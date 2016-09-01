@@ -11,6 +11,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.text.TextUtils;
@@ -57,6 +58,8 @@ import com.wangdaye.mysplash.main.view.fragment.SearchFragment;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import jp.wasabeef.glide.transformations.BlurTransformation;
+
 /**
  * Main activity.
  * */
@@ -75,6 +78,7 @@ public class MainActivity extends MysplashActivity
     private TextView navTitle;
     private TextView navSubtitle;
     private ImageButton navButton;
+    private ImageView navImgBg;
     private SafeHandler<MainActivity> handler;
 
     // presenter.
@@ -207,6 +211,8 @@ public class MainActivity extends MysplashActivity
 
         this.navButton = (ImageButton) header.findViewById(R.id.container_nav_header_button);
         navButton.setOnClickListener(this);
+
+        this.navImgBg = (ImageView) header.findViewById(R.id.imvBg);
 
         drawMeAvatar();
         drawMeTitle();
@@ -390,9 +396,18 @@ public class MainActivity extends MysplashActivity
         if (!AuthManager.getInstance().isAuthorized()) {
             appIcon.setVisibility(View.VISIBLE);
             navAvatar.setVisibility(View.GONE);
+            navImgBg.setVisibility(View.GONE);
+            if (ThemeUtils.getInstance(this).isLightTheme()) {
+                navTitle.setTextColor(ContextCompat.getColor(this, R.color.colorTextTitle_dark));
+                navSubtitle.setTextColor(ContextCompat.getColor(this, R.color.colorTextSubtitle_dark));
+            }else {
+                navTitle.setTextColor(ContextCompat.getColor(this, R.color.colorWhite));
+                navSubtitle.setTextColor(ContextCompat.getColor(this, R.color.colorWhite));
+            }
         } else if (TextUtils.isEmpty(AuthManager.getInstance().getAvatarPath())) {
             navAvatar.setVisibility(View.VISIBLE);
             appIcon.setVisibility(View.GONE);
+            navImgBg.setVisibility(View.VISIBLE);
             Glide.with(Mysplash.getInstance())
                     .load(R.drawable.default_avatar)
                     .override(128, 128)
@@ -403,6 +418,7 @@ public class MainActivity extends MysplashActivity
         } else {
             navAvatar.setVisibility(View.VISIBLE);
             appIcon.setVisibility(View.GONE);
+            navImgBg.setVisibility(View.VISIBLE);
             Glide.clear(navAvatar);
             Glide.with(Mysplash.getInstance())
                     .load(AuthManager.getInstance().getAvatarPath())
@@ -412,6 +428,13 @@ public class MainActivity extends MysplashActivity
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 navAvatar.setTransitionName(AuthManager.getInstance().getAccessToken());
             }
+
+            //set blur bg avatar
+            Glide.with(this).load(AuthManager.getInstance().getAvatarPath())
+                    .bitmapTransform(new BlurTransformation(this, 25))
+                    .into(navImgBg);
+            navTitle.setTextColor(ContextCompat.getColor(this, R.color.colorWhite));
+            navSubtitle.setTextColor(ContextCompat.getColor(this, R.color.colorWhite));
         }
     }
 

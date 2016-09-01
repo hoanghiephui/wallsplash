@@ -11,7 +11,7 @@
         android:layout_height="@dimen/circular_progress_height"
         android:layout_margin="@dimen/little_icon_size"
         android:layout_centerInParent="true"
-        app:cpv_color="?attr/content_color"
+        app:cpv_color="?attr/colorAccent"
         app:cpv_indeterminate="true"
         app:cpv_animAutostart="true" />
     
@@ -32,7 +32,7 @@
             android:textSize="@dimen/content_text_size"
             android:textColor="?attr/content_color"
             android:background="@android:color/transparent"
-            android:singleLine="true"
+            android:maxLines="1"
             android:layout_marginLeft="@dimen/normal_margin"
             android:layout_marginRight="@dimen/normal_margin"
             android:layout_marginTop="@dimen/normal_margin" />
@@ -48,7 +48,7 @@
             android:textSize="@dimen/content_text_size"
             android:textColor="?attr/content_color"
             android:background="@android:color/transparent"
-            android:singleLine="true"
+            android:maxLines="1"
             android:layout_marginLeft="@dimen/normal_margin"
             android:layout_marginRight="@dimen/normal_margin"
             android:layout_marginTop="@dimen/normal_margin" />
@@ -64,7 +64,7 @@
             android:textSize="@dimen/content_text_size"
             android:textColor="?attr/content_color"
             android:background="@android:color/transparent"
-            android:singleLine="true"
+            android:maxLines="1"
             android:layout_marginLeft="@dimen/normal_margin"
             android:layout_marginRight="@dimen/normal_margin"
             android:layout_marginTop="@dimen/normal_margin" />
@@ -80,7 +80,7 @@
             android:textSize="@dimen/content_text_size"
             android:textColor="?attr/content_color"
             android:background="@android:color/transparent"
-            android:singleLine="true"
+            android:maxLines="1"
             android:layout_marginLeft="@dimen/normal_margin"
             android:layout_marginRight="@dimen/normal_margin"
             android:layout_marginTop="@dimen/normal_margin" />
@@ -96,7 +96,7 @@
             android:textSize="@dimen/content_text_size"
             android:textColor="?attr/content_color"
             android:background="@android:color/transparent"
-            android:singleLine="true"
+            android:maxLines="1"
             android:layout_marginLeft="@dimen/normal_margin"
             android:layout_marginRight="@dimen/normal_margin"
             android:layout_marginTop="@dimen/normal_margin" />
@@ -112,7 +112,7 @@
             android:textSize="@dimen/content_text_size"
             android:textColor="?attr/content_color"
             android:background="@android:color/transparent"
-            android:singleLine="true"
+            android:maxLines="1"
             android:maxLength="30"
             android:layout_marginLeft="@dimen/normal_margin"
             android:layout_marginRight="@dimen/normal_margin"

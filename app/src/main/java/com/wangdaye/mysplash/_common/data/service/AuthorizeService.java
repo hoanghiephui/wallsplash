@@ -3,6 +3,7 @@ package com.wangdaye.mysplash._common.data.service;
 import com.wangdaye.mysplash.Mysplash;
 import com.wangdaye.mysplash._common.data.api.AuthorizeApi;
 import com.wangdaye.mysplash._common.data.data.AccessToken;
+import com.wangdaye.mysplash._common.utils.ValueUtils;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -25,7 +26,7 @@ public class AuthorizeService {
                 .getAccessToken(
                         Mysplash.APPLICATION_ID,
                         Mysplash.SECRET,
-                        "mysplash://" + Mysplash.UNSPLASH_LOGIN_CALLBACK,
+                        "wallsplash://" + Mysplash.UNSPLASH_LOGIN_CALLBACK,
                         code,
                         "authorization_code");
         getAccessToken.enqueue(new Callback<AccessToken>() {
@@ -61,6 +62,7 @@ public class AuthorizeService {
     private AuthorizeApi buildApi() {
         return new Retrofit.Builder()
                 .baseUrl(Mysplash.UNSPLASH_AUTH_BASE_URL)
+                .client(ValueUtils.buildClient())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
                 .create((AuthorizeApi.class));

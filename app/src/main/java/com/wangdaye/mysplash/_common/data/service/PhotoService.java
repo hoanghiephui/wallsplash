@@ -1,6 +1,7 @@
 package com.wangdaye.mysplash._common.data.service;
 
 import com.google.gson.GsonBuilder;
+import com.wangdaye.mysplash.BuildConfig;
 import com.wangdaye.mysplash.Mysplash;
 import com.wangdaye.mysplash._common.data.api.PhotoApi;
 import com.wangdaye.mysplash._common.data.data.Collection;
@@ -15,6 +16,7 @@ import com.wangdaye.mysplash._common.data.tools.AuthInterceptor;
 import java.util.List;
 
 import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -297,8 +299,12 @@ public class PhotoService {
     }
 
     private OkHttpClient buildClient() {
+        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+        logging.setLevel(BuildConfig.DEBUG ? HttpLoggingInterceptor.Level.BODY
+                : HttpLoggingInterceptor.Level.NONE);
         return new OkHttpClient.Builder()
                 .addInterceptor(new AuthInterceptor())
+                .addInterceptor(logging)
                 .build();
     }
 

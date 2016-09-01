@@ -28,8 +28,8 @@ public class Mysplash extends Application {
     private boolean activityInBackstage = false;
 
     // Unsplash data.
-    public static final String APPLICATION_ID = "7a96a77d719e9967f935da53784d6a3eb58a4fb174dda25e89ec69059e46c815";
-    public static final String SECRET = "dd766f4ee6e01599ca6db2e97c306a883a024f7322f92d4f7ab4aeae3be7924e";
+    public static final String APPLICATION_ID = "b0fc18a625db650671647a77a8f786f600658640d2598fade9a6ddad2d7c3ccb";
+    public static final String SECRET = "57df2a9ff4a2a73ae4f8c119bb7d85e6c5c2fb8bebd1c08e0ef488412ec5e92b";
 
     // Unsplash url.
     public static final String UNSPLASH_API_BASE_URL = "https://api.unsplash.com/";
@@ -39,7 +39,7 @@ public class Mysplash extends Application {
     public static final String UNSPLASH_LOGIN_CALLBACK = "unsplash-auth-callback";
     public static final String UNSPLASH_LOGIN_URL = Mysplash.UNSPLASH_AUTH_BASE_URL + "oauth/authorize"
             + "?client_id=" + Mysplash.APPLICATION_ID
-            + "&redirect_uri=" + "mysplash%3A%2F%2F" + UNSPLASH_LOGIN_CALLBACK
+            + "&redirect_uri=" + "wallsplash%3A%2F%2F" + UNSPLASH_LOGIN_CALLBACK
             + "&response_type=" + "code"
             + "&scope=" + "public+read_user+write_user+read_photos+write_photos+write_likes+read_collections+write_collections";
 

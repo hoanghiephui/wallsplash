@@ -37,12 +37,12 @@
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
                     android:hint="@string/feedback_search_bar"
-                    android:textColorHint="?attr/subtitle_color"
-                    android:textColorHighlight="?attr/subtitle_color"
+                    android:textColorHint="?attr/color_tab_selected"
+                    android:textColorHighlight="?attr/color_tab_selected"
                     android:textSize="@dimen/content_text_size"
-                    android:textColor="?attr/content_color"
+                    android:textColor="?attr/color_tab_selected"
                     android:imeOptions="actionSearch"
-                    android:singleLine="true"
+                    android:maxLines="1"
                     android:inputType="text"
                     tools:ignore="RtlHardcoded" />
 
@@ -64,7 +64,7 @@
                         android:id="@+id/fragment_search_nowTxt"
                         android:layout_marginLeft="@dimen/normal_margin"
                         android:layout_centerVertical="true"
-                        style="@style/subtitle_text"
+                        style="@style/subtitle_text_new"
                         tools:text="LANDSCAPE"
                         tools:ignore="RtlHardcoded" />
 

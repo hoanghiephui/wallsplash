@@ -43,7 +43,7 @@
             <intent-filter>
                 <data
                     android:host="unsplash-auth-callback"
-                    android:scheme="mysplash" />
+                    android:scheme="wallsplash" />
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />

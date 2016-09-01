@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import com.wangdaye.mysplash.BuildConfig;
 import com.wangdaye.mysplash.Mysplash;
 import com.wangdaye.mysplash.R;
 import com.wangdaye.mysplash._common.data.api.PhotoApi;
@@ -12,6 +13,8 @@ import com.wangdaye.mysplash._common.data.data.PhotoDetails;
 
 import java.util.List;
 
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Response;
 
 /**
@@ -281,5 +284,14 @@ public class ValueUtils {
                         Mysplash.TECHNOLOGY_PHOTOS_COUNT);
                 break;
         }
+    }
+
+    public static OkHttpClient buildClient() {
+        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+        logging.setLevel(BuildConfig.DEBUG ? HttpLoggingInterceptor.Level.BODY
+                : HttpLoggingInterceptor.Level.NONE);
+        return new OkHttpClient.Builder()
+                .addInterceptor(logging)
+                .build();
     }
 }

@@ -62,7 +62,11 @@ public class PhotoMenuPopupWindow extends PopupWindow
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             setElevation(10);
         }
-        showAsDropDown(anchor, 0, 0, Gravity.CENTER);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            showAsDropDown(anchor, 0, 0, Gravity.CENTER);
+        }else {
+
+        }
     }
 
     /** <br> UI. */
@@ -85,7 +89,7 @@ public class PhotoMenuPopupWindow extends PopupWindow
 
         if (ThemeUtils.getInstance(v.getContext()).isLightTheme()) {
             ((ImageView) v.findViewById(R.id.popup_photo_menu_statsIcon)).setImageResource(R.drawable.ic_stats_light);
-            ((ImageView) v.findViewById(R.id.popup_photo_menu_browserIcon)).setImageResource(R.drawable.ic_earth_light);
+            ((ImageView) v.findViewById(R.id.popup_photo_menu_browserIcon)).setImageResource(R.drawable.ic_earth_light1);
             ((ImageView) v.findViewById(R.id.popup_photo_menu_downloadPageIcon)).setImageResource(R.drawable.ic_image_light);
         } else {
             ((ImageView) v.findViewById(R.id.popup_photo_menu_statsIcon)).setImageResource(R.drawable.ic_stats_dark);

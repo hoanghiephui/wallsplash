@@ -37,10 +37,10 @@
                 android:id="@+id/fragment_home_tabLayout"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/tab_layout_height"
-                app:tabIndicatorHeight="3dp"
+                app:tabIndicatorHeight="2dp"
                 app:tabIndicatorColor="?attr/title_color"
-                app:tabSelectedTextColor="?attr/content_color"
-                app:tabTextColor="?attr/subtitle_color" />
+                app:tabSelectedTextColor="?attr/color_tab_selected"
+                app:tabTextColor="?attr/color_tab_text" />
 
         </android.support.design.widget.AppBarLayout>
 

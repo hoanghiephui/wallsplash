@@ -9,6 +9,7 @@ import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.util.Pair;
 import android.view.View;
 
+import com.wangdaye.mysplash.Mysplash;
 import com.wangdaye.mysplash.R;
 import com.wangdaye.mysplash._common.data.tools.AuthManager;
 import com.wangdaye.mysplash._common.i.presenter.MeManagePresenter;
@@ -67,7 +68,7 @@ public class MeManageImplementor
     @Override
     public void responseWriteAccessToken() {
         NotificationUtils.showSnackbar(
-                "Welcome back.",
+                Mysplash.getInstance().getResources().getString(R.string.welcome_back),
                 Snackbar.LENGTH_SHORT);
         view.drawMeAvatar();
         view.drawMeTitle();

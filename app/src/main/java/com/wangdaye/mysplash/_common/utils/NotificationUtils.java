@@ -35,7 +35,7 @@ public class NotificationUtils {
 
             if (ThemeUtils.getInstance(c).isLightTheme()) {
                 contentTxt.setTextColor(ContextCompat.getColor(c, R.color.colorTextContent_light));
-                snackbarLayout.setBackgroundResource(R.color.colorRoot_light);
+                snackbarLayout.setBackgroundResource(R.color.colorTextWarningRed);
             } else {
                 contentTxt.setTextColor(ContextCompat.getColor(c, R.color.colorTextContent_dark));
                 snackbarLayout.setBackgroundResource(R.color.colorRoot_dark);
@@ -66,7 +66,7 @@ public class NotificationUtils {
             if (ThemeUtils.getInstance(c).isLightTheme()) {
                 contentTxt.setTextColor(ContextCompat.getColor(c, R.color.colorTextContent_light));
                 actionBtn.setTextColor(ContextCompat.getColor(c, R.color.colorTextTitle_light));
-                snackbarLayout.setBackgroundResource(R.color.colorRoot_light);
+                snackbarLayout.setBackgroundResource(R.color.colorTextWarningRed);
             } else {
                 contentTxt.setTextColor(ContextCompat.getColor(c, R.color.colorTextContent_dark));
                 actionBtn.setTextColor(ContextCompat.getColor(c, R.color.colorTextTitle_dark));

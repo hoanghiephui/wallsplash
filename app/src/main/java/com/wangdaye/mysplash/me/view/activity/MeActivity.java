@@ -13,12 +13,14 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.mikhaellopez.circularimageview.CircularImageView;
 import com.wangdaye.mysplash.Mysplash;
 import com.wangdaye.mysplash.R;
 import com.wangdaye.mysplash._common.data.data.Collection;
@@ -37,7 +39,6 @@ import com.wangdaye.mysplash._common.i.view.ToolbarView;
 import com.wangdaye.mysplash._common.ui.activity.MysplashActivity;
 import com.wangdaye.mysplash._common.ui.activity.UpdateMeActivity;
 import com.wangdaye.mysplash._common.ui.adapter.MyPagerAdapter;
-import com.wangdaye.mysplash._common.ui.widget.CircleImageView;
 import com.wangdaye.mysplash._common.ui.widget.StatusBarView;
 import com.wangdaye.mysplash._common.ui.widget.SwipeBackLayout;
 import com.wangdaye.mysplash._common.utils.AnimUtils;
@@ -57,6 +58,8 @@ import com.wangdaye.mysplash.me.view.widget.MeProfileView;
 import java.util.ArrayList;
 import java.util.List;
 
+import jp.wasabeef.glide.transformations.BlurTransformation;
+
 /**
  * Me activity.
  * */
@@ -73,10 +76,11 @@ public class MeActivity extends MysplashActivity
     private CoordinatorLayout container;
     private AppBarLayout appBar;
     private Toolbar toolbar;
-    private CircleImageView avatar;
+    private CircularImageView avatar;
     private TextView title;
     private MyPagerAdapter adapter;
     private MeProfileView meProfileView;
+    private ImageView imgBg;
 
     private PagerView[] pagers = new PagerView[3];
     private DisplayUtils utils;
@@ -191,9 +195,10 @@ public class MeActivity extends MysplashActivity
         toolbar.setOnMenuItemClickListener(this);
         toolbar.setNavigationOnClickListener(this);
 
-        this.avatar = (CircleImageView) findViewById(R.id.activity_me_avatar);
+        this.avatar = (CircularImageView) findViewById(R.id.activity_me_avatar);
         this.title = (TextView) findViewById(R.id.activity_me_title);
         this.meProfileView = (MeProfileView) findViewById(R.id.activity_me_profileView);
+        this.imgBg = (ImageView)findViewById(R.id.imgBg);
 
         initPages();
         this.utils = new DisplayUtils(this);
@@ -245,6 +250,11 @@ public class MeActivity extends MysplashActivity
                     .override(128, 128)
                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                     .into(avatar);
+            //set blur bg avatar
+            Glide.with(this).load(AuthManager.getInstance().getUser().profile_image.large)
+                    .bitmapTransform(new BlurTransformation(this, 25))
+                    .into(imgBg);
+
         } else if (!TextUtils.isEmpty(AuthManager.getInstance().getAvatarPath())) {
             Glide.with(this)
                     .load(AuthManager.getInstance().getAvatarPath())
@@ -252,6 +262,11 @@ public class MeActivity extends MysplashActivity
                     .override(128, 128)
                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                     .into(avatar);
+
+            //set blur bg avatar
+            Glide.with(this).load(AuthManager.getInstance().getAvatarPath())
+                    .bitmapTransform(new BlurTransformation(this, 25))
+                    .into(imgBg);
         } else {
             Glide.with(this)
                     .load(R.drawable.default_avatar)

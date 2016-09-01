@@ -13,6 +13,8 @@
         <item name="subtitle_color">@color/colorTextSubtitle_light</item>
         <item name="content_color">@color/colorTextContent_light</item>
         <item name="android:textColorPrimary">?attr/content_color</item>
+        <item name="color_tab_text">@color/tabTextColor</item>
+        <item name="color_tab_selected">@color/colorWhite</item>
         <item name="android:windowTranslucentStatus">false</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowAllowEnterTransitionOverlap">true</item>
@@ -29,6 +31,8 @@
         <item name="title_color">@color/colorTextTitle_dark</item>
         <item name="subtitle_color">@color/colorTextSubtitle_dark</item>
         <item name="content_color">@color/colorTextContent_dark</item>
+        <item name="color_tab_text">@color/colorTextSubtitle_dark</item>
+        <item name="color_tab_selected">@color/colorWhite</item>
         <item name="android:textColorPrimary">?attr/content_color</item>
         <item name="android:windowTranslucentStatus">false</item>
         <item name="android:statusBarColor">@android:color/transparent</item>

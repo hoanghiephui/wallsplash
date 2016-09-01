@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -116,7 +115,7 @@ public class PhotoDetailsView extends FrameLayout
         if (ThemeUtils.getInstance(getContext()).isLightTheme()) {
             ((ImageView) findViewById(R.id.container_photo_details_sizeIcon)).setImageResource(R.drawable.ic_size_light);
             ((ImageView) findViewById(R.id.container_photo_details_colorIcon)).setImageResource(R.drawable.ic_color_light);
-            ((ImageView) findViewById(R.id.container_photo_details_locationIcon)).setImageResource(R.drawable.ic_location_light);
+            ((ImageView) findViewById(R.id.container_photo_details_locationIcon)).setImageResource(R.drawable.ic_place_light_24px);
             ((ImageView) findViewById(R.id.container_photo_details_modelIcon)).setImageResource(R.drawable.ic_camera_light);
             ((ImageView) findViewById(R.id.container_photo_details_exposureIcon)).setImageResource(R.drawable.ic_exposure_light);
             ((ImageView) findViewById(R.id.container_photo_details_apertureIcon)).setImageResource(R.drawable.ic_aperture_light);
@@ -289,7 +288,7 @@ public class PhotoDetailsView extends FrameLayout
 
         isoText.setText(details.exif.iso == 0 ? "Unknown" : String.valueOf(details.exif.iso));
 
-        colorSample.setBackground(new ColorDrawable(Color.parseColor(details.color)));
+        colorSample.setBackgroundColor(Color.parseColor(details.color));
 
         tagView.setAdapter(new TagAdapter(details.categories));
     }

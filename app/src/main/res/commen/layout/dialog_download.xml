@@ -20,7 +20,7 @@
             android:layout_margin="@dimen/normal_margin"
             android:layout_centerVertical="true"
             app:cpv_animAutostart="true"
-            app:cpv_color="?attr/content_color"
+            app:cpv_color="?attr/colorAccent"
             app:cpv_indeterminate="true"/>
 
         <TextView

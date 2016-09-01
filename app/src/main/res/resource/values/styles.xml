@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- activity & fragment themes. -->
 
@@ -11,7 +11,9 @@
         <item name="title_color">@color/colorTextTitle_light</item>
         <item name="subtitle_color">@color/colorTextSubtitle_light</item>
         <item name="content_color">@color/colorTextContent_light</item>
-        <item name="android:windowTranslucentStatus">true</item>
+        <item name="color_tab_text">@color/tabTextColor</item>
+        <item name="color_tab_selected">@color/colorWhite</item>
+        <item name="android:windowTranslucentStatus" tools:targetApi="19">true</item>
         <item name="android:popupMenuStyle">@style/material_popup_menu</item>
     </style>
 
@@ -24,7 +26,9 @@
         <item name="title_color">@color/colorTextTitle_dark</item>
         <item name="subtitle_color">@color/colorTextSubtitle_dark</item>
         <item name="content_color">@color/colorTextContent_dark</item>
-        <item name="android:windowTranslucentStatus">true</item>
+        <item name="color_tab_text">@color/colorTextSubtitle_dark</item>
+        <item name="color_tab_selected">@color/colorWhite</item>
+        <item name="android:windowTranslucentStatus" tools:targetApi="19">true</item>
         <item name="android:popupMenuStyle">@style/material_popup_menu</item>
     </style>
 
@@ -41,11 +45,11 @@
     <!-- photo activity. -->
 
     <style name="MysplashTheme_light.Translucent.Photo" parent="MysplashTheme_light.Translucent">
-        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentStatus" tools:targetApi="19">true</item>
     </style>
 
     <style name="MysplashTheme_dark.Translucent.Photo" parent="MysplashTheme_dark.Translucent">
-        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentStatus" tools:targetApi="19">true</item>
     </style>
 
     <!-- user activity. -->
@@ -73,8 +77,8 @@
     <!-- toolbar. -->
 
     <style name="MysplashToolbarTheme" parent="@style/ThemeOverlay.AppCompat.ActionBar">
-        <item name="android:textColorPrimary">?attr/content_color</item>
-        <item name="android:textColorSecondary">?attr/content_color</item>
+        <item name="android:textColorPrimary">?attr/color_tab_selected</item>
+        <item name="android:textColorSecondary">?attr/color_tab_selected</item>
     </style>
 
     <!-- menu. -->
@@ -107,11 +111,25 @@
         <item name="android:textColor">?attr/subtitle_color</item>
     </style>
 
+    <style name="subtitle_text_new">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/subtitle_text_size</item>
+        <item name="android:textColor">?attr/color_tab_selected</item>
+    </style>
+
     <style name="content_text">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">@dimen/content_text_size</item>
         <item name="android:textColor">?attr/content_color</item>
+    </style>
+
+    <style name="content_text_new">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/content_text_size</item>
+        <item name="android:textColor">?attr/title_color</item>
     </style>
 
     <!-- button -->

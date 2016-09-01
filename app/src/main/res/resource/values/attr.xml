@@ -22,6 +22,14 @@
         <attr name="content_color" format="reference|color" />
     </declare-styleable>
 
+    <declare-styleable name="color_tab_text">
+        <attr name="color_tab_text" format="reference|color" />
+    </declare-styleable>
+
+    <declare-styleable name="color_tab_selected">
+        <attr name="color_tab_selected" format="reference|color" />
+    </declare-styleable>
+
     <!-- circleImageView -->
     <declare-styleable name="CircleImageView">
         <attr name="civ_border_width" format="dimension" />

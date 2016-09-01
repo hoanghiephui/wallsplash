@@ -26,61 +26,76 @@
             android:layout_height="wrap_content"
             android:background="?attr/colorPrimary"
             app:theme="@style/MysplashToolbarTheme">
-
-            <RelativeLayout
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_scrollFlags="scroll|snap">
+                android:layout_height="wrap_content">
 
-                <com.wangdaye.mysplash._common.ui.widget.CircleImageView
-                    android:id="@+id/activity_me_avatar"
-                    android:layout_width="@dimen/design_icon_size"
-                    android:layout_height="@dimen/design_icon_size"
-                    android:layout_marginTop="@dimen/little_icon_size"
-                    android:layout_centerHorizontal="true"
-                    android:scaleType="centerCrop"
-                    android:src="?attr/line_color"
-                    android:transitionName="@string/transition_me_avatar"
-                    app:civ_fill_color="@color/colorTextGrey"
-                    tools:ignore="RtlHardcoded" />
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/imgBg"
+                    android:scaleType="centerCrop"/>
 
-                <TextView
-                    android:id="@+id/activity_me_title"
-                    android:text="..."
-                    android:textStyle="bold"
-                    android:textSize="@dimen/large_title_text_size"
-                    android:textColor="?attr/title_color"
-                    android:layout_below="@id/activity_me_avatar"
-                    android:layout_marginTop="@dimen/normal_margin"
-                    android:layout_marginRight="@dimen/normal_margin"
-                    android:layout_centerHorizontal="true"
-                    style="@style/title_text"
-                    tools:ignore="HardcodedText,RtlHardcoded" />
-
-                <com.wangdaye.mysplash.me.view.widget.MeProfileView
-                    android:id="@+id/activity_me_profileView"
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/activity_me_title" />
+                    app:layout_scrollFlags="scroll|snap">
 
-                <android.support.v7.widget.Toolbar
-                    android:id="@+id/activity_me_toolbar"
-                    android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
-                    android:background="@android:color/transparent"
-                    app:popupTheme="@style/MysplashPopupMenuTheme"/>
+                    <com.mikhaellopez.circularimageview.CircularImageView
+                        android:id="@+id/activity_me_avatar"
+                        android:layout_width="@dimen/design_icon_size"
+                        android:layout_height="@dimen/design_icon_size"
+                        android:layout_marginTop="@dimen/little_icon_size"
+                        android:layout_centerHorizontal="true"
+                        android:scaleType="centerCrop"
+                        android:src="?attr/line_color"
+                        android:transitionName="@string/transition_me_avatar"
+                        app:civ_border_color="@color/semiTransparentWhite"
+                        app:civ_border_width="5dp"
+                        tools:ignore="RtlHardcoded" />
 
-            </RelativeLayout>
+                    <TextView
+                        android:id="@+id/activity_me_title"
+                        android:text="..."
+                        android:textStyle="bold"
+                        android:textSize="@dimen/large_title_text_size"
+                        android:textColor="?attr/title_color"
+                        android:layout_below="@id/activity_me_avatar"
+                        android:layout_marginTop="@dimen/normal_margin"
+                        android:layout_marginRight="@dimen/normal_margin"
+                        android:layout_centerHorizontal="true"
+                        style="@style/title_text"
+                        tools:ignore="HardcodedText,RtlHardcoded" />
+
+                    <com.wangdaye.mysplash.me.view.widget.MeProfileView
+                        android:id="@+id/activity_me_profileView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/activity_me_title" />
+
+                    <android.support.v7.widget.Toolbar
+                        android:id="@+id/activity_me_toolbar"
+                        android:layout_width="match_parent"
+                        android:layout_height="?attr/actionBarSize"
+                        android:background="@android:color/transparent"
+                        app:popupTheme="@style/MysplashPopupMenuTheme"/>
+
+                </RelativeLayout>
+            </FrameLayout>
+
+
+
+
 
             <android.support.design.widget.TabLayout
                 android:id="@+id/activity_me_tabLayout"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/tab_layout_height"
                 android:layout_below="@id/activity_me_profileView"
-                app:tabIndicatorHeight="3dp"
+                app:tabIndicatorHeight="2dp"
                 app:tabIndicatorColor="?attr/title_color"
-                app:tabSelectedTextColor="?attr/content_color"
-                app:tabTextColor="?attr/subtitle_color" />
+                app:tabSelectedTextColor="?attr/color_tab_selected"
+                app:tabTextColor="?attr/color_tab_text" />
 
         </android.support.design.widget.AppBarLayout>
 

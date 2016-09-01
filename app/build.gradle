@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "com.wangdaye.mysplash"
-        minSdkVersion 19
+        minSdkVersion 15
         targetSdkVersion 24
         versionCode 218
         versionName "2.1.8"
@@ -54,4 +54,7 @@ dependencies {
     compile 'com.github.rahatarmanahmed:circularprogressview:2.5.0'
     compile 'com.zhy:flowlayout-lib:1.0.3'
     compile files('libs/thindownloadmanager-1.0.1.jar')
+    compile 'jp.wasabeef:glide-transformations:2.0.1'
+    compile 'com.squareup.okhttp3:logging-interceptor:3.4.1'
+    compile 'com.mikhaellopez:circularimageview:3.0.2'
 }

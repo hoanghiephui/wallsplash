@@ -1,6 +1,7 @@
 package com.wangdaye.mysplash._common.data.service;
 
 import com.google.gson.GsonBuilder;
+import com.wangdaye.mysplash.BuildConfig;
 import com.wangdaye.mysplash.Mysplash;
 import com.wangdaye.mysplash._common.data.api.UserApi;
 import com.wangdaye.mysplash._common.data.data.Me;
@@ -8,6 +9,7 @@ import com.wangdaye.mysplash._common.data.data.User;
 import com.wangdaye.mysplash._common.data.tools.AuthInterceptor;
 
 import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -101,8 +103,12 @@ public class UserService {
     }
 
     public OkHttpClient buildClient() {
+        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+        logging.setLevel(BuildConfig.DEBUG ? HttpLoggingInterceptor.Level.BODY
+                : HttpLoggingInterceptor.Level.NONE);
         return new OkHttpClient.Builder()
                 .addInterceptor(new AuthInterceptor())
+                .addInterceptor(logging)
                 .build();
     }
 
