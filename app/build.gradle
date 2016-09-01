@@ -57,4 +57,5 @@ dependencies {
     compile 'jp.wasabeef:glide-transformations:2.0.1'
     compile 'com.squareup.okhttp3:logging-interceptor:3.4.1'
     compile 'com.mikhaellopez:circularimageview:3.0.2'
+    compile project(':admobadapter')
 }

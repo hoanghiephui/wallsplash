@@ -3,10 +3,10 @@
 
     <!-- theme -->
     <color name="colorPrimary_light">#26bea2</color>
-    <color name="colorPrimary_dark">#212121</color>
+    <color name="colorPrimary_dark">#5a5c66</color>
 
     <color name="colorPrimaryDark_light">#15967e</color>
-    <color name="colorPrimaryDark_dark">#1a1a1a</color>
+    <color name="colorPrimaryDark_dark">#35373d</color>
 
     <color name="colorAccent_light">@color/colorTextTitle_light</color>
     <color name="colorAccent_dark">@color/colorTextTitle_dark</color>
