@@ -13,7 +13,7 @@ public class TypefaceUtils {
 
     public static void setTypeface(Context c, TextView t) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            t.setTypeface(Typeface.createFromAsset(c.getAssets(), "fonts/Courier.ttf"));
+            t.setTypeface(Typeface.createFromAsset(c.getAssets(), "fonts/Roboto_Thin.ttf"));
         }
     }
 }

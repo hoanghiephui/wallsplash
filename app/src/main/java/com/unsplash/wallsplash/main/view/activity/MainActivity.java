@@ -203,9 +203,9 @@ public class MainActivity extends BaseActivity
         navAvatar.setOnClickListener(this);
 
         this.appIcon = (ImageView) header.findViewById(R.id.container_nav_header_appIcon);
-        Glide.with(this)
+        /*Glide.with(this)
                 .load(R.drawable.ic_launcher)
-                .into(appIcon);
+                .into(appIcon);*/
         appIcon.setOnClickListener(this);
 
         this.navTitle = (TextView) header.findViewById(R.id.container_nav_header_title);
@@ -404,7 +404,7 @@ public class MainActivity extends BaseActivity
         if (!AuthManager.getInstance().isAuthorized()) {
             appIcon.setVisibility(View.VISIBLE);
             navAvatar.setVisibility(View.GONE);
-            navImgBg.setVisibility(View.GONE);
+            navImgBg.setVisibility(View.VISIBLE);
             if (ThemeUtils.getInstance(this).isLightTheme()) {
                 navTitle.setTextColor(ContextCompat.getColor(this, R.color.colorTextTitle_dark));
                 navSubtitle.setTextColor(ContextCompat.getColor(this, R.color.colorTextSubtitle_dark));

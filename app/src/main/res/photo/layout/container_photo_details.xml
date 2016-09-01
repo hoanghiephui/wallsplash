@@ -117,7 +117,7 @@
 
             <ImageView
                 android:id="@+id/container_photo_details_locationIcon"
-                android:src="@drawable/ic_place_light_24px"
+                android:src="@drawable/ic_place_light_24dp"
                 style="@style/material_icon"
                 tools:ignore="ContentDescription" />
 

@@ -121,7 +121,7 @@ public class PhotoDetailsView extends FrameLayout
         if (ThemeUtils.getInstance(getContext()).isLightTheme()) {
             ((ImageView) findViewById(R.id.container_photo_details_sizeIcon)).setImageResource(R.drawable.ic_size_light);
             ((ImageView) findViewById(R.id.container_photo_details_colorIcon)).setImageResource(R.drawable.ic_color_light);
-            ((ImageView) findViewById(R.id.container_photo_details_locationIcon)).setImageResource(R.drawable.ic_place_light_24px);
+            ((ImageView) findViewById(R.id.container_photo_details_locationIcon)).setImageResource(R.drawable.ic_place_light_24dp);
             ((ImageView) findViewById(R.id.container_photo_details_modelIcon)).setImageResource(R.drawable.ic_camera_light);
             ((ImageView) findViewById(R.id.container_photo_details_exposureIcon)).setImageResource(R.drawable.ic_exposure_light);
             ((ImageView) findViewById(R.id.container_photo_details_apertureIcon)).setImageResource(R.drawable.ic_aperture_light);
