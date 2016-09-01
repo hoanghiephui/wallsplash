@@ -5,11 +5,11 @@ android {
     buildToolsVersion "24.0.2"
 
     defaultConfig {
-        applicationId "com.wangdaye.mysplash"
+        applicationId "com.unsplash.wallsplash"
         minSdkVersion 15
         targetSdkVersion 24
-        versionCode 218
-        versionName "2.1.8"
+        versionCode 1
+        versionName "1.0"
     }
     sourceSets {
         main {

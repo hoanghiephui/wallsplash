@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.wangdaye.mysplash._common.ui.widget.SwipeBackLayout
+<com.unsplash.wallsplash._common.ui.widget.SwipeBackLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.wangdaye.mysplash._common.ui.widget.StatusBarView
+    <com.unsplash.wallsplash._common.ui.widget.StatusBarView
         android:id="@+id/activity_login_statusBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -126,4 +126,4 @@
 
     </android.support.design.widget.CoordinatorLayout>
 
-</com.wangdaye.mysplash._common.ui.widget.SwipeBackLayout>
+</com.unsplash.wallsplash._common.ui.widget.SwipeBackLayout>
