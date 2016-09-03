@@ -190,4 +190,16 @@
         <item name="android:windowContentOverlay">@null</item>
     </style>
 
+    <!-- photo preview activity. -->
+
+    <style name="MysplashTheme_light.Translucent.PhotoPreview" parent="MysplashTheme_light.Translucent">
+        <item name="android:windowTranslucentStatus" tools:targetApi="kitkat">true</item>
+        <item name="android:windowTranslucentNavigation" tools:targetApi="kitkat">true</item>
+    </style>
+
+    <style name="MysplashTheme_dark.Translucent.PhotoPreview" parent="MysplashTheme_dark.Translucent">
+        <item name="android:windowTranslucentStatus" tools:targetApi="kitkat">true</item>
+        <item name="android:windowTranslucentNavigation" tools:targetApi="kitkat">true</item>
+    </style>
+
 </resources>

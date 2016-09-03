@@ -29,6 +29,58 @@ public class AnimUtils {
     private static Interpolator fastOutLinearIn;
     private static Interpolator linearOutSlowIn;
 
+    /**
+     * <br> view anim.
+     */
+
+    public static void animInitShow(final View v, int delay) {
+        v.setVisibility(View.INVISIBLE);
+        DisplayUtils utils = new DisplayUtils(v.getContext());
+        ObjectAnimator anim = ObjectAnimator
+                .ofFloat(v, "translationY", utils.dpToPx(72), 0)
+                .setDuration(300);
+
+        anim.setInterpolator(new DecelerateInterpolator());
+        anim.setStartDelay(delay);
+        anim.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                super.onAnimationStart(animation);
+                v.setVisibility(View.VISIBLE);
+            }
+        });
+        anim.start();
+    }
+
+    public static void animShow(View v) {
+        if (v.getVisibility() == View.GONE) {
+            v.setVisibility(View.VISIBLE);
+        }
+        ObjectAnimator
+                .ofFloat(v, "alpha", 0, 1)
+                .setDuration(300)
+                .start();
+
+    }
+
+    public static void animHide(final View v) {
+        ObjectAnimator anim = ObjectAnimator
+                .ofFloat(v, "alpha", 1, 0)
+                .setDuration(300);
+        anim.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                v.setVisibility(View.GONE);
+            }
+        });
+        anim.start();
+    }
+
+    /**
+     * <br> image anim.
+     */
+
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public static Interpolator getFastOutSlowInInterpolator(Context context) {
         if (fastOutSlowIn == null) {
@@ -126,6 +178,7 @@ public class AnimUtils {
      * Interrupting Activity transitions can yield an OperationNotSupportedException when the
      * transition tries to pause the animator. Yikes! We can fix this by wrapping the Animator:
      */
+    @TargetApi(Build.VERSION_CODES.KITKAT)
     public static class NoPauseAnimator extends Animator {
         private final Animator mAnimator;
         private final ArrayMap<AnimatorListener, AnimatorListener> mListeners = new ArrayMap<>();
@@ -278,6 +331,7 @@ public class AnimUtils {
         }
     }
 
+    @TargetApi(Build.VERSION_CODES.KITKAT)
     public static class TransitionListenerAdapter implements Transition.TransitionListener {
 
         @Override
@@ -306,46 +360,5 @@ public class AnimUtils {
         }
     }
 
-    public static void animInitShow(final View v, int delay) {
-        v.setVisibility(View.INVISIBLE);
-        DisplayUtils utils = new DisplayUtils(v.getContext());
-        ObjectAnimator anim = ObjectAnimator
-                .ofFloat(v, "translationY", utils.dpToPx(72), 0)
-                .setDuration(300);
 
-        anim.setInterpolator(new DecelerateInterpolator());
-        anim.setStartDelay(delay);
-        anim.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationStart(Animator animation) {
-                super.onAnimationStart(animation);
-                v.setVisibility(View.VISIBLE);
-            }
-        });
-        anim.start();
-    }
-
-    public static void animShow(View v) {
-        if (v.getVisibility() == View.GONE) {
-            v.setVisibility(View.VISIBLE);
-        }
-        ObjectAnimator
-                .ofFloat(v, "alpha", 0, 1)
-                .setDuration(300)
-                .start();
-    }
-
-    public static void animHide(final View v) {
-        ObjectAnimator anim = ObjectAnimator
-                .ofFloat(v, "alpha", 1, 0)
-                .setDuration(300);
-        anim.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                super.onAnimationEnd(animation);
-                v.setVisibility(View.GONE);
-            }
-        });
-        anim.start();
-    }
 }

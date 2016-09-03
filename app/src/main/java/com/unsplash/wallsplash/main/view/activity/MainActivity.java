@@ -42,6 +42,7 @@ import com.unsplash.wallsplash._common.ui.activity.BaseActivity;
 import com.unsplash.wallsplash._common.ui.activity.DownloadManageActivity;
 import com.unsplash.wallsplash._common.ui.activity.SettingsActivity;
 import com.unsplash.wallsplash._common.ui.widget.CircleImageView;
+import com.unsplash.wallsplash._common.utils.BackToTopUtils;
 import com.unsplash.wallsplash._common.utils.SafeHandler;
 import com.unsplash.wallsplash._common.utils.ThemeUtils;
 import com.unsplash.wallsplash._common.utils.TypefaceUtils;
@@ -137,13 +138,13 @@ public class MainActivity extends BaseActivity
             int fragmentCounts = fragmentManagePresenter.getFragmentList().size();
             Fragment f = fragmentManagePresenter.getFragmentList().get(fragmentCounts - 1);
             if (f instanceof HomeFragment
-                    && ((HomeFragment) f).needPagerBackToTop()) {
+                    && ((HomeFragment) f).needPagerBackToTop() && BackToTopUtils.getInstance(this).isSetBackToTop(true)) {
                 ((HomeFragment) f).pagerBackToTop();
             } else if (f instanceof SearchFragment
                     && ((SearchFragment) f).needPagerBackToTop()) {
                 ((SearchFragment) f).pagerBackToTop();
             } else if (f instanceof CategoryFragment
-                    && ((CategoryFragment) f).needPagerBackToTop()) {
+                    && ((CategoryFragment) f).needPagerBackToTop() && BackToTopUtils.getInstance(this).isSetBackToTop(true)) {
                 ((CategoryFragment) f).pagerBackToTop();
             } else {
                 super.onBackPressed();

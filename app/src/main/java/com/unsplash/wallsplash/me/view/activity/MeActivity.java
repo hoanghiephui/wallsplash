@@ -42,6 +42,7 @@ import com.unsplash.wallsplash._common.ui.adapter.MyPagerAdapter;
 import com.unsplash.wallsplash._common.ui.widget.StatusBarView;
 import com.unsplash.wallsplash._common.ui.widget.SwipeBackLayout;
 import com.unsplash.wallsplash._common.utils.AnimUtils;
+import com.unsplash.wallsplash._common.utils.BackToTopUtils;
 import com.unsplash.wallsplash._common.utils.DisplayUtils;
 import com.unsplash.wallsplash._common.utils.ThemeUtils;
 import com.unsplash.wallsplash.collection.view.activity.CollectionActivity;
@@ -137,7 +138,7 @@ public class MeActivity extends BaseActivity
     public void onBackPressed() {
         if (WallSplashApplication.getInstance().isActivityInBackstage()) {
             super.onBackPressed();
-        } else if (pagerManagePresenter.needPagerBackToTop()) {
+        } else if (pagerManagePresenter.needPagerBackToTop() && BackToTopUtils.getInstance(this).isSetBackToTop(false)) {
             pagerManagePresenter.pagerScrollToTop();
         } else {
             super.onBackPressed();

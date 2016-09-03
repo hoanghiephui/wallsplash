@@ -143,6 +143,9 @@ public class CategoryFragment extends Fragment
             case -1:
                 toolbarPresenter.touchNavigatorIcon();
                 break;
+            case R.id.fragment_category_toolbar:
+                toolbarPresenter.touchToolbar();
+                break;
         }
     }
 
@@ -173,7 +176,7 @@ public class CategoryFragment extends Fragment
 
     @Override
     public void touchToolbar() {
-        photosView.scrollToTop();
+        photosView.pagerScrollToTop();
     }
 
     @Override

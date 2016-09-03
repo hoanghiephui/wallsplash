@@ -34,11 +34,11 @@ public class NotificationUtils {
             TypefaceUtils.setTypeface(c, contentTxt);
 
             if (ThemeUtils.getInstance(c).isLightTheme()) {
-                contentTxt.setTextColor(ContextCompat.getColor(c, R.color.colorTextContent_light));
-                snackbarLayout.setBackgroundResource(R.color.colorTextWarningRed);
+                contentTxt.setTextColor(ContextCompat.getColor(c, R.color.colorWhite));
+                snackbarLayout.setBackgroundResource(R.color.colorPrimary_light);
             } else {
                 contentTxt.setTextColor(ContextCompat.getColor(c, R.color.colorTextContent_dark));
-                snackbarLayout.setBackgroundResource(R.color.colorRoot_dark);
+                snackbarLayout.setBackgroundResource(R.color.colorPrimary_dark);
             }
 
             snackbar.show();
@@ -64,13 +64,13 @@ public class NotificationUtils {
             Button actionBtn = (Button) snackbarLayout.findViewById(R.id.snackbar_action);
 
             if (ThemeUtils.getInstance(c).isLightTheme()) {
-                contentTxt.setTextColor(ContextCompat.getColor(c, R.color.colorTextContent_light));
-                actionBtn.setTextColor(ContextCompat.getColor(c, R.color.colorTextTitle_light));
-                snackbarLayout.setBackgroundResource(R.color.colorTextWarningRed);
+                contentTxt.setTextColor(ContextCompat.getColor(c, R.color.colorWhite));
+                actionBtn.setTextColor(ContextCompat.getColor(c, R.color.colorAccent_light));
+                snackbarLayout.setBackgroundResource(R.color.colorPrimary_light);
             } else {
                 contentTxt.setTextColor(ContextCompat.getColor(c, R.color.colorTextContent_dark));
-                actionBtn.setTextColor(ContextCompat.getColor(c, R.color.colorTextTitle_dark));
-                snackbarLayout.setBackgroundResource(R.color.colorRoot_dark);
+                actionBtn.setTextColor(ContextCompat.getColor(c, R.color.colorAccent_light));
+                snackbarLayout.setBackgroundResource(R.color.colorPrimary_dark);
             }
 
             snackbar.show();

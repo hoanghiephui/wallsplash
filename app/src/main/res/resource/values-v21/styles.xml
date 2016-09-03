@@ -135,4 +135,14 @@
         <item name="colorAccent">@color/colorTextTitle_dark</item>
     </style>
 
+    <style name="MysplashTheme_light.Translucent.PhotoPreview" parent="MysplashTheme_light.Translucent">
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+    </style>
+
+    <style name="MysplashTheme_dark.Translucent.PhotoPreview" parent="MysplashTheme_dark.Translucent">
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+    </style>
+
 </resources>

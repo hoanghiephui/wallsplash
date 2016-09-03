@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -130,6 +131,9 @@ public class SearchFragment extends Fragment
         editText.setFocusable(true);
         editText.requestFocus();
 
+        FrameLayout orientationContainer = (FrameLayout) v.findViewById(R.id.fragment_search_orientationContainer);
+        orientationContainer.setOnClickListener(this);
+
         RelativeLayout orientationMenu = (RelativeLayout) v.findViewById(R.id.fragment_search_orientationMenu);
         orientationMenu.setOnClickListener(this);
 
@@ -180,6 +184,9 @@ public class SearchFragment extends Fragment
         switch (view.getId()) {
             case -1:
                 searchBarPresenter.touchNavigatorIcon();
+                break;
+            case R.id.fragment_search_orientationContainer:
+                searchBarPresenter.touchSearchBar();
                 break;
 
             case R.id.fragment_search_orientationMenu:

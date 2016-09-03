@@ -36,6 +36,7 @@ import com.unsplash.wallsplash._common.ui.widget.CircleImageView;
 import com.unsplash.wallsplash._common.ui.widget.StatusBarView;
 import com.unsplash.wallsplash._common.ui.widget.SwipeBackLayout;
 import com.unsplash.wallsplash._common.utils.AnimUtils;
+import com.unsplash.wallsplash._common.utils.BackToTopUtils;
 import com.unsplash.wallsplash._common.utils.ThemeUtils;
 import com.unsplash.wallsplash._common.utils.TypefaceUtils;
 import com.unsplash.wallsplash.collection.model.activity.EditResultObject;
@@ -110,7 +111,7 @@ public class CollectionActivity extends BaseActivity
     public void onBackPressed() {
         if (WallSplashApplication.getInstance().isActivityInBackstage()) {
             super.onBackPressed();
-        } else if (photosView.needPagerBackToTop()) {
+        } else if (photosView.needPagerBackToTop() && BackToTopUtils.getInstance(this).isSetBackToTop(false)) {
             photosView.pagerBackToTop();
         } else {
             Intent result = new Intent();
@@ -184,7 +185,7 @@ public class CollectionActivity extends BaseActivity
         toolbar.setNavigationOnClickListener(this);
 
         this.creatorBar = (RelativeLayout) findViewById(R.id.activity_collection_creatorBar);
-
+        creatorBar.setOnClickListener(this);
         this.avatarImage = (CircleImageView) findViewById(R.id.activity_collection_avatar);
         avatarImage.setOnClickListener(this);
         Glide.with(this)
@@ -225,6 +226,20 @@ public class CollectionActivity extends BaseActivity
 
             case R.id.activity_collection_avatar:
                 toolbarPresenter.touchToolbar();
+                User u = User.buildUser((Collection) editResultModel.getEditKey());
+                WallSplashApplication.getInstance().setUser(u);
+
+                Intent intent = new Intent(this, UserActivity.class);
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+                    startActivity(intent);
+                } else {
+                    View v = avatarImage;
+                    ActivityOptionsCompat options = ActivityOptionsCompat
+                            .makeSceneTransitionAnimation(
+                                    this,
+                                    Pair.create(v, getString(R.string.transition_user_avatar)));
+                    ActivityCompat.startActivity(this, intent, options.toBundle());
+                }
                 break;
         }
     }
@@ -279,20 +294,7 @@ public class CollectionActivity extends BaseActivity
 
     @Override
     public void touchToolbar() {
-        User u = User.buildUser((Collection) editResultModel.getEditKey());
-        WallSplashApplication.getInstance().setUser(u);
-
-        Intent intent = new Intent(this, UserActivity.class);
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            startActivity(intent);
-        } else {
-            View v = avatarImage;
-            ActivityOptionsCompat options = ActivityOptionsCompat
-                    .makeSceneTransitionAnimation(
-                            this,
-                            Pair.create(v, getString(R.string.transition_user_avatar)));
-            ActivityCompat.startActivity(this, intent, options.toBundle());
-        }
+        photosView.pagerBackToTop();
     }
 
     @Override

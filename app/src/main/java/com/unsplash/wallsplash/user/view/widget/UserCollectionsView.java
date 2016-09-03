@@ -29,6 +29,7 @@ import com.unsplash.wallsplash._common.i.view.SwipeBackView;
 import com.unsplash.wallsplash._common.ui.widget.SwipeBackLayout;
 import com.unsplash.wallsplash._common.ui.widget.swipeRefreshLayout.BothWaySwipeRefreshLayout;
 import com.unsplash.wallsplash._common.utils.AnimUtils;
+import com.unsplash.wallsplash._common.utils.BackToTopUtils;
 import com.unsplash.wallsplash._common.utils.ThemeUtils;
 import com.unsplash.wallsplash.user.model.widget.CollectionsObject;
 import com.unsplash.wallsplash.user.model.widget.LoadObject;
@@ -315,6 +316,10 @@ public class UserCollectionsView extends FrameLayout
             recyclerView.scrollToPosition(5);
         }
         recyclerView.smoothScrollToPosition(0);
+
+        if (!BackToTopUtils.getInstance(getContext()).isNotified()) {
+            BackToTopUtils.getInstance(getContext()).showSetBackToTopSnackbar();
+        }
     }
 
     @Override

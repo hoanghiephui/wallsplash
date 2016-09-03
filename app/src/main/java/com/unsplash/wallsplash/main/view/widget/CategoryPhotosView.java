@@ -32,6 +32,7 @@ import com.unsplash.wallsplash._common.i.view.LoadView;
 import com.unsplash.wallsplash._common.i.view.ScrollView;
 import com.unsplash.wallsplash._common.ui.widget.swipeRefreshLayout.BothWaySwipeRefreshLayout;
 import com.unsplash.wallsplash._common.utils.AnimUtils;
+import com.unsplash.wallsplash._common.utils.BackToTopUtils;
 import com.unsplash.wallsplash._common.utils.ThemeUtils;
 import com.unsplash.wallsplash.main.model.widget.CategoryObject;
 import com.unsplash.wallsplash.main.model.widget.LoadObject;
@@ -328,6 +329,9 @@ public class CategoryPhotosView extends FrameLayout
             recyclerView.scrollToPosition(5);
         }
         recyclerView.smoothScrollToPosition(0);
+        if (!BackToTopUtils.getInstance(getContext()).isNotified()) {
+            BackToTopUtils.getInstance(getContext()).showSetBackToTopSnackbar();
+        }
     }
 
     @Override

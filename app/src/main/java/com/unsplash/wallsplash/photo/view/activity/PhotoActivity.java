@@ -42,11 +42,13 @@ import com.unsplash.wallsplash._common.i.view.DownloadView;
 import com.unsplash.wallsplash._common.i.view.PhotoInfoView;
 import com.unsplash.wallsplash._common.i.view.PopupManageView;
 import com.unsplash.wallsplash._common.i.view.ScrollView;
+import com.unsplash.wallsplash._common.ui.activity.PreviewPhotoActivity;
 import com.unsplash.wallsplash._common.ui.dialog.DownloadDialog;
 import com.unsplash.wallsplash._common.ui.dialog.StatsDialog;
 import com.unsplash.wallsplash._common.ui.popup.PhotoMenuPopupWindow;
 import com.unsplash.wallsplash._common.ui.widget.CircleImageView;
 import com.unsplash.wallsplash._common.ui.widget.FreedomImageView;
+import com.unsplash.wallsplash._common.ui.widget.PhotoTouchView;
 import com.unsplash.wallsplash._common.ui.widget.SwipeBackLayout;
 import com.unsplash.wallsplash._common.utils.AnimUtils;
 import com.unsplash.wallsplash._common.utils.DisplayUtils;
@@ -225,6 +227,9 @@ public class PhotoActivity extends AppCompatActivity
         this.detailsView = (PhotoDetailsView) findViewById(R.id.activity_photo_detailsView);
         detailsView.requestPhotoDetails();
 
+        PhotoTouchView touchView = (PhotoTouchView) findViewById(R.id.activity_photo_touchView);
+        touchView.setOnClickListener(this);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.activity_photo_toolbar);
         toolbar.setTitle(title.getText().toString());
         if (ThemeUtils.getInstance(this).isLightTheme()) {
@@ -367,6 +372,12 @@ public class PhotoActivity extends AppCompatActivity
                 } else {
                     requestPermission(WallSplashApplication.WRITE_EXTERNAL_STORAGE, DownloadObject.WALLPAPER_TYPE);
                 }
+                break;
+
+            case R.id.activity_photo_touchView:
+                WallSplashApplication.getInstance().setPhoto(photoInfoPresenter.getPhoto());
+                Intent p = new Intent(this, PreviewPhotoActivity.class);
+                startActivity(p);
                 break;
         }
     }
