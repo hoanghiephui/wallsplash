@@ -3,6 +3,8 @@ package com.unsplash.wallsplash._common.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.text.format.DateFormat;
+import android.text.format.DateUtils;
 
 import com.unsplash.wallsplash.BuildConfig;
 import com.unsplash.wallsplash.R;
@@ -11,7 +13,13 @@ import com.unsplash.wallsplash._common.data.api.PhotoApi;
 import com.unsplash.wallsplash._common.data.data.Photo;
 import com.unsplash.wallsplash._common.data.data.PhotoDetails;
 
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -309,5 +317,30 @@ public class ValueUtils {
         return new OkHttpClient.Builder()
                 .addInterceptor(logging)
                 .build();
+    }
+
+    public static String formatSameDayTime(final Context context, final long timestamp) {
+        if (context == null) return null;
+        if (DateUtils.isToday(timestamp))
+            return DateUtils.formatDateTime(context, timestamp,
+                    DateFormat.is24HourFormat(context) ? DateUtils.FORMAT_SHOW_TIME | DateUtils.FORMAT_24HOUR
+                            : DateUtils.FORMAT_SHOW_TIME | DateUtils.FORMAT_12HOUR);
+        return DateUtils.formatDateTime(context, timestamp, DateUtils.FORMAT_SHOW_DATE);
+    }
+
+    public static Long getFormattedDate(String created_at) {
+        long time;
+        try {
+            //2016-09-05T03:09:13-04:00
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.getDefault());
+            dateFormat.setTimeZone(TimeZone.getTimeZone("UTC -4"));
+            Date date = dateFormat.parse(created_at);
+            dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+            Timestamp tm = Timestamp.valueOf(dateFormat.format(date));
+            time = tm.getTime();
+            return time;
+        } catch (ParseException ignored) {
+        }
+        return null;
     }
 }

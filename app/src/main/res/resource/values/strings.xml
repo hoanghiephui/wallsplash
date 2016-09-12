@@ -3,7 +3,7 @@
 
     <!-- application. -->
     <string name="app_name">Wall Splash</string>
-    <string name="powered">Powered by Unsplash.com</string>
+    <string name="powered">© 2016 by Unsplash.com\nBuild by Hoang Hiep</string>
     <string name="version_code">2.1.8</string>
 
     <!-- key words. -->
@@ -95,6 +95,7 @@
     <string name="feedback_update_profile_failed">Cannot edit profile.</string>
 
     <string name="feedback_add_to_collection">Add to collection</string>
+    <string name="feedback_delete_from_collection">Delete from collection</string>
     <string name="feedback_create_collection">Create new collection</string>
     <string name="feedback_edit_collection">Edit collection</string>
     <string name="feedback_name">Name</string>
@@ -104,7 +105,16 @@
     <string name="feedback_add_photo_to_collection_failed">Cannot add photo to collection.</string>
     <string name="feedback_delete_collection_failed">Cannot delete collection.</string>
     <string name="feedback_name_is_required">Name is required.</string>
+    <string name="feedback_sure">Are you sure?</string>
     <string name="feedback_notify_set_back_to_top">You can set the back pressed effect.</string>
+
+    <string name="feedback_add_photo_failed">Add photo failed.</string>
+    <string name="feedback_delete_photo_failed">Delete photo failed.</string>
+    <string name="feedback_create_collection_failed">Create collection failed.</string>
+    <string name="feedback_update_collection_failed">Update collection failed.</string>
+
+    <string name="feedback_overload">Overload</string>
+    <string name="feedback_exceed_rate_limit">In this hour, the visits of Uysplash API exceed the rate limit, So we cannot load anything now.\n\nYou can try again in next hour.</string>
 
 
     <!-- menu. -->
@@ -167,4 +177,18 @@
 
     <string name="welcome_back">Welcome back</string>
     <string name="key_notified_set_back_to_top">notified_set_back_to_top</string>
+    <string name="id_app_admob">ca-app-pub-2257698129050878~1953322344</string>
+    <string name="testDeviceID">AEF5B86790E2FFBE863DC449D15B4C63</string>
+    <string name="created_at">Created at: %1$s</string>
+    <string name="set_wallpaper">WALLPAPER</string>
+    <string name="share">SHARE</string>
+    <string name="download">DOWNLOAD</string>
+    <string name="photos"> photos</string>
+    <string name="photo">photo</string>
+    <string name="likes"> likes</string>
+    <string name="like">like</string>
+    <string name="collections"> collections</string>
+    <string name="collection">collection</string>
+    <string name="enter">ENTER</string>
 </resources>
+

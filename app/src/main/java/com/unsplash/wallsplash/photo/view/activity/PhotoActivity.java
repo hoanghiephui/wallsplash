@@ -10,6 +10,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
@@ -17,6 +19,9 @@ import android.support.v4.util.Pair;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -48,7 +53,8 @@ import com.unsplash.wallsplash._common.ui.dialog.StatsDialog;
 import com.unsplash.wallsplash._common.ui.popup.PhotoMenuPopupWindow;
 import com.unsplash.wallsplash._common.ui.widget.CircleImageView;
 import com.unsplash.wallsplash._common.ui.widget.FreedomImageView;
-import com.unsplash.wallsplash._common.ui.widget.PhotoTouchView;
+import com.unsplash.wallsplash._common.ui.widget.FreedomTouchView;
+import com.unsplash.wallsplash._common.ui.widget.ShortTimeView;
 import com.unsplash.wallsplash._common.ui.widget.SwipeBackLayout;
 import com.unsplash.wallsplash._common.utils.AnimUtils;
 import com.unsplash.wallsplash._common.utils.DisplayUtils;
@@ -56,6 +62,7 @@ import com.unsplash.wallsplash._common.utils.LanguageUtils;
 import com.unsplash.wallsplash._common.utils.NotificationUtils;
 import com.unsplash.wallsplash._common.utils.ThemeUtils;
 import com.unsplash.wallsplash._common.utils.TypefaceUtils;
+import com.unsplash.wallsplash._common.utils.ValueUtils;
 import com.unsplash.wallsplash.photo.model.activity.DownloadObject;
 import com.unsplash.wallsplash.photo.model.activity.PhotoInfoObject;
 import com.unsplash.wallsplash.photo.presenter.activity.DownloadImplementor;
@@ -89,6 +96,9 @@ public class PhotoActivity extends AppCompatActivity
     private CircleImageView avatarImage;
     private LinearLayout buttonBar;
     private PhotoDetailsView detailsView;
+    private CollapsingToolbarLayout toolbarLayout;
+    private SwipeBackLayout swipeBackLayout;
+    private AppBarLayout appBarLayout;
 
     // presenter.
     private PhotoInfoPresenter photoInfoPresenter;
@@ -124,6 +134,14 @@ public class PhotoActivity extends AppCompatActivity
             AnimUtils.animInitShow(titleBar, 200);
             AnimUtils.animInitShow(buttonBar, 300);
             AnimUtils.animInitShow(detailsView, 400);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            overridePendingTransition(0, R.anim.activity_slide_out_bottom);
         }
     }
 
@@ -169,19 +187,19 @@ public class PhotoActivity extends AppCompatActivity
     // init.
     @SuppressLint({"SetTextI18n", "CutPasteId"})
     private void initView() {
-        SwipeBackLayout swipeBackLayout = (SwipeBackLayout) findViewById(R.id.activity_photo_swipeBackLayout);
+        swipeBackLayout = (SwipeBackLayout) findViewById(R.id.activity_photo_swipeBackLayout);
         swipeBackLayout.setOnSwipeListener(this);
-
         this.container = (CoordinatorLayout) findViewById(R.id.activity_photo_container);
 
         FreedomImageView photoImage = (FreedomImageView) findViewById(R.id.activity_photo_image);
+        photoImage.setSize(photoInfoModel.getPhoto().width, photoInfoModel.getPhoto().height);
         if (WallSplashApplication.getInstance().getDrawable() != null) {
             photoImage.setImageDrawable(WallSplashApplication.getInstance().getDrawable());
         } else {
             Glide.with(this)
                     .load(photoInfoModel.getPhoto().urls.regular)
                     .priority(Priority.HIGH)
-                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .into(photoImage);
         }
 
@@ -210,8 +228,8 @@ public class PhotoActivity extends AppCompatActivity
         TextView title = (TextView) findViewById(R.id.activity_photo_title);
         title.setText("By " + photoInfoModel.getPhoto().user.name);
 
-        TextView subtitle = (TextView) findViewById(R.id.activity_photo_subtitle);
-        subtitle.setText("On " + photoInfoModel.getPhoto().created_at.split("T")[0]);
+        ShortTimeView subtitle = (ShortTimeView) findViewById(R.id.activity_photo_subtitle);
+        subtitle.setTime(ValueUtils.getFormattedDate(photoInfoModel.getPhoto().created_at));
         TypefaceUtils.setTypeface(this, subtitle);
 
         this.buttonBar = (LinearLayout) findViewById(R.id.activity_photo_btnBar);
@@ -227,10 +245,34 @@ public class PhotoActivity extends AppCompatActivity
         this.detailsView = (PhotoDetailsView) findViewById(R.id.activity_photo_detailsView);
         detailsView.requestPhotoDetails();
 
-        PhotoTouchView touchView = (PhotoTouchView) findViewById(R.id.activity_photo_touchView);
+        FreedomTouchView touchView = (FreedomTouchView) findViewById(R.id.activity_photo_touchView);
+        touchView.setSize(photoInfoModel.getPhoto().width, photoInfoModel.getPhoto().height);
         touchView.setOnClickListener(this);
 
+        this.toolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing);
+        toolbarLayout.setTitle(" ");
+        appBarLayout = (AppBarLayout) findViewById(R.id.activity_photo_appBar);
+        appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            boolean isShow = false;
+            int scrollRange = -1;
+
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                if (scrollRange == -1) {
+                    scrollRange = appBarLayout.getTotalScrollRange();
+                }
+                if (scrollRange + verticalOffset == 0) {
+                    toolbarLayout.setTitle(photoInfoModel.getPhoto().user.name);
+                    isShow = true;
+                } else if (isShow) {
+                    toolbarLayout.setTitle(" ");//carefull there should a space between double quote otherwise it wont work
+                    isShow = false;
+                }
+            }
+        });
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.activity_photo_toolbar);
+        setSupportActionBar(toolbar);
         toolbar.setTitle(title.getText().toString());
         if (ThemeUtils.getInstance(this).isLightTheme()) {
             toolbar.setNavigationIcon(R.drawable.ic_toolbar_back_light);
@@ -375,11 +417,16 @@ public class PhotoActivity extends AppCompatActivity
                 break;
 
             case R.id.activity_photo_touchView:
-                WallSplashApplication.getInstance().setPhoto(photoInfoPresenter.getPhoto());
-                Intent p = new Intent(this, PreviewPhotoActivity.class);
-                startActivity(p);
+                overridePendingTransition(R.anim.activity_in, 0);
+                viewPhotoFull();
                 break;
         }
+    }
+
+    private void viewPhotoFull() {
+        WallSplashApplication.getInstance().setPhoto(photoInfoPresenter.getPhoto());
+        Intent p = new Intent(this, PreviewPhotoActivity.class);
+        startActivity(p);
     }
 
     // on dismiss listener.
@@ -403,11 +450,20 @@ public class PhotoActivity extends AppCompatActivity
     }
 
     @Override
-    public void onSwipeFinish() {
+    public void onSwipeFinish(int dir) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             finishAfterTransition();
         } else {
             finish();
+            switch (dir) {
+                case SwipeBackLayout.UP_DIR:
+                    overridePendingTransition(0, R.anim.activity_slide_out_top);
+                    break;
+
+                case SwipeBackLayout.DOWN_DIR:
+                    overridePendingTransition(0, R.anim.activity_slide_out_bottom);
+                    break;
+            }
         }
     }
 
@@ -427,6 +483,7 @@ public class PhotoActivity extends AppCompatActivity
         Intent intent = new Intent(this, UserActivity.class);
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             startActivity(intent);
+            overridePendingTransition(R.anim.activity_in, 0);
         } else {
             View v = avatarImage;
             ActivityOptionsCompat options = ActivityOptionsCompat
@@ -443,7 +500,7 @@ public class PhotoActivity extends AppCompatActivity
             case PhotoMenuPopupWindow.ITEM_STATS:
                 StatsDialog dialog = new StatsDialog();
                 dialog.setPhoto(photoInfoPresenter.getPhoto());
-                dialog.show(getFragmentManager(), null);
+                dialog.show(getSupportFragmentManager(), null);
                 break;
 
             case PhotoMenuPopupWindow.ITEM_BROWSER:
@@ -465,6 +522,7 @@ public class PhotoActivity extends AppCompatActivity
     @Override
     public void drawPhotoDetails(PhotoDetails details) {
         // do nothing.
+        Toast.makeText(this, details.location.country, Toast.LENGTH_SHORT).show();
     }
 
     // download view.
@@ -510,4 +568,27 @@ public class PhotoActivity extends AppCompatActivity
     public void responsePopup(String value, int position) {
         photoInfoPresenter.touchMenuItem(position);
     }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_photo, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.fullView:
+                viewPhotoFull();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
+    }
+
+
+
 }

@@ -1,11 +1,11 @@
 package com.unsplash.wallsplash._common.ui.dialog;
 
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.DialogFragment;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -131,6 +131,9 @@ public class UpdateCollectionDialog extends DialogFragment
                 if (state == CONFIRM_STATE) {
                     AnimUtils.animShow(baseBtnContainer);
                     AnimUtils.animHide(confirmBtnContainer);
+                } else if (state == UPDATE_STATE || state == DELETE_STATE) {
+                    AnimUtils.animShow(baseBtnContainer);
+                    AnimUtils.animHide(progressView);
                 }
                 break;
 
@@ -147,9 +150,6 @@ public class UpdateCollectionDialog extends DialogFragment
                 if (state == INPUT_STATE) {
                     AnimUtils.animShow(confirmBtnContainer);
                     AnimUtils.animHide(baseBtnContainer);
-                } else if (state == DELETE_STATE) {
-                    AnimUtils.animShow(contentView);
-                    AnimUtils.animHide(progressView);
                 }
                 break;
 
@@ -168,6 +168,20 @@ public class UpdateCollectionDialog extends DialogFragment
         InputMethodManager manager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         manager.hideSoftInputFromWindow(nameTxt.getWindowToken(), 0);
         manager.hideSoftInputFromWindow(descriptionTxt.getWindowToken(), 0);
+    }
+
+    private void notifyUpdateFailed() {
+        Toast.makeText(
+                getActivity(),
+                getString(R.string.feedback_update_collection_failed),
+                Toast.LENGTH_SHORT).show();
+    }
+
+    private void notifyDeleteFailed() {
+        Toast.makeText(
+                getActivity(),
+                getString(R.string.feedback_delete_collection_failed),
+                Toast.LENGTH_SHORT).show();
     }
 
     /**
@@ -256,14 +270,20 @@ public class UpdateCollectionDialog extends DialogFragment
                 listener.onEditCollection(response.body());
             }
             dismiss();
+        } else if (Integer.parseInt(response.headers().get("X-Ratelimit-Remaining")) < 0) {
+            dismiss();
+            RateLimitDialog dialog = new RateLimitDialog();
+            dialog.show(getActivity().getSupportFragmentManager(), null);
         } else {
-            updateCollection();
+            setState(INPUT_STATE);
+            notifyUpdateFailed();
         }
     }
 
     @Override
     public void onRequestACollectionFailed(Call<Collection> call, Throwable t) {
-        updateCollection();
+        setState(INPUT_STATE);
+        notifyUpdateFailed();
     }
 
     // on delete collection listener.
@@ -275,21 +295,19 @@ public class UpdateCollectionDialog extends DialogFragment
                 listener.onDeleteCollection(collection);
             }
             dismiss();
+        } else if (Integer.parseInt(response.headers().get("X-Ratelimit-Remaining")) < 0) {
+            dismiss();
+            RateLimitDialog dialog = new RateLimitDialog();
+            dialog.show(getFragmentManager(), null);
         } else {
-            Toast.makeText(
-                    getActivity(),
-                    getString(R.string.feedback_delete_collection_failed),
-                    Toast.LENGTH_SHORT).show();
-            setState(CONFIRM_STATE);
+            setState(INPUT_STATE);
+            notifyDeleteFailed();
         }
     }
 
     @Override
     public void onDeleteCollectionFailed(Call<DeleteCollectionResult> call, Throwable t) {
-        Toast.makeText(
-                getActivity(),
-                getString(R.string.feedback_delete_collection_failed),
-                Toast.LENGTH_SHORT).show();
-        setState(CONFIRM_STATE);
+        setState(INPUT_STATE);
+        notifyDeleteFailed();
     }
 }

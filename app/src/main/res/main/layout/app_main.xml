@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <android.support.design.widget.FloatingActionButton
+        android:visibility="gone"
+        android:id="@+id/fabUpload"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        app:backgroundTint="?attr/colorAccent"
+        android:src="@drawable/ic_cloud_upload_white_24dp"
+        app:layout_behavior="com.unsplash.wallsplash._common.ui.widget.ScrollAwareFABBehavior" />
+
+    <FrameLayout
+        android:id="@+id/activity_main_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?attr/root_color" />
+
+</android.support.design.widget.CoordinatorLayout>

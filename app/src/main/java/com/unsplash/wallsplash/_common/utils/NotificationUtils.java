@@ -1,9 +1,9 @@
 package com.unsplash.wallsplash._common.utils;
 
-import android.app.Activity;
 import android.content.Context;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -20,7 +20,7 @@ import java.util.List;
 public class NotificationUtils {
 
     public static void showSnackbar(String content, int duration) {
-        List<Activity> activityList = WallSplashApplication.getInstance().getActivityList();
+        List<AppCompatActivity> activityList = WallSplashApplication.getInstance().getActivityList();
         if (activityList != null && activityList.size() != 0) {
             Context c = activityList.get(activityList.size() - 1);
             View container = ((SnackbarContainer) activityList.get(activityList.size() - 1)).getSnackbarContainer();
@@ -47,7 +47,7 @@ public class NotificationUtils {
 
     public static void showActionSnackbar(String content, String action,
                                           int duration, View.OnClickListener l) {
-        List<Activity> activityList = WallSplashApplication.getInstance().getActivityList();
+        List<AppCompatActivity> activityList = WallSplashApplication.getInstance().getActivityList();
         if (activityList != null && activityList.size() != 0) {
             Context c = activityList.get(activityList.size() - 1);
             View container = ((SnackbarContainer) activityList.get(activityList.size() - 1)).getSnackbarContainer();

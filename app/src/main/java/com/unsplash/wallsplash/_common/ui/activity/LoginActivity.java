@@ -10,13 +10,10 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.unsplash.wallsplash.R;
 import com.unsplash.wallsplash.WallSplashApplication;
 import com.unsplash.wallsplash._common.data.data.AccessToken;
@@ -94,6 +91,12 @@ public class LoginActivity extends BaseActivity
     }
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(0, R.anim.activity_slide_out_bottom);
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
         service.cancel();
@@ -117,16 +120,16 @@ public class LoginActivity extends BaseActivity
         ImageButton closeBtn = (ImageButton) findViewById(R.id.activity_login_closeBtn);
         closeBtn.setOnClickListener(this);
         if (ThemeUtils.getInstance(this).isLightTheme()) {
-            closeBtn.setImageResource(R.drawable.ic_close_light);
+            closeBtn.setImageResource(R.drawable.ic_close_dark);
         } else {
             closeBtn.setImageResource(R.drawable.ic_close_dark);
         }
 
-        ImageView icon = (ImageView) findViewById(R.id.activity_login_icon);
+        /*ImageView icon = (ImageView) findViewById(R.id.activity_login_icon);
         Glide.with(this)
                 .load(R.drawable.ic_launcher)
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .into(icon);
+                .into(icon);*/
 
         TypefaceUtils.setTypeface(this, ((TextView) findViewById(R.id.activity_login_content)));
 
@@ -191,6 +194,7 @@ public class LoginActivity extends BaseActivity
         switch (view.getId()) {
             case R.id.activity_login_closeBtn:
                 finish();
+                overridePendingTransition(0, R.anim.activity_slide_out_bottom);
                 break;
 
             case R.id.activity_login_loginBtn:
@@ -211,8 +215,17 @@ public class LoginActivity extends BaseActivity
     }
 
     @Override
-    public void onSwipeFinish() {
+    public void onSwipeFinish(int dir) {
         finish();
+        switch (dir) {
+            case SwipeBackLayout.UP_DIR:
+                overridePendingTransition(0, R.anim.activity_slide_out_top);
+                break;
+
+            case SwipeBackLayout.DOWN_DIR:
+                overridePendingTransition(0, R.anim.activity_slide_out_bottom);
+                break;
+        }
     }
 
     // on request access token listener.

@@ -14,7 +14,9 @@ import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.util.Pair;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,23 +29,31 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+import com.mikhaellopez.circularimageview.CircularImageView;
 import com.unsplash.wallsplash.R;
 import com.unsplash.wallsplash.WallSplashApplication;
+import com.unsplash.wallsplash._common.data.data.ChangeCollectionPhotoResult;
 import com.unsplash.wallsplash._common.data.data.Collection;
 import com.unsplash.wallsplash._common.data.data.LikePhotoResult;
-import com.unsplash.wallsplash._common.data.data.Me;
 import com.unsplash.wallsplash._common.data.data.Photo;
+import com.unsplash.wallsplash._common.data.data.User;
 import com.unsplash.wallsplash._common.data.service.PhotoService;
 import com.unsplash.wallsplash._common.data.tools.AuthManager;
 import com.unsplash.wallsplash._common.ui.activity.LoginActivity;
-import com.unsplash.wallsplash._common.ui.dialog.SelectCollectionDialog;
+import com.unsplash.wallsplash._common.ui.dialog.DeleteCollectionPhotoDialog;
+import com.unsplash.wallsplash._common.ui.dialog.SelectCollectionPhotoDialog;
 import com.unsplash.wallsplash._common.ui.widget.FreedomImageView;
+import com.unsplash.wallsplash._common.ui.widget.MaterialProgressBar;
+import com.unsplash.wallsplash._common.ui.widget.ShortTimeView;
 import com.unsplash.wallsplash._common.utils.AnimUtils;
 import com.unsplash.wallsplash._common.utils.ColorUtils;
 import com.unsplash.wallsplash._common.utils.ObservableColorMatrix;
 import com.unsplash.wallsplash._common.utils.TypefaceUtils;
+import com.unsplash.wallsplash._common.utils.ValueUtils;
+import com.unsplash.wallsplash.collection.view.activity.CollectionActivity;
 import com.unsplash.wallsplash.me.view.activity.MeActivity;
 import com.unsplash.wallsplash.photo.view.activity.PhotoActivity;
+import com.unsplash.wallsplash.user.view.activity.UserActivity;
 
 import java.util.List;
 
@@ -54,22 +64,23 @@ import retrofit2.Response;
  * Photos adapter. (Recycler view)
  */
 
-public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.ViewHolder>
-        implements SelectCollectionDialog.OnCollectionsChangedListener {
+public class PhotoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
+        implements SelectCollectionPhotoDialog.OnCollectionsChangedListener, DeleteCollectionPhotoDialog.OnDeleteCollectionListener {
     // widget
-    private Context a;
+    private Context mContext;
     private List<Photo> itemList;
     private PhotoService service;
-
+    private static final String TAG = PhotoAdapter.class.getSimpleName();
     // data
     private boolean own = false;
+    private boolean inMyCollection = false;
 
     /**
      * <br> life cycle.
      */
 
-    public PhotoAdapter(Context a, List<Photo> list) {
-        this.a = a;
+    public PhotoAdapter(Context context, List<Photo> list) {
+        this.mContext = context;
         this.itemList = list;
     }
 
@@ -83,25 +94,27 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.ViewHolder>
         return new ViewHolder(v, viewType);
     }
 
+
     @SuppressLint("RecyclerView")
     @Override
-    public void onBindViewHolder(final ViewHolder holder, final int position) {
-        holder.title.setText("");
-        holder.image.setShowShadow(false);
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
+        ((ViewHolder) holder).title.setText("");
+        ((ViewHolder) holder).image.setShowShadow(false);
+        Glide.with(mContext).load(itemList.get(position).user.profile_image.large)
+                .diskCacheStrategy(DiskCacheStrategy.NONE).into(((ViewHolder) holder).avatar);
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            Glide.with(a)
+            Glide.with(mContext)
                     .load(itemList.get(position).urls.regular)
-                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                    .placeholder(R.drawable.bg_blur)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .listener(new RequestListener<String, GlideDrawable>() {
                         @Override
                         public boolean onResourceReady(GlideDrawable resource, String model,
                                                        Target<GlideDrawable> target,
                                                        boolean isFromMemoryCache, boolean isFirstResource) {
                             itemList.get(position).loadPhotoSuccess = true;
-                            String titleTxt = "By " + itemList.get(position).user.name + ", On "
-                                    + itemList.get(position).created_at.split("T")[0];
-                            holder.title.setText(titleTxt);
-                            holder.image.setShowShadow(true);
+                            ((ViewHolder) holder).image.setShowShadow(true);
+                            ((ViewHolder) holder).progress.setVisibility(View.GONE);
                             return false;
                         }
 
@@ -112,18 +125,21 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.ViewHolder>
                             return false;
                         }
                     })
-                    .into(holder.image);
+                    .into(((ViewHolder) holder).image);
         } else {
-            Glide.with(a)
+            Glide.with(mContext)
                     .load(itemList.get(position).urls.regular)
                     .listener(new RequestListener<String, GlideDrawable>() {
                         @Override
                         public boolean onResourceReady(GlideDrawable resource, String model,
                                                        Target<GlideDrawable> target,
                                                        boolean isFromMemoryCache, boolean isFirstResource) {
+                            ((ViewHolder) holder).progress.setVisibility(View.GONE);
                             itemList.get(position).loadPhotoSuccess = true;
                             if (!itemList.get(position).hasFadedIn) {
-                                holder.image.setHasTransientState(true);
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                                    ((ViewHolder) holder).image.setHasTransientState(true);
+                                }
                                 final ObservableColorMatrix matrix = new ObservableColorMatrix();
                                 final ObjectAnimator saturation = ObjectAnimator.ofFloat(
                                         matrix, ObservableColorMatrix.SATURATION, 0f, 1f);
@@ -134,25 +150,25 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.ViewHolder>
                                         // just animating the color matrix does not invalidate the
                                         // drawable so need this update listener.  Also have to create a
                                         // new CMCF as the matrix is immutable :(
-                                        holder.image.setColorFilter(new ColorMatrixColorFilter(matrix));
+                                        ((ViewHolder) holder).image.setColorFilter(new ColorMatrixColorFilter(matrix));
                                     }
                                 });
                                 saturation.setDuration(2000L);
-                                saturation.setInterpolator(AnimUtils.getFastOutSlowInInterpolator(a));
+                                saturation.setInterpolator(AnimUtils.getFastOutSlowInInterpolator(mContext));
                                 saturation.addListener(new AnimatorListenerAdapter() {
                                     @Override
                                     public void onAnimationEnd(Animator animation) {
-                                        holder.image.clearColorFilter();
-                                        holder.image.setHasTransientState(false);
+                                        ((ViewHolder) holder).image.clearColorFilter();
+                                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                                            ((ViewHolder) holder).image.setHasTransientState(false);
+                                        }
                                     }
                                 });
                                 saturation.start();
                                 itemList.get(position).hasFadedIn = true;
                             }
-                            String titleTxt = "By " + itemList.get(position).user.name + ", On "
-                                    + itemList.get(position).created_at.split("T")[0];
-                            holder.title.setText(titleTxt);
-                            holder.image.setShowShadow(true);
+
+                            ((ViewHolder) holder).image.setShowShadow(true);
                             return false;
                         }
 
@@ -162,32 +178,158 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.ViewHolder>
                         }
                     })
                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                    .into(holder.image);
+                    .into(((ViewHolder) holder).image);
+        }
+        String titleTxt = "By " + itemList.get(position).user.name;
+        ((ViewHolder) holder).title.setText(titleTxt);
+        ((ViewHolder) holder).tvTime.setTime(ValueUtils.getFormattedDate(itemList.get(position).created_at));
+        ((ViewHolder) holder).tvNumberLike.setText(String.valueOf(itemList.get(position).likes));
+
+        if (inMyCollection) {
+            ((ViewHolder) holder).deleteButton.setVisibility(View.VISIBLE);
+        } else {
+            ((ViewHolder) holder).deleteButton.setVisibility(View.GONE);
         }
 
         if (itemList.get(position).liked_by_user) {
-            holder.likeButton.setImageResource(R.drawable.ic_item_heart_red);
+            ((ViewHolder) holder).likeButton.setImageResource(R.drawable.ic_item_heart_red);
         } else {
-            holder.likeButton.setImageResource(R.drawable.ic_item_heart_outline);
+            ((ViewHolder) holder).likeButton.setImageResource(R.drawable.ic_item_heart_outline);
         }
 
-        holder.background.setBackgroundColor(
+        ((ViewHolder) holder).background.setBackgroundColor(
                 ColorUtils.calcCardBackgroundColor(
-                        a,
+                        mContext,
                         itemList.get(position).color));
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            holder.image.setTransitionName(itemList.get(position).id);
+            ((ViewHolder) holder).image.setTransitionName(itemList.get(position).id);
         }
+
+        setOnClick((ViewHolder) holder, position);
+    }
+
+    private void setOnClick(final ViewHolder holder, final int position) {
+        holder.likeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!AuthManager.getInstance().isAuthorized()) {
+                    Intent i = new Intent(mContext, LoginActivity.class);
+                    mContext.startActivity(i);
+                } else {
+                    setLikeForAPhoto(position);
+                    if (itemList.get(position).liked_by_user) {
+                        itemList.get(position).liked_by_user = false;
+                        ((ImageButton) view).setImageResource(R.drawable.ic_item_heart_outline);
+                        int count = itemList.get(position).likes - 1;
+                        holder.tvNumberLike.setText(String.valueOf(count));
+                    } else {
+                        int count = itemList.get(position).likes + 1;
+                        itemList.get(position).liked_by_user = true;
+                        ((ImageButton) view).setImageResource(R.drawable.ic_item_heart_red);
+                        holder.tvNumberLike.setText(String.valueOf(count));
+                    }
+                }
+            }
+        });
+
+        holder.background.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mContext instanceof Activity) {
+                    Photo p = itemList.get(position);
+                    WallSplashApplication.getInstance().setPhoto(p);
+                    Log.d(TAG, "onClick: " + p.id);
+                    if (itemList.get(position).loadPhotoSuccess) {
+                        View imageView = ((RelativeLayout) view).getChildAt(0);
+                        Drawable d = ((FreedomImageView) imageView).getDrawable();
+                        WallSplashApplication.getInstance().setDrawable(d);
+                    } else {
+                        WallSplashApplication.getInstance().setDrawable(null);
+                    }
+
+                    Intent intent = new Intent(mContext, PhotoActivity.class);
+                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+                        ActivityOptionsCompat options = ActivityOptionsCompat
+                                .makeScaleUpAnimation(
+                                        view,
+                                        (int) view.getX(), (int) view.getY(),
+                                        view.getMeasuredWidth(), view.getMeasuredHeight());
+                        ActivityCompat.startActivity((Activity) mContext, intent, options.toBundle());
+                    } else {
+                        View imageView = ((RelativeLayout) view).getChildAt(0);
+                        ActivityOptionsCompat options = ActivityOptionsCompat
+                                .makeSceneTransitionAnimation(
+                                        (Activity) mContext,
+                                        Pair.create(imageView, mContext.getString(R.string.transition_photo_image)),
+                                        Pair.create(imageView, mContext.getString(R.string.transition_photo_background)));
+                        ActivityCompat.startActivity((Activity) mContext, intent, options.toBundle());
+                    }
+                }
+            }
+        });
+
+        holder.addCollection.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mContext instanceof Activity) {
+                    if (!AuthManager.getInstance().isAuthorized()) {
+                        Intent i = new Intent(mContext, LoginActivity.class);
+                        mContext.startActivity(i);
+                    } else {
+                        SelectCollectionPhotoDialog dialog = new SelectCollectionPhotoDialog();
+                        dialog.setPhoto(itemList.get(position));
+                        if (own) {
+                            dialog.setOnCollectionsChangedListener(PhotoAdapter.this);
+                        }
+                        dialog.show(((AppCompatActivity) mContext).getSupportFragmentManager(), null);
+                    }
+                }
+            }
+        });
+
+        holder.avatar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                User u = User.buildUser(itemList.get(position));
+                WallSplashApplication.getInstance().setUser(u);
+                Intent intent = new Intent(mContext, UserActivity.class);
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+                    mContext.startActivity(intent);
+                } else {
+                    View v = holder.avatar;
+                    ActivityOptionsCompat options = ActivityOptionsCompat
+                            .makeSceneTransitionAnimation(
+                                    (Activity) mContext,
+                                    Pair.create(v, mContext.getString(R.string.transition_user_avatar)));
+                    ActivityCompat.startActivity((Activity) mContext, intent, options.toBundle());
+                }
+            }
+        });
+
+        holder.deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mContext instanceof CollectionActivity) {
+                    DeleteCollectionPhotoDialog dialog = new DeleteCollectionPhotoDialog();
+                    dialog.setDeleteInfo(
+                            ((CollectionActivity) mContext).getCollection(),
+                            itemList.get(position),
+                            position);
+                    dialog.setOnDeleteCollectionListener(PhotoAdapter.this);
+                    dialog.show(((CollectionActivity) mContext).getSupportFragmentManager(), null);
+                }
+            }
+        });
     }
 
     @Override
-    public void onViewRecycled(ViewHolder holder) {
-        Glide.clear(holder.image);
+    public void onViewRecycled(RecyclerView.ViewHolder holder) {
+        Glide.clear((((ViewHolder) holder).image));
     }
 
-    public void setActivity(Activity a) {
-        this.a = a;
+    public void setActivity(Activity activity) {
+        this.mContext = activity;
     }
 
     /**
@@ -199,10 +341,7 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.ViewHolder>
         return itemList.size();
     }
 
-    @Override
-    public int getItemViewType(int position) {
-        return position;
-    }
+
 
     public void insertItem(Photo item) {
         itemList.add(item);
@@ -240,6 +379,18 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.ViewHolder>
         this.own = own;
     }
 
+    @Override
+    public void onDeletePhotoSuccess(ChangeCollectionPhotoResult result, int position) {
+        if (itemList.size() > position && itemList.get(position).id.equals(result.photo.id)) {
+            itemList.remove(position);
+            notifyItemRemoved(position);
+        }
+    }
+
+    public void setInMyCollection(boolean in) {
+        this.inMyCollection = in;
+    }
+
     /**
      * <br> interface.
      */
@@ -273,12 +424,12 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.ViewHolder>
 
     @Override
     public void onAddCollection(Collection c) {
-        ((MeActivity) a).addCollection(c);
+        ((MeActivity) mContext).addCollection(c);
     }
 
     @Override
-    public void onAddPhotoToCollection(Collection c, Me me) {
-        ((MeActivity) a).changeCollection(c);
+    public void onAddPhotoToCollection(Collection c, ChangeCollectionPhotoResult.User user) {
+        ((MeActivity) mContext).changeCollection(c);
     }
 
     /**
@@ -287,19 +438,21 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.ViewHolder>
 
     // view holder.
 
-    public class ViewHolder extends RecyclerView.ViewHolder
-            implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder {
         // widget
         public RelativeLayout background;
         public FreedomImageView image;
-        public TextView title;
-        public ImageButton likeButton;
+        private TextView title, tvNumberLike;
+        private ImageButton likeButton, addCollection;
+        private CircularImageView avatar;
+        private ShortTimeView tvTime;
+        private MaterialProgressBar progress;
+        public ImageButton deleteButton;
 
         public ViewHolder(View itemView, int position) {
             super(itemView);
 
             this.background = (RelativeLayout) itemView.findViewById(R.id.item_photo_background);
-            background.setOnClickListener(this);
 
             this.image = (FreedomImageView) itemView.findViewById(R.id.item_photo_image);
             image.setSize(itemList.get(position).width, itemList.get(position).height);
@@ -307,80 +460,23 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.ViewHolder>
             this.title = (TextView) itemView.findViewById(R.id.item_photo_title);
             TypefaceUtils.setTypeface(itemView.getContext(), title);
 
+            this.tvNumberLike = (TextView) itemView.findViewById(R.id.tvNumberLike);
+            TypefaceUtils.setTypeface(itemView.getContext(), tvNumberLike);
+
             this.likeButton = (ImageButton) itemView.findViewById(R.id.item_photo_likeButton);
-            likeButton.setOnClickListener(this);
 
-            itemView.findViewById(R.id.item_photo_collectionButton).setOnClickListener(this);
+            this.addCollection = (ImageButton) itemView.findViewById(R.id.item_photo_collectionButton);
+
+            avatar = (CircularImageView) itemView.findViewById(R.id.avatar);
+
+            this.tvTime = (ShortTimeView) itemView.findViewById(R.id.tvTime);
+
+            this.progress = (MaterialProgressBar) itemView.findViewById(R.id.progress);
+
+            this.deleteButton = (ImageButton) itemView.findViewById(R.id.item_photo_deleteButton);
         }
 
-        @Override
-        public void onClick(View view) {
-            switch (view.getId()) {
-                case R.id.item_photo_background:
-                    if (a instanceof Activity) {
-                        Photo p = itemList.get(getAdapterPosition());
-                        WallSplashApplication.getInstance().setPhoto(p);
 
-                        if (itemList.get(getAdapterPosition()).loadPhotoSuccess) {
-                            View imageView = ((RelativeLayout) view).getChildAt(0);
-                            Drawable d = ((FreedomImageView) imageView).getDrawable();
-                            WallSplashApplication.getInstance().setDrawable(d);
-                        } else {
-                            WallSplashApplication.getInstance().setDrawable(null);
-                        }
-
-                        Intent intent = new Intent(a, PhotoActivity.class);
-                        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-                            ActivityOptionsCompat options = ActivityOptionsCompat
-                                    .makeScaleUpAnimation(
-                                            view,
-                                            (int) view.getX(), (int) view.getY(),
-                                            view.getMeasuredWidth(), view.getMeasuredHeight());
-                            ActivityCompat.startActivity((Activity) a, intent, options.toBundle());
-                        } else {
-                            View imageView = ((RelativeLayout) view).getChildAt(0);
-                            ActivityOptionsCompat options = ActivityOptionsCompat
-                                    .makeSceneTransitionAnimation(
-                                            (Activity) a,
-                                            Pair.create(imageView, a.getString(R.string.transition_photo_image)),
-                                            Pair.create(imageView, a.getString(R.string.transition_photo_background)));
-                            ActivityCompat.startActivity((Activity) a, intent, options.toBundle());
-                        }
-                    }
-                    break;
-
-                case R.id.item_photo_likeButton:
-                    if (!AuthManager.getInstance().isAuthorized()) {
-                        Intent i = new Intent(a, LoginActivity.class);
-                        a.startActivity(i);
-                    } else {
-                        setLikeForAPhoto(getAdapterPosition());
-                        if (itemList.get(getAdapterPosition()).liked_by_user) {
-                            itemList.get(getAdapterPosition()).liked_by_user = false;
-                            ((ImageButton) view).setImageResource(R.drawable.ic_item_heart_broken);
-                        } else {
-                            itemList.get(getAdapterPosition()).liked_by_user = true;
-                            ((ImageButton) view).setImageResource(R.drawable.ic_item_heart_red);
-                        }
-                    }
-                    break;
-
-                case R.id.item_photo_collectionButton:
-                    if (a instanceof Activity) {
-                        if (!AuthManager.getInstance().isAuthorized()) {
-                            Intent i = new Intent(a, LoginActivity.class);
-                            a.startActivity(i);
-                        } else {
-                            SelectCollectionDialog dialog = new SelectCollectionDialog();
-                            dialog.setPhoto(itemList.get(getAdapterPosition()));
-                            if (own) {
-                                dialog.setOnCollectionsChangedListener(PhotoAdapter.this);
-                            }
-                            dialog.show(((Activity) a).getFragmentManager(), null);
-                        }
-                    }
-                    break;
-            }
-        }
     }
+
 }

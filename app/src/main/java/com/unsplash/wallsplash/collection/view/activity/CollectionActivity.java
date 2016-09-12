@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.mikhaellopez.circularimageview.CircularImageView;
 import com.unsplash.wallsplash.R;
 import com.unsplash.wallsplash.WallSplashApplication;
 import com.unsplash.wallsplash._common.data.data.Collection;
@@ -32,7 +33,6 @@ import com.unsplash.wallsplash._common.i.view.SwipeBackManageView;
 import com.unsplash.wallsplash._common.i.view.ToolbarView;
 import com.unsplash.wallsplash._common.ui.activity.BaseActivity;
 import com.unsplash.wallsplash._common.ui.dialog.UpdateCollectionDialog;
-import com.unsplash.wallsplash._common.ui.widget.CircleImageView;
 import com.unsplash.wallsplash._common.ui.widget.StatusBarView;
 import com.unsplash.wallsplash._common.ui.widget.SwipeBackLayout;
 import com.unsplash.wallsplash._common.utils.AnimUtils;
@@ -62,7 +62,7 @@ public class CollectionActivity extends BaseActivity
     private CoordinatorLayout container;
     private AppBarLayout appBar;
     private RelativeLayout creatorBar;
-    private CircleImageView avatarImage;
+    private CircularImageView avatarImage;
     private CollectionPhotosView photosView;
 
     // presenter.
@@ -118,14 +118,26 @@ public class CollectionActivity extends BaseActivity
             result.putExtra(DELETE_COLLECTION, false);
             setResult(RESULT_OK, result);
             super.onBackPressed();
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+                overridePendingTransition(0, R.anim.activity_slide_out_bottom);
+            }
         }
     }
 
-    private void finishActivity(boolean delete) {
+    private void finishActivity(int dir, boolean delete) {
         Intent result = new Intent();
         result.putExtra(DELETE_COLLECTION, delete);
         setResult(RESULT_OK, result);
         finish();
+        switch (dir) {
+            case SwipeBackLayout.UP_DIR:
+                overridePendingTransition(0, R.anim.activity_slide_out_top);
+                break;
+
+            case SwipeBackLayout.DOWN_DIR:
+                overridePendingTransition(0, R.anim.activity_slide_out_bottom);
+                break;
+        }
     }
 
     /**
@@ -186,7 +198,7 @@ public class CollectionActivity extends BaseActivity
 
         this.creatorBar = (RelativeLayout) findViewById(R.id.activity_collection_creatorBar);
         creatorBar.setOnClickListener(this);
-        this.avatarImage = (CircleImageView) findViewById(R.id.activity_collection_avatar);
+        this.avatarImage = (CircularImageView) findViewById(R.id.activity_collection_avatar);
         avatarImage.setOnClickListener(this);
         Glide.with(this)
                 .load(c.user.profile_image.large)
@@ -212,6 +224,10 @@ public class CollectionActivity extends BaseActivity
         this.editResultModel = new EditResultObject();
     }
 
+    public Collection getCollection() {
+        return (Collection) editResultPresenter.getEditKey();
+    }
+
     /**
      * <br> interface.
      */
@@ -224,6 +240,10 @@ public class CollectionActivity extends BaseActivity
                 toolbarPresenter.touchNavigatorIcon();
                 break;
 
+            case R.id.activity_collection_creatorBar:
+                toolbarPresenter.touchToolbar();
+                break;
+
             case R.id.activity_collection_avatar:
                 toolbarPresenter.touchToolbar();
                 User u = User.buildUser((Collection) editResultModel.getEditKey());
@@ -232,6 +252,7 @@ public class CollectionActivity extends BaseActivity
                 Intent intent = new Intent(this, UserActivity.class);
                 if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
                     startActivity(intent);
+                    overridePendingTransition(R.anim.activity_in, 0);
                 } else {
                     View v = avatarImage;
                     ActivityOptionsCompat options = ActivityOptionsCompat
@@ -260,8 +281,8 @@ public class CollectionActivity extends BaseActivity
     }
 
     @Override
-    public void onSwipeFinish() {
-        swipeBackManagePresenter.swipeBackFinish();
+    public void onSwipeFinish(int dir) {
+        swipeBackManagePresenter.swipeBackFinish(dir);
     }
 
     // on collection changed listener.
@@ -289,7 +310,7 @@ public class CollectionActivity extends BaseActivity
 
     @Override
     public void touchNavigatorIcon() {
-        finishActivity(false);
+        finishActivity(SwipeBackLayout.NULL_DIR, false);
     }
 
     @Override
@@ -304,7 +325,7 @@ public class CollectionActivity extends BaseActivity
                 UpdateCollectionDialog dialog = new UpdateCollectionDialog();
                 dialog.setCollection((Collection) editResultPresenter.getEditKey());
                 dialog.setOnCollectionChangedListener(this);
-                dialog.show(getFragmentManager(), null);
+                dialog.show(getSupportFragmentManager(), null);
                 break;
         }
     }
@@ -323,8 +344,8 @@ public class CollectionActivity extends BaseActivity
     }
 
     @Override
-    public void swipeBackFinish() {
-        finishActivity(false);
+    public void swipeBackFinish(int dir) {
+        finishActivity(dir, false);
     }
 
     // edit result view.
@@ -336,22 +357,22 @@ public class CollectionActivity extends BaseActivity
 
     @Override
     public void drawUpdateResult(Object newKey) {
-        Collection c = (Collection) newKey;
+        Collection collection = (Collection) newKey;
 
         TextView title = (TextView) findViewById(R.id.activity_collection_title);
-        title.setText(c.title);
+        title.setText(collection.title);
 
         TextView description = (TextView) findViewById(R.id.activity_collection_description);
-        if (TextUtils.isEmpty(c.description)) {
+        if (TextUtils.isEmpty(collection.description) || collection.description.equals("null")) {
             description.setVisibility(View.GONE);
         } else {
             TypefaceUtils.setTypeface(this, description);
-            description.setText(c.description);
+            description.setText(collection.description);
         }
     }
 
     @Override
     public void drawDeleteResult(Object oldKey) {
-        finishActivity(true);
+        finishActivity(SwipeBackLayout.NULL_DIR, true);
     }
 }

@@ -1,126 +1,165 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.unsplash.wallsplash._common.ui.widget.SwipeBackLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<com.unsplash.wallsplash._common.ui.widget.SwipeBackLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_login_swipeBackLayout"
+    android:background="#aad47e"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <com.unsplash.wallsplash._common.ui.widget.StatusBarView
+        android:fitsSystemWindows="true"
         android:id="@+id/activity_login_statusBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/colorPrimaryDark" />
+        android:background="#aad47e" />
 
     <android.support.design.widget.CoordinatorLayout
+        android:fitsSystemWindows="true"
         android:id="@+id/activity_login_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="#aad47e">
 
         <RelativeLayout
+            android:fitsSystemWindows="true"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="?attr/root_color">
+            android:background="@drawable/bg">
 
             <ImageButton
                 android:id="@+id/activity_login_closeBtn"
-                android:src="@drawable/ic_close_light"
                 style="@style/material_image_button"
+                android:src="@drawable/ic_close_dark"
                 tools:ignore="ContentDescription" />
 
-            <RelativeLayout
+            <android.support.v7.widget.CardView
+                android:fitsSystemWindows="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true">
-
-                <ImageView
-                    android:id="@+id/activity_login_icon"
-                    android:layout_centerHorizontal="true"
-                    android:layout_width="@dimen/design_icon_size"
-                    android:layout_height="@dimen/design_icon_size"
-                    android:layout_alignParentTop="true"
-                    tools:src="@drawable/ic_launcher"
-                    tools:ignore="ContentDescription" />
-
-                <TextView
-                    android:id="@+id/activity_login_title"
-                    android:text="LOGIN"
-                    android:textSize="@dimen/design_title_text_size"
-                    android:textStyle="bold"
-                    android:layout_centerHorizontal="true"
-                    android:layout_below="@id/activity_login_icon"
-                    android:layout_marginTop="@dimen/normal_margin"
-                    android:layout_marginBottom="@dimen/mini_margin"
-                    android:layout_marginLeft="@dimen/mini_icon_size"
-                    android:layout_marginRight="@dimen/mini_icon_size"
-                    style="@style/title_text"
-                    tools:ignore="HardcodedText" />
-
-                <TextView
-                    android:id="@+id/activity_login_content"
-                    android:text="Welcome back."
-                    android:layout_centerHorizontal="true"
-                    android:layout_below="@id/activity_login_title"
-                    android:layout_width="wrap_content"
-                    style="@style/content_text"
-                    tools:ignore="HardcodedText" />
-
-                <LinearLayout
-                    android:id="@+id/activity_login_buttonContainer"
-                    android:orientation="vertical"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/activity_login_content"
-                    android:layout_centerHorizontal="true">
-
-                    <Button
-                        android:id="@+id/activity_login_loginBtn"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="LOGIN"
-                        android:textStyle="bold"
-                        android:textColor="?attr/root_color"
-                        android:layout_marginTop="@dimen/design_icon_size"
-                        android:layout_marginLeft="@dimen/design_icon_size"
-                        android:layout_marginRight="@dimen/design_icon_size"
-                        android:layout_marginBottom="@dimen/normal_margin"
-                        tools:ignore="HardcodedText" />
-
-                    <Button
-                        android:id="@+id/activity_login_joinBtn"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/design_icon_size"
-                        android:layout_marginLeft="@dimen/design_icon_size"
-                        android:layout_marginRight="@dimen/design_icon_size"
-                        android:text="JOIN"
-                        android:textStyle="bold"
-                        android:textColor="?attr/content_color"
-                        tools:ignore="HardcodedText" />
-
-                </LinearLayout>
+                android:layout_centerInParent="true"
+                android:layout_margin="@dimen/mini_icon_size"
+                app:cardCornerRadius="@dimen/mini_margin"
+                app:cardElevation="@dimen/mini_margin"
+                app:cardBackgroundColor="@android:color/transparent">
 
                 <RelativeLayout
-                    android:id="@+id/activity_login_progressContainer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/design_icon_size"
-                    android:layout_below="@id/activity_login_content"
-                    android:layout_centerHorizontal="true">
+                    android:layout_centerInParent="true">
 
-                    <com.github.rahatarmanahmed.cpv.CircularProgressView
-                        android:layout_width="@dimen/circular_progress_height"
-                        android:layout_height="@dimen/circular_progress_height"
-                        android:layout_margin="@dimen/little_icon_size"
-                        android:layout_centerInParent="true"
-                        app:cpv_color="?attr/colorAccent"
-                        app:cpv_indeterminate="true"
-                        app:cpv_animAutostart="true" />
+                    <ImageView
+                        android:id="@+id/activity_login_icon"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_alignParentTop="true"
+                        android:layout_centerHorizontal="true"
+                        tools:ignore="ContentDescription"
+                        android:src="@drawable/ic_avatar" />
+
+                    <TextView
+                        android:id="@+id/activity_login_title"
+                        style="@style/title_text"
+                        android:layout_below="@id/activity_login_icon"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginBottom="@dimen/mini_margin"
+                        android:layout_marginLeft="@dimen/mini_icon_size"
+                        android:layout_marginRight="@dimen/mini_icon_size"
+                        android:layout_marginTop="@dimen/normal_margin"
+                        android:text="LOGIN"
+                        android:textSize="@dimen/design_title_text_size"
+                        android:textStyle="bold"
+                        tools:ignore="HardcodedText" />
+
+                    <TextView
+                        android:id="@+id/activity_login_content"
+                        style="@style/content_text"
+                        android:textColor="@color/colorWhite"
+                        android:layout_width="wrap_content"
+                        android:layout_below="@id/activity_login_title"
+                        android:layout_centerHorizontal="true"
+                        android:text="Welcome back."
+                        tools:ignore="HardcodedText" />
+
+                    <View
+                        android:layout_marginLeft="@dimen/design_icon_size"
+                        android:layout_marginRight="@dimen/design_icon_size"
+                        android:layout_marginTop="@dimen/nano_margin"
+                        android:layout_below="@id/activity_login_content"
+                        android:layout_width="match_parent"
+                        android:background="@color/colorWhite"
+                        android:layout_height="0.5dp" />
+
+                    <LinearLayout
+                        android:layout_marginTop="@dimen/mini_icon_size"
+                        android:id="@+id/activity_login_buttonContainer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/activity_login_content"
+                        android:layout_centerHorizontal="true"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/activity_login_loginBtn"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/little_margin"
+                            android:layout_marginRight="@dimen/mini_margin"
+                            android:layout_weight="1"
+                            android:layout_marginTop="@dimen/design_icon_size"
+                            android:layout_marginBottom="@dimen/mini_icon_size"
+                            android:text="LOGIN"
+                            android:textColor="?attr/root_color"
+                            android:textStyle="bold"
+                            tools:ignore="HardcodedText" />
+
+                        <Button
+                            android:id="@+id/activity_login_joinBtn"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/design_icon_size"
+                            android:layout_marginLeft="@dimen/mini_margin"
+                            android:layout_marginRight="@dimen/little_margin"
+                            android:layout_marginBottom="@dimen/mini_icon_size"
+                            android:layout_weight="1"
+                            android:text="JOIN"
+                            android:textColor="@color/colorTextLight"
+                            android:textStyle="bold"
+                            tools:ignore="HardcodedText" />
+
+                    </LinearLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/activity_login_progressContainer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/activity_login_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_margin="@dimen/design_icon_size">
+
+                        <com.github.rahatarmanahmed.cpv.CircularProgressView
+                            android:layout_width="@dimen/circular_progress_height"
+                            android:layout_height="@dimen/circular_progress_height"
+                            android:layout_centerInParent="true"
+                            android:layout_margin="@dimen/little_icon_size"
+                            app:cpv_animAutostart="true"
+                            app:cpv_color="?attr/colorAccent"
+                            app:cpv_indeterminate="true" />
+
+                    </RelativeLayout>
 
                 </RelativeLayout>
+            </android.support.v7.widget.CardView>
 
-            </RelativeLayout>
+            <TextView
+                android:gravity="center"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorWhite"
+                android:layout_marginBottom="@dimen/normal_margin"
+                android:text="@string/powered" />
 
         </RelativeLayout>
 

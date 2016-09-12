@@ -2,6 +2,7 @@ package com.unsplash.wallsplash.collection.model.widget;
 
 import android.content.Context;
 
+import com.unsplash.wallsplash.WallSplashApplication;
 import com.unsplash.wallsplash._common.data.data.Photo;
 import com.unsplash.wallsplash._common.data.service.PhotoService;
 import com.unsplash.wallsplash._common.i.model.PhotosModel;
@@ -38,6 +39,7 @@ public class PhotosObject
 
     public PhotosObject(Context c, Object key, int photosType) {
         this.adapter = new PhotoAdapter(c, new ArrayList<Photo>());
+        adapter.setInMyCollection(WallSplashApplication.getInstance().isMyOwnCollection());
         this.service = PhotoService.getService();
 
         this.key = key;

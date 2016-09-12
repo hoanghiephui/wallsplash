@@ -15,7 +15,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.clockbyte.admobadapter.expressads.AdmobExpressRecyclerAdapterWrapper;
 import com.github.rahatarmanahmed.cpv.CircularProgressView;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
 import com.unsplash.wallsplash.R;
 import com.unsplash.wallsplash._common.i.model.CollectionsModel;
 import com.unsplash.wallsplash._common.i.model.LoadModel;
@@ -66,6 +69,7 @@ public class HomeCollectionsView extends FrameLayout
     private PagerPresenter pagerPresenter;
     private LoadPresenter loadPresenter;
     private ScrollPresenter scrollPresenter;
+    private AdmobExpressRecyclerAdapterWrapper adapterWrapper;
 
     /**
      * <br> life cycle.
@@ -114,15 +118,25 @@ public class HomeCollectionsView extends FrameLayout
         refreshLayout.setOnRefreshAndLoadListener(this);
         refreshLayout.setVisibility(GONE);
         if (ThemeUtils.getInstance(getContext()).isLightTheme()) {
-            refreshLayout.setColorSchemeColors(ContextCompat.getColor(getContext(), R.color.colorTextContent_light));
+            refreshLayout.setColorSchemeColors(ContextCompat.getColor(getContext(), R.color.colorTextContent_light),
+                    ContextCompat.getColor(getContext(), R.color.colorAccent_light),
+                    ContextCompat.getColor(getContext(), R.color.colorAccent_dark));
             refreshLayout.setProgressBackgroundColorSchemeResource(R.color.colorPrimary_light);
         } else {
-            refreshLayout.setColorSchemeColors(ContextCompat.getColor(getContext(), R.color.colorTextContent_dark));
+            refreshLayout.setColorSchemeColors(ContextCompat.getColor(getContext(), R.color.colorPrimary_light),
+                    ContextCompat.getColor(getContext(), R.color.colorAccent_light),
+                    ContextCompat.getColor(getContext(), R.color.colorAccent_dark));
             refreshLayout.setProgressBackgroundColorSchemeResource(R.color.colorPrimary_dark);
         }
 
         this.recyclerView = (RecyclerView) findViewById(R.id.container_photo_list_recyclerView);
-        recyclerView.setAdapter(collectionsModel.getAdapter());
+        String[] testDevicesIds = new String[]{getContext().getString(R.string.testDeviceID), AdRequest.DEVICE_ID_EMULATOR};
+        adapterWrapper = new AdmobExpressRecyclerAdapterWrapper(getContext(), "ca-app-pub-2257698129050878/7146096743", testDevicesIds, new AdSize(AdSize.FULL_WIDTH, 250));
+        adapterWrapper.setAdapter(collectionsModel.getAdapter());
+        adapterWrapper.setLimitOfAds(3);
+        adapterWrapper.setNoOfDataBetweenAds(10);
+        adapterWrapper.setFirstAdIndex(2);
+        recyclerView.setAdapter(adapterWrapper);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         recyclerView.addOnScrollListener(onScrollListener);
     }
@@ -264,6 +278,7 @@ public class HomeCollectionsView extends FrameLayout
     @Override
     public void cancelRequest() {
         collectionsPresenter.cancelRequest();
+        onDetroy();
     }
 
     @Override
@@ -282,7 +297,7 @@ public class HomeCollectionsView extends FrameLayout
     }
 
     @Override
-    public int getItemCount() {
+    public int getItemCounts() {
         if (loadPresenter.getLoadState() != LoadObject.NORMAL_STATE) {
             return 0;
         } else {
@@ -363,5 +378,9 @@ public class HomeCollectionsView extends FrameLayout
     public boolean needBackToTop() {
         return !scrollPresenter.isToTop()
                 && loadPresenter.getLoadState() == LoadObject.NORMAL_STATE;
+    }
+
+    private void onDetroy() {
+        adapterWrapper.destroyAds();
     }
 }

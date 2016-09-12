@@ -198,7 +198,7 @@ public class AboutActivity extends BaseActivity
     }
 
     @Override
-    public void onSwipeFinish() {
+    public void onSwipeFinish(int dir) {
         finish();
     }
 

@@ -8,5 +8,5 @@ public interface SwipeBackManagePresenter {
 
     boolean checkCanSwipeBack(int dir);
 
-    void swipeBackFinish();
+    void swipeBackFinish(int dir);
 }

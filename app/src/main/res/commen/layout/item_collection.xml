@@ -22,7 +22,7 @@
     <TextView
         android:id="@+id/item_collection_subtitle"
         android:textColor="@android:color/white"
-        android:singleLine="true"
+        android:maxLines="1"
         android:shadowDx="1"
         android:shadowDy="1"
         android:shadowRadius="1"
@@ -34,10 +34,34 @@
         style="@style/subtitle_text"
         tools:text="3 photos"/>
 
+    <com.unsplash.wallsplash._common.ui.widget.ShortTimeView
+        tools:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvTime"
+        android:layout_toRightOf="@+id/item_collection_subtitle"
+        android:layout_toEndOf="@+id/item_collection_subtitle"
+        android:layout_marginTop="@dimen/normal_margin"
+        android:layout_marginLeft="8dp"
+        android:textColor="@color/colorTextLight" />
+
+    <com.unsplash.wallsplash._common.ui.widget.MaterialProgressBar
+        android:layout_centerInParent="true"
+        android:id="@+id/progress"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:indeterminate="true"
+        android:layout_marginLeft="@dimen/mini_icon_size"
+        android:layout_marginRight="@dimen/mini_icon_size"
+        android:visibility="visible"
+        app:duration="2000"
+        app:progressColour="@color/colorAccent_light"
+        app:backgroundColour="@color/colorPrimary_light" />
+
     <TextView
         android:id="@+id/item_collection_title"
         android:textColor="@android:color/white"
-        android:singleLine="true"
+        android:maxLines="1"
         android:textSize="@dimen/large_title_text_size"
         android:textStyle="bold"
         android:shadowDx="1"

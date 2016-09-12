@@ -82,14 +82,12 @@ public class AdmobExpressRecyclerAdapterWrapper
     private Context mContext;
     private AdmobAdapterCalculator AdapterCalculator = new AdmobAdapterCalculator();
     private int mCntAdCreated = 0;
-
     /*
     * Gets an object which incapsulates transformation of the source and ad blocks indices
     */
     public AdmobAdapterCalculator getAdapterCalculator() {
         return AdapterCalculator;
     }
-
     /*
 * Injects an object which incapsulates transformation of the source and ad blocks indices. You could override calculations
 * by inheritance of AdmobAdapterCalculator class
@@ -166,7 +164,6 @@ public class AdmobExpressRecyclerAdapterWrapper
     }
 
     private int viewTypeBiggestSource;
-
     /*
    * Gets the biggest value among all the view types in the underlying source adapter, by default it equals to 0.
    */
@@ -187,20 +184,18 @@ public class AdmobExpressRecyclerAdapterWrapper
     /**
      * Use this constructor for test purposes. if you are going to release the live version
      * please use the appropriate constructor
-     *
-     * @param testDevicesId sets a devices ID to test ads interaction.
-     *                      You could pass null but it's better to set ids for all your test devices
-     *                      including emulators. for emulator just use the
      * @see #AdmobExpressRecyclerAdapterWrapper(Context, String)
+     * @param testDevicesId sets a devices ID to test ads interaction.
+     * You could pass null but it's better to set ids for all your test devices
+     * including emulators. for emulator just use the
      * @see {AdRequest.DEVICE_ID_EMULATOR}
      */
     public AdmobExpressRecyclerAdapterWrapper(Context context, String[] testDevicesId) {
         init(context, null, testDevicesId, null);
     }
-
     /**
      * @param admobReleaseUnitId sets a release unit ID for admob banners.
-     *                           If you are testing the ads please use constructor for tests
+     * If you are testing the ads please use constructor for tests
      * @see #AdmobExpressRecyclerAdapterWrapper(Context, String[])
      * ID should be active, please check it in your Admob's account.
      * Be careful: don't set it or set to null if you still haven't deployed a Release.
@@ -212,14 +207,14 @@ public class AdmobExpressRecyclerAdapterWrapper
 
     /**
      * @param admobReleaseUnitId sets a release unit ID for admob banners.
-     *                           If you are testing the ads please use constructor for tests
-     * @param testDevicesId      sets a devices ID to test ads interaction.
-     *                           You could pass null but it's better to set ids for all your test devices
-     *                           including emulators. for emulator just use the
+     * If you are testing the ads please use constructor for tests
      * @see #AdmobExpressRecyclerAdapterWrapper(Context, String[])
      * ID should be active, please check it in your Admob's account.
      * Be careful: don't set it or set to null if you still haven't deployed a Release.
      * Otherwise your Admob account could be banned
+     * @param testDevicesId sets a devices ID to test ads interaction.
+     * You could pass null but it's better to set ids for all your test devices
+     * including emulators. for emulator just use the
      * @see {AdRequest.DEVICE_ID_EMULATOR}
      */
     public AdmobExpressRecyclerAdapterWrapper(Context context, String admobReleaseUnitId, String[] testDevicesId) {
@@ -228,16 +223,16 @@ public class AdmobExpressRecyclerAdapterWrapper
 
     /**
      * @param admobReleaseUnitId sets a release unit ID for admob banners.
-     *                           If you are testing the ads please use constructor for tests
-     * @param testDevicesId      sets a devices ID to test ads interaction.
-     *                           You could pass null but it's better to set ids for all your test devices
-     *                           including emulators. for emulator just use the
-     * @param adSize             sets ad size. By default it equals to AdSize(AdSize.FULL_WIDTH, 150);
+     * If you are testing the ads please use constructor for tests
      * @see #AdmobExpressRecyclerAdapterWrapper(Context, String[])
      * ID should be active, please check it in your Admob's account.
      * Be careful: don't set it or set to null if you still haven't deployed a Release.
      * Otherwise your Admob account could be banned
+     * @param testDevicesId sets a devices ID to test ads interaction.
+     * You could pass null but it's better to set ids for all your test devices
+     * including emulators. for emulator just use the
      * @see {AdRequest.DEVICE_ID_EMULATOR}
+     * @param adSize sets ad size. By default it equals to AdSize(AdSize.FULL_WIDTH, 150);
      */
     public AdmobExpressRecyclerAdapterWrapper(Context context, String admobReleaseUnitId, String[] testDevicesId, AdSize adSize) {
         init(context, admobReleaseUnitId, testDevicesId, adSize);
@@ -246,26 +241,24 @@ public class AdmobExpressRecyclerAdapterWrapper
     /**
      * Use this constructor for test purposes. if you are going to release the live version
      * please use the appropriate constructor
-     *
-     * @param testDevicesId sets a devices ID to test ads interaction.
-     *                      You could pass null but it's better to set ids for all your test devices
-     *                      including emulators. for emulator just use the
-     * @param adSize        sets ad size. By default it equals to AdSize(AdSize.FULL_WIDTH, 150);
      * @see #AdmobExpressRecyclerAdapterWrapper(Context, String, AdSize)
+     * @param testDevicesId sets a devices ID to test ads interaction.
+     * You could pass null but it's better to set ids for all your test devices
+     * including emulators. for emulator just use the
      * @see {AdRequest.DEVICE_ID_EMULATOR}
+     * @param adSize sets ad size. By default it equals to AdSize(AdSize.FULL_WIDTH, 150);
      */
     public AdmobExpressRecyclerAdapterWrapper(Context context, String[] testDevicesId, AdSize adSize) {
         init(context, null, testDevicesId, adSize);
     }
-
     /**
      * @param admobReleaseUnitId sets a release unit ID for admob banners.
-     *                           If you are testing the ads please use constructor for tests
-     * @param adSize             sets ad size. By default it equals to AdSize(AdSize.FULL_WIDTH, 150);
+     * If you are testing the ads please use constructor for tests
      * @see #AdmobExpressRecyclerAdapterWrapper(Context, String[], AdSize)
      * ID should be active, please check it in your Admob's account.
      * Be careful: don't set it or set to null if you still haven't deployed a Release.
      * Otherwise your Admob account could be banned
+     * @param adSize sets ad size. By default it equals to AdSize(AdSize.FULL_WIDTH, 150);
      */
     public AdmobExpressRecyclerAdapterWrapper(Context context, String admobReleaseUnitId, AdSize adSize) {
         init(context, admobReleaseUnitId, null, adSize);
@@ -289,7 +282,6 @@ public class AdmobExpressRecyclerAdapterWrapper
 
     /**
      * Will start async prefetch of ad block to use its further
-     *
      * @return last created NativeExpressAdView
      */
     private NativeExpressAdView prefetchAds(int cntToPrefetch) {

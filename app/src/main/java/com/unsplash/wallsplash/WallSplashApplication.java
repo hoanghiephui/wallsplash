@@ -1,10 +1,11 @@
 package com.unsplash.wallsplash;
 
-import android.app.Activity;
 import android.app.Application;
 import android.graphics.drawable.Drawable;
 import android.os.Environment;
+import android.support.v7.app.AppCompatActivity;
 
+import com.google.android.gms.ads.MobileAds;
 import com.unsplash.wallsplash._common.data.data.Collection;
 import com.unsplash.wallsplash._common.data.data.Photo;
 import com.unsplash.wallsplash._common.data.data.User;
@@ -19,7 +20,7 @@ import java.util.List;
 
 public class WallSplashApplication extends Application {
     // data
-    private List<Activity> activityList;
+    private List<AppCompatActivity> activityList;
     private Photo photo;
     private Collection collection;
     private User user;
@@ -85,6 +86,7 @@ public class WallSplashApplication extends Application {
         super.onCreate();
         initialize();
         readPhotoCount();
+        MobileAds.initialize(getApplicationContext(), getString(R.string.id_app_admob));
     }
 
     private void initialize() {
@@ -107,7 +109,7 @@ public class WallSplashApplication extends Application {
      * <br> data.
      */
 
-    public void addActivity(Activity a) {
+    public void addActivity(AppCompatActivity a) {
         activityList.add(a);
     }
 
@@ -115,7 +117,7 @@ public class WallSplashApplication extends Application {
         activityList.remove(activityList.size() - 1);
     }
 
-    public List<Activity> getActivityList() {
+    public List<AppCompatActivity> getActivityList() {
         return activityList;
     }
 

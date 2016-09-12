@@ -48,9 +48,7 @@ public class CollectionMiniAdapter extends RecyclerView.Adapter<CollectionMiniAd
         this.itemList = list;
     }
 
-    /**
-     * <br> UI.
-     */
+    /** <br> UI. */
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -69,17 +67,16 @@ public class CollectionMiniAdapter extends RecyclerView.Adapter<CollectionMiniAd
             return;
         }
 
-        holder.title.setText("");
-        holder.subtitle.setText("");
+        holder.title.setText(itemList.get(position - 1).title.toUpperCase());
+        int photoNum = itemList.get(position - 1).total_photos;
+        holder.subtitle.setText(photoNum + (photoNum > 1 ? " " + c.getString(R.string.photos) : " " + c.getString(R.string.photo)));
+
         if (itemList.get(position - 1).cover_photo != null) {
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
                 Glide.with(c)
                         .load(itemList.get(position - 1).cover_photo.urls.regular)
                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                         .into(holder.image);
-                holder.title.setText(itemList.get(position - 1).title.toUpperCase());
-                int photoNum = itemList.get(position - 1).total_photos;
-                holder.subtitle.setText(photoNum + (photoNum > 1 ? " photos" : " photo"));
             } else {
                 Glide.with(c)
                         .load(itemList.get(position - 1).cover_photo.urls.regular)
@@ -115,10 +112,6 @@ public class CollectionMiniAdapter extends RecyclerView.Adapter<CollectionMiniAd
                                     saturation.start();
                                     itemList.get(position - 1).cover_photo.hasFadeIn = true;
                                 }
-
-                                holder.title.setText(itemList.get(position - 1).title.toUpperCase());
-                                int photoNum = itemList.get(position - 1).total_photos;
-                                holder.subtitle.setText(photoNum + (photoNum > 1 ? " photos" : " photo"));
                                 return false;
                             }
 
@@ -132,9 +125,6 @@ public class CollectionMiniAdapter extends RecyclerView.Adapter<CollectionMiniAd
             }
         } else {
             holder.image.setImageResource(R.color.colorTextContent_light);
-            holder.title.setText(itemList.get(position - 1).title.toUpperCase());
-            int photoNum = itemList.get(position - 1).total_photos;
-            holder.subtitle.setText(photoNum + (photoNum > 1 ? " photos" : " photo"));
         }
         if (itemList.get(position - 1).privateX) {
             holder.lockIcon.setVisibility(View.VISIBLE);
@@ -148,9 +138,7 @@ public class CollectionMiniAdapter extends RecyclerView.Adapter<CollectionMiniAd
         Glide.clear(holder.image);
     }
 
-    /**
-     * <br> data.
-     */
+    /** <br> data. */
 
     @Override
     public int getItemCount() {
@@ -176,13 +164,10 @@ public class CollectionMiniAdapter extends RecyclerView.Adapter<CollectionMiniAd
         return itemList.size();
     }
 
-    /**
-     * <br> interface.
-     */
+    /** <br> interface. */
 
     public interface OnCollectionResponseListener {
         void onCreateCollection();
-
         void onAddToCollection(int collection_id);
     }
 
@@ -190,9 +175,7 @@ public class CollectionMiniAdapter extends RecyclerView.Adapter<CollectionMiniAd
         this.listener = l;
     }
 
-    /**
-     * <br> inner class.
-     */
+    /** <br> inner class. */
 
     // view holder.
 

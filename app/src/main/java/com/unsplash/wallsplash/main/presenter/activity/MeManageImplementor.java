@@ -2,6 +2,7 @@ package com.unsplash.wallsplash.main.presenter.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Build;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
@@ -10,7 +11,6 @@ import android.support.v4.util.Pair;
 import android.view.View;
 
 import com.unsplash.wallsplash.R;
-import com.unsplash.wallsplash.WallSplashApplication;
 import com.unsplash.wallsplash._common.data.tools.AuthManager;
 import com.unsplash.wallsplash._common.i.presenter.MeManagePresenter;
 import com.unsplash.wallsplash._common.i.view.MeManageView;
@@ -35,16 +35,15 @@ public class MeManageImplementor
         this.view = view;
     }
 
-    /**
-     * <br> presenter.
-     */
+    /** <br> presenter. */
 
     @Override
     public void touchMeAvatar(Activity a) {
         if (!AuthManager.getInstance().isAuthorized()) {
             Intent intent = new Intent(a, LoginActivity.class);
             a.startActivity(intent);
-        } else {
+            a.overridePendingTransition(R.anim.activity_in, 0);
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Intent intent = new Intent(a, MeActivity.class);
 
             NavigationView nav = (NavigationView) a.findViewById(R.id.activity_main_navView);
@@ -56,6 +55,10 @@ public class MeManageImplementor
                                     header.findViewById(R.id.container_nav_header_avatar),
                                     a.getString(R.string.transition_me_avatar)));
             ActivityCompat.startActivity(a, intent, options.toBundle());
+        } else {
+            Intent intent = new Intent(a, MeActivity.class);
+            a.startActivity(intent);
+            a.overridePendingTransition(R.anim.activity_in, 0);
         }
     }
 
@@ -64,6 +67,7 @@ public class MeManageImplementor
         if (!AuthManager.getInstance().isAuthorized()) {
             Intent intent = new Intent(a, LoginActivity.class);
             a.startActivity(intent);
+            a.overridePendingTransition(R.anim.activity_in, 0);
         } else {
             AuthManager.getInstance().logout();
         }
@@ -72,7 +76,7 @@ public class MeManageImplementor
     @Override
     public void responseWriteAccessToken() {
         NotificationUtils.showSnackbar(
-                WallSplashApplication.getInstance().getResources().getString(R.string.welcome_back),
+                "Welcome back.",
                 Snackbar.LENGTH_SHORT);
         view.drawMeAvatar();
         view.drawMeTitle();

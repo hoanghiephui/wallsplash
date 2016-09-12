@@ -12,6 +12,7 @@ import com.unsplash.wallsplash._common.data.tools.AuthManager;
 import com.unsplash.wallsplash._common.i.model.PhotosModel;
 import com.unsplash.wallsplash._common.i.presenter.PhotosPresenter;
 import com.unsplash.wallsplash._common.i.view.PhotosView;
+import com.unsplash.wallsplash._common.ui.dialog.RateLimitDialog;
 import com.unsplash.wallsplash._common.utils.NotificationUtils;
 import com.unsplash.wallsplash.user.model.widget.PhotosObject;
 
@@ -206,6 +207,9 @@ public class PhotosImplementor
                 view.requestPhotosSuccess();
             } else {
                 view.requestPhotosFailed(c.getString(R.string.feedback_load_nothing_tv));
+                RateLimitDialog.checkAndNotify(
+                        WallSplashApplication.getInstance().getActivityList().get(WallSplashApplication.getInstance().getActivityList().size()),
+                        response.headers().get("X-Ratelimit-Remaining"));
             }
         }
 

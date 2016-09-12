@@ -19,7 +19,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.clockbyte.admobadapter.expressads.AdmobExpressRecyclerAdapterWrapper;
 import com.github.rahatarmanahmed.cpv.CircularProgressView;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
 import com.unsplash.wallsplash.R;
 import com.unsplash.wallsplash._common.i.model.CategoryModel;
 import com.unsplash.wallsplash._common.i.model.LoadModel;
@@ -65,6 +68,7 @@ public class CategoryPhotosView extends FrameLayout
     private CategoryPresenter categoryPresenter;
     private LoadPresenter loadPresenter;
     private ScrollPresenter scrollPresenter;
+    private AdmobExpressRecyclerAdapterWrapper adapterWrapper;
 
     /**
      * <br> life cycle.
@@ -129,15 +133,25 @@ public class CategoryPhotosView extends FrameLayout
         refreshLayout.setOnRefreshAndLoadListener(this);
         refreshLayout.setVisibility(GONE);
         if (ThemeUtils.getInstance(getContext()).isLightTheme()) {
-            refreshLayout.setColorSchemeColors(ContextCompat.getColor(getContext(), R.color.colorTextContent_light));
+            refreshLayout.setColorSchemeColors(ContextCompat.getColor(getContext(), R.color.colorTextContent_light),
+                    ContextCompat.getColor(getContext(), R.color.colorAccent_light),
+                    ContextCompat.getColor(getContext(), R.color.colorAccent_dark));
             refreshLayout.setProgressBackgroundColorSchemeResource(R.color.colorPrimary_light);
         } else {
-            refreshLayout.setColorSchemeColors(ContextCompat.getColor(getContext(), R.color.colorTextContent_dark));
+            refreshLayout.setColorSchemeColors(ContextCompat.getColor(getContext(), R.color.colorPrimary_light),
+                    ContextCompat.getColor(getContext(), R.color.colorAccent_light),
+                    ContextCompat.getColor(getContext(), R.color.colorAccent_dark));
             refreshLayout.setProgressBackgroundColorSchemeResource(R.color.colorPrimary_dark);
         }
 
         this.recyclerView = (RecyclerView) findViewById(R.id.container_photo_list_recyclerView);
-        recyclerView.setAdapter(categoryModel.getAdapter());
+        String[] testDevicesIds = new String[]{getContext().getString(R.string.testDeviceID), AdRequest.DEVICE_ID_EMULATOR};
+        adapterWrapper = new AdmobExpressRecyclerAdapterWrapper(getContext(), "ca-app-pub-2257698129050878/7146096743", testDevicesIds, new AdSize(AdSize.FULL_WIDTH, 250));
+        adapterWrapper.setAdapter(categoryModel.getAdapter());
+        adapterWrapper.setLimitOfAds(3);
+        adapterWrapper.setNoOfDataBetweenAds(10);
+        adapterWrapper.setFirstAdIndex(2);
+        recyclerView.setAdapter(adapterWrapper);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         recyclerView.addOnScrollListener(scrollListener);
     }
@@ -356,5 +370,9 @@ public class CategoryPhotosView extends FrameLayout
     public boolean needBackToTop() {
         return !scrollPresenter.isToTop()
                 && loadPresenter.getLoadState() == LoadObject.NORMAL_STATE;
+    }
+
+    public void onDestroy() {
+        adapterWrapper.destroyAds();
     }
 }

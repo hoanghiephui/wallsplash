@@ -128,6 +128,9 @@ public class UserActivity extends BaseActivity
             pagerManagePresenter.pagerScrollToTop();
         } else {
             super.onBackPressed();
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+                overridePendingTransition(0, R.anim.activity_slide_out_bottom);
+            }
         }
     }
 
@@ -199,8 +202,8 @@ public class UserActivity extends BaseActivity
 
         List<String> tabList = new ArrayList<>();
         tabList.add("PHOTOS");
-        tabList.add("COLLECTIONS");
         tabList.add("LIKES");
+        tabList.add("COLLECTIONS");
         this.adapter = new MyPagerAdapter(pageList, tabList);
 
         ViewPager viewPager = (ViewPager) findViewById(R.id.activity_user_viewPager);
@@ -272,8 +275,8 @@ public class UserActivity extends BaseActivity
     }
 
     @Override
-    public void onSwipeFinish() {
-        swipeBackManagePresenter.swipeBackFinish();
+    public void onSwipeFinish(int dir) {
+        swipeBackManagePresenter.swipeBackFinish(dir);
     }
 
     // snackbar container.
@@ -342,7 +345,7 @@ public class UserActivity extends BaseActivity
 
     @Override
     public int getPagerItemCount(int position) {
-        return pagers[position].getItemCount();
+        return pagers[position].getItemCounts();
     }
 
     // popup manage view.
@@ -368,11 +371,20 @@ public class UserActivity extends BaseActivity
     }
 
     @Override
-    public void swipeBackFinish() {
+    public void swipeBackFinish(int dir) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             finishAfterTransition();
         } else {
             finish();
+            switch (dir) {
+                case SwipeBackLayout.UP_DIR:
+                    overridePendingTransition(0, R.anim.activity_slide_out_top);
+                    break;
+
+                case SwipeBackLayout.DOWN_DIR:
+                    overridePendingTransition(0, R.anim.activity_slide_out_bottom);
+                    break;
+            }
         }
     }
 }

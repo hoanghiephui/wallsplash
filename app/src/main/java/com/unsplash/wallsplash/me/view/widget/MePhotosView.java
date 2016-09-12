@@ -263,7 +263,7 @@ public class MePhotosView extends FrameLayout
     }
 
     @Override
-    public int getItemCount() {
+    public int getItemCounts() {
         if (loadPresenter.getLoadState() != LoadObject.NORMAL_STATE) {
             return 0;
         } else {

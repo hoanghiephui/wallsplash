@@ -4,8 +4,9 @@
     <!-- normal -->
     <item tools:ignore="StateListReachable">
         <shape>
-            <solid android:color="?attr/title_color"/>
-            <corners android:radius="2dp" />
+            <solid android:color="#00ffffff" />
+            <stroke android:color="#aad47e" android:width="1dp" />
+            <corners android:radius="4dp" />
             <padding
                 android:top="2dp"
                 android:left="2dp"
@@ -18,7 +19,7 @@
     <item android:state_pressed="true">
         <shape>
             <solid android:color="?attr/title_color"/>
-            <corners android:radius="2dp" />
+            <corners android:radius="4dp" />
             <padding
                 android:top="2dp"
                 android:left="2dp"
@@ -31,7 +32,7 @@
     <item android:state_focused="true">
         <shape>
             <solid android:color="?attr/title_color"/>
-            <corners android:radius="2dp" />
+            <corners android:radius="4dp" />
             <padding
                 android:top="2dp"
                 android:left="2dp"

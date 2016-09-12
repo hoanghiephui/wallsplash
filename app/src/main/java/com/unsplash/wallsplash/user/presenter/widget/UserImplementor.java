@@ -1,10 +1,12 @@
 package com.unsplash.wallsplash.user.presenter.widget;
 
+import com.unsplash.wallsplash.WallSplashApplication;
 import com.unsplash.wallsplash._common.data.data.User;
 import com.unsplash.wallsplash._common.data.service.UserService;
 import com.unsplash.wallsplash._common.i.model.UserModel;
 import com.unsplash.wallsplash._common.i.presenter.UserPresenter;
 import com.unsplash.wallsplash._common.i.view.UserView;
+import com.unsplash.wallsplash._common.ui.dialog.RateLimitDialog;
 
 import retrofit2.Call;
 import retrofit2.Response;
@@ -54,6 +56,12 @@ public class UserImplementor
             model.setUser(response.body());
             view.drawUserInfo(response.body());
             view.requestDetailsSuccess();
+        } else if (Integer.parseInt(response.headers().get("X-Ratelimit-Remaining")) < 0) {
+            RateLimitDialog dialog = new RateLimitDialog();
+            dialog.show(
+                    WallSplashApplication.getInstance().getActivityList().get(
+                            WallSplashApplication.getInstance().getActivityList().size()).getSupportFragmentManager(),
+                    null);
         } else {
             requestUser();
         }

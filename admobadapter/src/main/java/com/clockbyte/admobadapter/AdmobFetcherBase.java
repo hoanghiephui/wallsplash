@@ -38,7 +38,6 @@ public abstract class AdmobFetcherBase {
     protected AtomicBoolean lockFetch = new AtomicBoolean();
 
     protected String admobReleaseUnitId;
-
     /*
     *Gets a release unit ID for admob banners. ID should be active, please check it in your Admob's account.
     * Be careful: don't set it or set to null if you still haven't deployed a Release.
@@ -47,7 +46,6 @@ public abstract class AdmobFetcherBase {
     public String getAdmobReleaseUnitId() {
         return admobReleaseUnitId;
     }
-
     /*
    *Sets a release unit ID for admob banners. ID should be active, please check it in your Admob's account.
    * Be careful: don't set it or set to null if you still haven't deployed a Release.
@@ -58,14 +56,12 @@ public abstract class AdmobFetcherBase {
     }
 
     protected ArrayList<String> testDeviceId = new ArrayList<String>();
-
     /*
     *Gets a test device ID. Normally you don't have to set it
      */
     public ArrayList<String> getTestDeviceIds() {
         return testDeviceId;
     }
-
     /*
     *Sets a test device ID. Normally you don't have to set it
      */
@@ -91,7 +87,6 @@ public abstract class AdmobFetcherBase {
     public synchronized int getFetchedAdsCount() {
         return mNoOfFetchedAds;
     }
-
     /**
      * Gets the number of ads that have been fetched and are currently being fetched
      *
@@ -158,11 +153,9 @@ public abstract class AdmobFetcherBase {
         /**
          * Raised when the ad have changed. Adapters that implement this class
          * should notify their data views that the dataset has changed.
-         *
          * @param adIdx the index of ad block which state was changed
          */
         void onAdChanged(int adIdx);
-
         /**
          * Raised when the number of ads have changed. Adapters that implement this class
          * should notify their data views that the dataset has changed.

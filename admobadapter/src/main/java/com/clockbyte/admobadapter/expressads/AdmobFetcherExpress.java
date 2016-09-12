@@ -98,7 +98,6 @@ public class AdmobFetcherExpress extends AdmobFetcherBase {
 
     /**
      * Subscribing to the native ads events
-     *
      * @param adView
      */
     protected synchronized void setupAd(final NativeExpressAdView adView) {
@@ -125,7 +124,6 @@ public class AdmobFetcherExpress extends AdmobFetcherBase {
 
     /**
      * A handler for received native ads
-     *
      * @param adNative
      */
     private synchronized void onAdFetched(NativeExpressAdView adNative) {

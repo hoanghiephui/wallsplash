@@ -30,8 +30,8 @@ public class SwipeBackManageImplementor
     }
 
     @Override
-    public void swipeBackFinish() {
-        view.swipeBackFinish();
+    public void swipeBackFinish(int dir) {
+        view.swipeBackFinish(dir);
     }
 }
 

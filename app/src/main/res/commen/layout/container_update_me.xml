@@ -35,7 +35,8 @@
             android:maxLines="1"
             android:layout_marginLeft="@dimen/normal_margin"
             android:layout_marginRight="@dimen/normal_margin"
-            android:layout_marginTop="@dimen/normal_margin" />
+            android:layout_marginTop="@dimen/normal_margin"
+            android:drawablePadding="@dimen/little_margin" />
 
         <EditText
             android:id="@+id/container_update_me_firstNameTxt"
@@ -51,7 +52,8 @@
             android:maxLines="1"
             android:layout_marginLeft="@dimen/normal_margin"
             android:layout_marginRight="@dimen/normal_margin"
-            android:layout_marginTop="@dimen/normal_margin" />
+            android:layout_marginTop="@dimen/normal_margin"
+            android:drawablePadding="@dimen/little_margin" />
 
         <EditText
             android:id="@+id/container_update_me_lastNameTxt"
@@ -67,7 +69,8 @@
             android:maxLines="1"
             android:layout_marginLeft="@dimen/normal_margin"
             android:layout_marginRight="@dimen/normal_margin"
-            android:layout_marginTop="@dimen/normal_margin" />
+            android:layout_marginTop="@dimen/normal_margin"
+            android:drawablePadding="@dimen/little_margin" />
 
         <EditText
             android:id="@+id/container_update_me_emailTxt"
@@ -83,7 +86,8 @@
             android:maxLines="1"
             android:layout_marginLeft="@dimen/normal_margin"
             android:layout_marginRight="@dimen/normal_margin"
-            android:layout_marginTop="@dimen/normal_margin" />
+            android:layout_marginTop="@dimen/normal_margin"
+            android:drawablePadding="@dimen/little_margin" />
 
         <EditText
             android:id="@+id/container_update_me_portfolioTxt"
@@ -99,7 +103,9 @@
             android:maxLines="1"
             android:layout_marginLeft="@dimen/normal_margin"
             android:layout_marginRight="@dimen/normal_margin"
-            android:layout_marginTop="@dimen/normal_margin" />
+            android:layout_marginTop="@dimen/normal_margin"
+            android:drawableLeft="@drawable/ic_earth_light1"
+            android:drawablePadding="@dimen/little_margin" />
 
         <EditText
             android:id="@+id/container_update_me_locationTxt"
@@ -116,7 +122,9 @@
             android:maxLength="30"
             android:layout_marginLeft="@dimen/normal_margin"
             android:layout_marginRight="@dimen/normal_margin"
-            android:layout_marginTop="@dimen/normal_margin" />
+            android:layout_marginTop="@dimen/normal_margin"
+            android:drawableLeft="@drawable/ic_location_dark"
+            android:drawablePadding="@dimen/little_margin" />
 
         <EditText
             android:id="@+id/container_update_me_bioTxt"
@@ -132,7 +140,8 @@
             android:maxLength="250"
             android:layout_marginLeft="@dimen/normal_margin"
             android:layout_marginRight="@dimen/normal_margin"
-            android:layout_marginTop="@dimen/normal_margin" />
+            android:layout_marginTop="@dimen/normal_margin"
+            android:drawablePadding="@dimen/little_margin" />
 
         <Button
             android:id="@+id/container_update_me_saveBtn"

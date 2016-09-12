@@ -60,9 +60,13 @@
 
     <!-- me activity. -->
 
-    <style name="MysplashTheme_light.Translucent.Me" parent="MysplashTheme_light.Translucent" />
+    <style name="MysplashTheme_light.Translucent.Me" parent="MysplashTheme_light">
+        <item name="android:windowTranslucentStatus" tools:targetApi="19">true</item>
+    </style>
 
-    <style name="MysplashTheme_dark.Translucent.Me" parent="MysplashTheme_dark.Translucent" />
+    <style name="MysplashTheme_dark.Translucent.Me" parent="MysplashTheme_dark">
+        <item name="android:windowTranslucentStatus" tools:targetApi="19">true</item>
+    </style>
 
     <!-- settings activity. -->
 
@@ -73,6 +77,12 @@
     <style name="MysplashTheme_dark.Translucent.Settings" parent="MysplashTheme_dark.Translucent">
         <item name="android:alertDialogTheme">@style/MysplashDialogTheme_dark</item>
     </style>
+
+    <!-- common activity theme. -->
+
+    <style name="MysplashTheme_light.Translucent.Common" parent="MysplashTheme_light.Translucent" />
+
+    <style name="MysplashTheme_dark.Translucent.Common" parent="MysplashTheme_dark.Translucent" />
 
     <!-- toolbar. -->
 
@@ -202,4 +212,9 @@
         <item name="android:windowTranslucentNavigation" tools:targetApi="kitkat">true</item>
     </style>
 
+    <style name="CollapsingTextAppearance" parent="Base.TextAppearance.AppCompat.Widget.ActionBar.Title" />
+
+    <style name="CollapsingTextAppearance.Inverse">
+        <item name="android:textSize">30sp</item>
+    </style>
 </resources>

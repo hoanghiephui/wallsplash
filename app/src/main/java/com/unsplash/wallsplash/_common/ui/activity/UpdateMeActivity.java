@@ -7,6 +7,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.text.TextUtils;
 import android.view.View;
@@ -20,6 +21,7 @@ import com.unsplash.wallsplash.R;
 import com.unsplash.wallsplash._common.data.data.Me;
 import com.unsplash.wallsplash._common.data.service.UserService;
 import com.unsplash.wallsplash._common.data.tools.AuthManager;
+import com.unsplash.wallsplash._common.ui.dialog.RateLimitDialog;
 import com.unsplash.wallsplash._common.ui.widget.StatusBarView;
 import com.unsplash.wallsplash._common.ui.widget.SwipeBackLayout;
 import com.unsplash.wallsplash._common.utils.NotificationUtils;
@@ -88,6 +90,14 @@ public class UpdateMeActivity extends BaseActivity
     }
 
     @Override
+    public void onBackPressed() {
+        if (state == INPUT_STATE) {
+            super.onBackPressed();
+            overridePendingTransition(0, R.anim.activity_slide_out_bottom);
+        }
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
         service.cancel();
@@ -110,7 +120,7 @@ public class UpdateMeActivity extends BaseActivity
 
         ImageButton closeBtn = (ImageButton) findViewById(R.id.activity_update_me_closeBtn);
         if (ThemeUtils.getInstance(this).isLightTheme()) {
-            closeBtn.setImageResource(R.drawable.ic_close_light);
+            closeBtn.setImageResource(R.drawable.ic_close_dark);
         } else {
             closeBtn.setImageResource(R.drawable.ic_close_dark);
         }
@@ -140,6 +150,7 @@ public class UpdateMeActivity extends BaseActivity
         TypefaceUtils.setTypeface(this, emailTxt);
         emailTxt.setText(AuthManager.getInstance().getMe().email);
 
+
         this.portfolioTxt = (EditText) findViewById(R.id.container_update_me_portfolioTxt);
         TypefaceUtils.setTypeface(this, portfolioTxt);
         portfolioTxt.setText(AuthManager.getInstance().getMe().portfolio_url);
@@ -154,9 +165,27 @@ public class UpdateMeActivity extends BaseActivity
 
         Button saveBtn = (Button) findViewById(R.id.container_update_me_saveBtn);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            saveBtn.setBackgroundResource(R.drawable.button_login);
+            saveBtn.setBackgroundResource(R.drawable.button_save);
         }
         saveBtn.setOnClickListener(this);
+
+        if (ThemeUtils.getInstance(this).isLightTheme()) {
+            usernameTxt.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(this, R.drawable.ic_contacts_grey_600_24dp), null, null, null);
+            emailTxt.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(this, R.drawable.ic_email_grey_600_24dp), null, null, null);
+            firstNameTxt.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(this, R.drawable.ic_account_circle_grey_600_24dp), null, null, null);
+            lastNameTxt.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(this, R.drawable.ic_account_circle_grey_600_24dp), null, null, null);
+            portfolioTxt.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(this, R.drawable.ic_earth_light1), null, null, null);
+            locationTxt.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(this, R.drawable.ic_location_on_grey_600_24dp), null, null, null);
+            bioTxt.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(this, R.drawable.ic_gesture_grey_600_24dp), null, null, null);
+        } else {
+            usernameTxt.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(this, R.drawable.ic_contacts_white_24dp), null, null, null);
+            emailTxt.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(this, R.drawable.ic_email_white_24dp), null, null, null);
+            firstNameTxt.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(this, R.drawable.ic_account_circle_white_24dp), null, null, null);
+            lastNameTxt.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(this, R.drawable.ic_account_circle_white_24dp), null, null, null);
+            portfolioTxt.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(this, R.drawable.ic_earth_light), null, null, null);
+            locationTxt.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(this, R.drawable.ic_location_on_white_24dp), null, null, null);
+            bioTxt.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(this, R.drawable.ic_gesture_white_24dp), null, null, null);
+        }
     }
 
     private void setState(int newState) {
@@ -261,8 +290,17 @@ public class UpdateMeActivity extends BaseActivity
     }
 
     @Override
-    public void onSwipeFinish() {
+    public void onSwipeFinish(int dir) {
         finish();
+        switch (dir) {
+            case SwipeBackLayout.UP_DIR:
+                overridePendingTransition(0, R.anim.activity_slide_out_top);
+                break;
+
+            case SwipeBackLayout.DOWN_DIR:
+                overridePendingTransition(0, R.anim.activity_slide_out_bottom);
+                break;
+        }
     }
 
     // on request me profile listener.
@@ -272,11 +310,15 @@ public class UpdateMeActivity extends BaseActivity
         if (response.isSuccessful()) {
             AuthManager.getInstance().writeUserInfo(response.body());
             finish();
+            overridePendingTransition(0, R.anim.activity_slide_out_bottom);
         } else {
             setState(INPUT_STATE);
             NotificationUtils.showSnackbar(
                     getString(R.string.feedback_update_profile_failed),
                     Snackbar.LENGTH_SHORT);
+            RateLimitDialog.checkAndNotify(
+                    this,
+                    response.headers().get("X-Ratelimit-Remaining"));
         }
     }
 

@@ -22,7 +22,6 @@ import android.util.Log;
 public class AdmobAdapterCalculator {
 
     protected int mNoOfDataBetweenAds;
-
     /*
     * Gets the number of your data items between ad blocks, by default it equals to 10.
     * You should set it according to the Admob's policies and rules which says not to
@@ -75,7 +74,7 @@ public class AdmobAdapterCalculator {
     /**
      * Gets the count of ads that could be published
      *
-     * @param fetchedAdsCount  the count of completely fetched ads that are ready to be published
+     * @param fetchedAdsCount the count of completely fetched ads that are ready to be published
      * @param sourceItemsCount the count of items in the source collection
      * @return the original position that the adapter position would have been without ads
      */
@@ -92,8 +91,8 @@ public class AdmobAdapterCalculator {
     /**
      * Translates an adapter position to an actual position within the underlying dataset.
      *
-     * @param position         the adapter position
-     * @param fetchedAdsCount  the count of completely fetched ads that are ready to be published
+     * @param position the adapter position
+     * @param fetchedAdsCount the count of completely fetched ads that are ready to be published
      * @param sourceItemsCount the count of items in the source collection
      * @return the original position that the adapter position would have been without ads
      */
@@ -120,9 +119,9 @@ public class AdmobAdapterCalculator {
 
     /**
      * Translates the source position to an actual position withing the adapter wrapper.
-     *
      * @param fetchedAdsCount the count of completely fetched ads that are ready to be published
-     * @param sourcePos       the source index
+     * @param sourcePos the source index
+     *
      * @return the position of the adapter wrapper item
      */
     public int translateSourceIndexToWrapperPosition(int sourcePos, int fetchedAdsCount) {
@@ -141,7 +140,7 @@ public class AdmobAdapterCalculator {
      * an ad, using the preconfigured ad positioning rules; and if a native ad object is
      * available to place in that position.
      *
-     * @param position        the adapter position
+     * @param position the adapter position
      * @param fetchedAdsCount the count of completely fetched ads that are ready to be published
      * @return <code>true</code> if ads can
      */
@@ -184,7 +183,7 @@ public class AdmobAdapterCalculator {
     /**
      * Checks if an ad is available for this position.
      *
-     * @param position        the adapter position
+     * @param position the adapter position
      * @param fetchedAdsCount the count of completely fetched ads that are ready to be published
      * @return {@code true} if an ad is available, {@code false} otherwise
      */
@@ -199,7 +198,7 @@ public class AdmobAdapterCalculator {
     /**
      * Checks if we have to request the next ad block for this position.
      *
-     * @param position         the adapter position
+     * @param position the adapter position
      * @param fetchingAdsCount the count of fetched and currently fetching ads
      * @return {@code true} if an ad is not available to publish and we should fetch one, {@code false} otherwise
      */

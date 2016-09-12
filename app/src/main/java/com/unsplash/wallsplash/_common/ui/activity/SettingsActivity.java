@@ -52,6 +52,12 @@ public class SettingsActivity extends BaseActivity
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(0, R.anim.activity_slide_out_bottom);
+    }
+
     /**
      * <br> UI..
      */

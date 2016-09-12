@@ -14,26 +14,79 @@
         android:transitionName="@string/transition_photo_background"
         tools:ignore="UnusedAttribute">
 
-        <com.unsplash.wallsplash._common.ui.widget.FreedomImageView
-            android:id="@+id/activity_photo_image"
+        <com.unsplash.wallsplash._common.ui.widget.StatusBarView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:foreground="?attr/selectableItemBackground"
-            android:scaleType="centerCrop"
-            android:src="@drawable/design_about_app"
-            android:transitionName="@string/transition_photo_image"
-            app:fiv_cover_mode="true"
-            app:fiv_exist_photo="true"
-            app:layout_behavior="._common.ui.behavior.CoverBehavior"
-            tools:ignore="UnusedAttribute" />
+            android:background="?attr/colorPrimary"
+            android:visibility="gone" />
+
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/activity_photo_appBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            android:fitsSystemWindows="true">
+
+            <android.support.design.widget.CollapsingToolbarLayout
+                android:id="@+id/collapsing"
+                android:layout_width="match_parent"
+                android:layout_height="350dp"
+                android:fitsSystemWindows="true"
+                app:contentScrim="?colorPrimary"
+                app:expandedTitleMarginBottom="60dp"
+                app:expandedTitleTextAppearance="@style/CollapsingTextAppearance.Inverse"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                app:title="">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fitsSystemWindows="true">
+
+                    <com.unsplash.wallsplash._common.ui.widget.FreedomImageView
+                        android:id="@+id/activity_photo_image"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:fitsSystemWindows="true"
+                        android:foreground="?attr/selectableItemBackground"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/design_about_app"
+                        android:transitionName="@string/transition_photo_image"
+                        app:fiv_cover_mode="true"
+
+                        app:layout_behavior="._common.ui.behavior.CoverBehavior"
+                        app:layout_collapseMode="parallax"
+                        tools:ignore="UnusedAttribute" />
+
+                    <com.unsplash.wallsplash._common.ui.widget.FreedomTouchView
+                        android:id="@+id/activity_photo_touchView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="?attr/selectableItemBackground" />
+                </FrameLayout>
+
+
+                <android.support.v7.widget.Toolbar
+                    android:id="@+id/activity_photo_toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:background="@null"
+                    app:layout_collapseMode="pin"
+                    app:popupTheme="@style/MysplashPopupMenuTheme" />
+            </android.support.design.widget.CollapsingToolbarLayout>
+
+
+        </android.support.design.widget.AppBarLayout>
+
 
         <android.support.v4.widget.NestedScrollView
             android:id="@+id/activity_photo_scrollView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
+            android:layout_height="match_parent"
             android:scrollbarStyle="outsideOverlay"
-            android:scrollbars="vertical">
+            android:scrollbars="vertical"
+            app:behavior_overlapTop="30dp"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <LinearLayout
                 android:id="@+id/activity_photo_scrollContainer"
@@ -41,191 +94,178 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <com.unsplash.wallsplash._common.ui.widget.PhotoTouchView
-                    android:id="@+id/activity_photo_touchView"
+
+                <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="?attr/selectableItemBackground" />
+                    android:layout_marginBottom="@dimen/little_margin"
+                    android:layout_marginLeft="@dimen/little_margin"
+                    android:layout_marginRight="@dimen/little_margin"
+                    app:cardCornerRadius="@dimen/mini_margin"
+                    app:cardElevation="@dimen/mini_margin">
 
-                <android.support.design.widget.AppBarLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="?attr/root_color"
-                    tools:ignore="UnusedAttribute">
-
-                    <RelativeLayout
-                        android:id="@+id/activity_photo_titleBar"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <ImageButton
-                            android:id="@+id/activity_photo_menuBtn"
-                            style="@style/material_image_button"
-                            android:layout_alignParentRight="true"
-                            android:layout_alignParentTop="true"
-                            android:src="@drawable/ic_menu_light"
-                            tools:ignore="ContentDescription,RtlHardcoded" />
-
-                        <TextView
-                            android:id="@+id/activity_photo_title"
-                            style="@style/large_title_text"
-                            android:layout_centerHorizontal="true"
-                            android:layout_marginLeft="@dimen/normal_icon_size"
-                            android:layout_marginRight="@dimen/normal_icon_size"
-                            android:layout_marginTop="@dimen/little_icon_size"
-                            android:singleLine="true"
-                            android:textColor="?attr/title_color"
-                            android:textStyle="bold"
-                            tools:ignore="RtlHardcoded"
-                            tools:text="TAKEN BY Alfredo Wong" />
-
-                        <TextView
-                            android:id="@+id/activity_photo_subtitle"
-                            style="@style/subtitle_text"
-                            android:layout_below="@id/activity_photo_title"
-                            android:layout_centerHorizontal="true"
-                            android:layout_marginTop="@dimen/normal_margin"
-                            android:singleLine="true"
-                            tools:ignore="RtlHardcoded"
-                            tools:text="ON 2016-07-23" />
-
-                        <com.unsplash.wallsplash._common.ui.widget.CircleImageView
-                            android:id="@+id/activity_photo_avatar"
-                            android:layout_width="@dimen/large_icon_size"
-                            android:layout_height="@dimen/large_icon_size"
-                            android:layout_below="@id/activity_photo_subtitle"
-                            android:layout_centerHorizontal="true"
-                            android:layout_marginTop="@dimen/normal_margin"
-                            android:scaleType="centerCrop"
-                            android:src="?attr/line_color"
-                            app:civ_fill_color="@color/colorTextGrey"
-                            tools:ignore="RtlHardcoded" />
-
-                    </RelativeLayout>
-
-                    <LinearLayout
-                        android:id="@+id/activity_photo_btnBar"
+                    <android.support.design.widget.AppBarLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/normal_margin"
-                        android:orientation="horizontal"
-                        tools:ignore="DisableBaselineAlignment">
+                        android:background="?attr/root_color"
+                        tools:ignore="UnusedAttribute">
 
                         <RelativeLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1">
+                            android:id="@+id/activity_photo_titleBar"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
 
                             <ImageButton
-                                android:id="@+id/activity_photo_downloadBtn"
-                                android:layout_width="@dimen/large_icon_size"
-                                android:layout_height="@dimen/large_icon_size"
-                                android:layout_centerHorizontal="true"
-                                android:background="?attr/selectableItemBackgroundBorderless"
-                                android:padding="@dimen/normal_margin"
-                                android:src="@drawable/ic_download_light"
-                                tools:ignore="ContentDescription" />
+                                android:id="@+id/activity_photo_menuBtn"
+                                style="@style/material_image_button"
+                                android:layout_alignParentRight="true"
+                                android:layout_alignParentTop="true"
+                                android:src="@drawable/ic_menu_light"
+                                tools:ignore="ContentDescription,RtlHardcoded" />
 
                             <TextView
-                                android:id="@+id/activity_photo_downloadTxt"
-                                style="@style/subtitle_text"
-                                android:layout_below="@id/activity_photo_downloadBtn"
+                                android:id="@+id/activity_photo_title"
+                                style="@style/large_title_text"
                                 android:layout_centerHorizontal="true"
-                                android:layout_marginBottom="@dimen/normal_margin"
+                                android:layout_marginLeft="@dimen/normal_icon_size"
+                                android:layout_marginRight="@dimen/normal_icon_size"
+                                android:layout_marginTop="@dimen/little_icon_size"
                                 android:singleLine="true"
-                                android:text="DOWNLOAD"
+                                android:textColor="?attr/title_color"
                                 android:textStyle="bold"
-                                tools:ignore="HardcodedText" />
+                                tools:ignore="RtlHardcoded"
+                                tools:text="TAKEN BY Alfredo Wong" />
+
+                            <com.unsplash.wallsplash._common.ui.widget.ShortTimeView
+                                android:id="@+id/activity_photo_subtitle"
+                                style="@style/subtitle_text"
+                                android:layout_below="@id/activity_photo_title"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginTop="@dimen/normal_margin"
+                                android:maxLines="1"
+                                tools:ignore="RtlHardcoded"
+                                tools:text="ON 2016-07-23" />
+
+                            <com.unsplash.wallsplash._common.ui.widget.CircleImageView
+                                android:id="@+id/activity_photo_avatar"
+                                android:layout_width="@dimen/large_icon_size"
+                                android:layout_height="@dimen/large_icon_size"
+                                android:layout_below="@id/activity_photo_subtitle"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginTop="@dimen/normal_margin"
+                                android:scaleType="centerCrop"
+                                android:src="?attr/line_color"
+                                app:civ_fill_color="@color/colorTextGrey"
+                                tools:ignore="RtlHardcoded" />
 
                         </RelativeLayout>
 
-                        <RelativeLayout
-                            android:layout_width="0dp"
+                        <LinearLayout
+                            android:id="@+id/activity_photo_btnBar"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1">
+                            android:layout_marginTop="@dimen/normal_margin"
+                            android:orientation="horizontal"
+                            tools:ignore="DisableBaselineAlignment">
 
-                            <ImageButton
-                                android:id="@+id/activity_photo_shareBtn"
-                                android:layout_width="@dimen/large_icon_size"
-                                android:layout_height="@dimen/large_icon_size"
-                                android:layout_centerHorizontal="true"
-                                android:background="?attr/selectableItemBackgroundBorderless"
-                                android:padding="@dimen/normal_margin"
-                                android:src="@drawable/ic_send_light"
-                                tools:ignore="ContentDescription" />
+                            <RelativeLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1">
 
-                            <TextView
-                                android:id="@+id/activity_photo_shareTxt"
-                                style="@style/subtitle_text"
-                                android:layout_below="@id/activity_photo_shareBtn"
-                                android:layout_centerHorizontal="true"
-                                android:layout_marginBottom="@dimen/normal_margin"
-                                android:singleLine="true"
-                                android:text="SHARE"
-                                android:textStyle="bold"
-                                tools:ignore="HardcodedText" />
+                                <ImageButton
+                                    android:id="@+id/activity_photo_downloadBtn"
+                                    android:layout_width="@dimen/large_icon_size"
+                                    android:layout_height="@dimen/large_icon_size"
+                                    android:layout_centerHorizontal="true"
+                                    android:background="?attr/selectableItemBackgroundBorderless"
+                                    android:padding="@dimen/normal_margin"
+                                    android:src="@drawable/ic_download_light"
+                                    tools:ignore="ContentDescription" />
 
-                        </RelativeLayout>
+                                <TextView
+                                    android:id="@+id/activity_photo_downloadTxt"
+                                    style="@style/subtitle_text"
+                                    android:layout_below="@id/activity_photo_downloadBtn"
+                                    android:layout_centerHorizontal="true"
+                                    android:layout_marginBottom="@dimen/normal_margin"
+                                    android:maxLines="1"
+                                    android:text="@string/download"
+                                    android:textStyle="bold"
+                                    tools:ignore="HardcodedText" />
 
-                        <RelativeLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1">
+                            </RelativeLayout>
 
-                            <ImageButton
-                                android:id="@+id/activity_photo_wallBtn"
-                                android:layout_width="@dimen/large_icon_size"
-                                android:layout_height="@dimen/large_icon_size"
-                                android:layout_centerHorizontal="true"
-                                android:background="?attr/selectableItemBackgroundBorderless"
-                                android:padding="@dimen/normal_margin"
-                                android:src="@drawable/ic_mountain_light"
-                                tools:ignore="ContentDescription" />
+                            <RelativeLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1">
 
-                            <TextView
-                                android:id="@+id/activity_photo_wallTxt"
-                                style="@style/subtitle_text"
-                                android:layout_below="@id/activity_photo_wallBtn"
-                                android:layout_centerHorizontal="true"
-                                android:layout_marginBottom="@dimen/normal_margin"
-                                android:singleLine="true"
-                                android:text="WALLPAPER"
-                                android:textStyle="bold"
-                                tools:ignore="HardcodedText" />
+                                <ImageButton
+                                    android:id="@+id/activity_photo_shareBtn"
+                                    android:layout_width="@dimen/large_icon_size"
+                                    android:layout_height="@dimen/large_icon_size"
+                                    android:layout_centerHorizontal="true"
+                                    android:background="?attr/selectableItemBackgroundBorderless"
+                                    android:padding="@dimen/normal_margin"
+                                    android:src="@drawable/ic_send_light"
+                                    tools:ignore="ContentDescription" />
 
-                        </RelativeLayout>
+                                <TextView
+                                    android:id="@+id/activity_photo_shareTxt"
+                                    style="@style/subtitle_text"
+                                    android:layout_below="@id/activity_photo_shareBtn"
+                                    android:layout_centerHorizontal="true"
+                                    android:layout_marginBottom="@dimen/normal_margin"
+                                    android:maxLines="1"
+                                    android:text="@string/share"
+                                    android:textStyle="bold"
+                                    tools:ignore="HardcodedText" />
 
-                    </LinearLayout>
+                            </RelativeLayout>
 
-                    <com.unsplash.wallsplash.photo.view.widget.PhotoDetailsView
-                        android:id="@+id/activity_photo_detailsView"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                            <RelativeLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1">
 
-                </android.support.design.widget.AppBarLayout>
+                                <ImageButton
+                                    android:id="@+id/activity_photo_wallBtn"
+                                    android:layout_width="@dimen/large_icon_size"
+                                    android:layout_height="@dimen/large_icon_size"
+                                    android:layout_centerHorizontal="true"
+                                    android:background="?attr/selectableItemBackgroundBorderless"
+                                    android:padding="@dimen/normal_margin"
+                                    android:src="@drawable/ic_mountain_light"
+                                    tools:ignore="ContentDescription" />
+
+                                <TextView
+                                    android:id="@+id/activity_photo_wallTxt"
+                                    style="@style/subtitle_text"
+                                    android:layout_below="@id/activity_photo_wallBtn"
+                                    android:layout_centerHorizontal="true"
+                                    android:layout_marginBottom="@dimen/normal_margin"
+                                    android:maxLines="1"
+                                    android:text="@string/set_wallpaper"
+                                    android:textStyle="bold"
+                                    tools:ignore="HardcodedText" />
+
+                            </RelativeLayout>
+
+                        </LinearLayout>
+
+                        <com.unsplash.wallsplash.photo.view.widget.PhotoDetailsView
+                            android:id="@+id/activity_photo_detailsView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+
+                    </android.support.design.widget.AppBarLayout>
+                </android.support.v7.widget.CardView>
             </LinearLayout>
+
+
         </android.support.v4.widget.NestedScrollView>
-
-        <android.support.design.widget.AppBarLayout
-            android:id="@+id/activity_photo_appBar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_behavior="._common.ui.behavior.OverlapAppBarBehavior"
-            app:theme="@style/MysplashToolbarTheme">
-
-            <com.unsplash.wallsplash._common.ui.widget.StatusBarView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="?attr/colorPrimary" />
-
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/activity_photo_toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:background="?attr/colorPrimary"
-                app:popupTheme="@style/MysplashPopupMenuTheme" />
-
-        </android.support.design.widget.AppBarLayout>
 
     </android.support.design.widget.CoordinatorLayout>
 

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -37,6 +38,7 @@ public class CollectionTypePopupWindow extends PopupWindow
      * <br> life cycle.
      */
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public CollectionTypePopupWindow(Context c, View anchor, String valueNow) {
         super(c);
         this.initialize(c, anchor, valueNow);
@@ -49,6 +51,7 @@ public class CollectionTypePopupWindow extends PopupWindow
         });
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @SuppressLint("InflateParams")
     private void initialize(Context c, View anchor, String valueNow) {
         View v = LayoutInflater.from(c).inflate(R.layout.popup_collection_type, null);
@@ -85,9 +88,9 @@ public class CollectionTypePopupWindow extends PopupWindow
         allTxt.setText(names[0]);
         if (values[0].equals(valueNow)) {
             if (ThemeUtils.getInstance(v.getContext()).isLightTheme()) {
-                allTxt.setTextColor(ContextCompat.getColor(v.getContext(), R.color.colorTextSubtitle_light));
+                allTxt.setTextColor(ContextCompat.getColor(v.getContext(), R.color.colorAccent_light));
             } else {
-                allTxt.setTextColor(ContextCompat.getColor(v.getContext(), R.color.colorTextSubtitle_dark));
+                allTxt.setTextColor(ContextCompat.getColor(v.getContext(), R.color.colorAccent_light));
             }
         }
 
@@ -96,9 +99,9 @@ public class CollectionTypePopupWindow extends PopupWindow
         curatedTxt.setText(names[1]);
         if (values[1].equals(valueNow)) {
             if (ThemeUtils.getInstance(v.getContext()).isLightTheme()) {
-                curatedTxt.setTextColor(ContextCompat.getColor(v.getContext(), R.color.colorTextSubtitle_light));
+                curatedTxt.setTextColor(ContextCompat.getColor(v.getContext(), R.color.colorAccent_light));
             } else {
-                curatedTxt.setTextColor(ContextCompat.getColor(v.getContext(), R.color.colorTextSubtitle_dark));
+                curatedTxt.setTextColor(ContextCompat.getColor(v.getContext(), R.color.colorAccent_light));
             }
         }
 
@@ -107,20 +110,20 @@ public class CollectionTypePopupWindow extends PopupWindow
         featuredTxt.setText(names[2]);
         if (values[2].equals(valueNow)) {
             if (ThemeUtils.getInstance(v.getContext()).isLightTheme()) {
-                featuredTxt.setTextColor(ContextCompat.getColor(v.getContext(), R.color.colorTextSubtitle_light));
+                featuredTxt.setTextColor(ContextCompat.getColor(v.getContext(), R.color.colorAccent_light));
             } else {
-                featuredTxt.setTextColor(ContextCompat.getColor(v.getContext(), R.color.colorTextSubtitle_dark));
+                featuredTxt.setTextColor(ContextCompat.getColor(v.getContext(), R.color.colorAccent_light));
             }
         }
 
         if (ThemeUtils.getInstance(v.getContext()).isLightTheme()) {
-            ((ImageView) v.findViewById(R.id.popup_collection_type_allIcon)).setImageResource(R.drawable.ic_mountain_light);
-            ((ImageView) v.findViewById(R.id.popup_collection_type_curatedIcon)).setImageResource(R.drawable.ic_star_outline_light);
-            ((ImageView) v.findViewById(R.id.popup_collection_type_featuredIcon)).setImageResource(R.drawable.ic_feature_light);
+            ((ImageView) v.findViewById(R.id.popup_collection_type_allIcon)).setImageResource(R.drawable.ic_select_all_grey_600_24dp);
+            ((ImageView) v.findViewById(R.id.popup_collection_type_curatedIcon)).setImageResource(R.drawable.ic_filter_vintage_grey_600_24dp);
+            ((ImageView) v.findViewById(R.id.popup_collection_type_featuredIcon)).setImageResource(R.drawable.ic_featured);
         } else {
-            ((ImageView) v.findViewById(R.id.popup_collection_type_allIcon)).setImageResource(R.drawable.ic_mountain_dark);
-            ((ImageView) v.findViewById(R.id.popup_collection_type_curatedIcon)).setImageResource(R.drawable.ic_star_outline_dark);
-            ((ImageView) v.findViewById(R.id.popup_collection_type_featuredIcon)).setImageResource(R.drawable.ic_feature_dark);
+            ((ImageView) v.findViewById(R.id.popup_collection_type_allIcon)).setImageResource(R.drawable.ic_select_all_white_24dp);
+            ((ImageView) v.findViewById(R.id.popup_collection_type_curatedIcon)).setImageResource(R.drawable.ic_filter_vintage_white_24dp);
+            ((ImageView) v.findViewById(R.id.popup_collection_type_featuredIcon)).setImageResource(R.drawable.ic_featured_white);
         }
     }
 

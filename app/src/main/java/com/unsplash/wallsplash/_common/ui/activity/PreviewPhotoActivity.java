@@ -62,6 +62,12 @@ public class PreviewPhotoActivity extends AppCompatActivity
     }
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(0, R.anim.activity_slide_out_bottom);
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         WallSplashApplication.getInstance().removeActivity();

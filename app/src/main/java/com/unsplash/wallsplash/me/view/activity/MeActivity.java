@@ -39,7 +39,6 @@ import com.unsplash.wallsplash._common.i.view.ToolbarView;
 import com.unsplash.wallsplash._common.ui.activity.BaseActivity;
 import com.unsplash.wallsplash._common.ui.activity.UpdateMeActivity;
 import com.unsplash.wallsplash._common.ui.adapter.MyPagerAdapter;
-import com.unsplash.wallsplash._common.ui.widget.StatusBarView;
 import com.unsplash.wallsplash._common.ui.widget.SwipeBackLayout;
 import com.unsplash.wallsplash._common.utils.AnimUtils;
 import com.unsplash.wallsplash._common.utils.BackToTopUtils;
@@ -68,7 +67,7 @@ import jp.wasabeef.glide.transformations.BlurTransformation;
 public class MeActivity extends BaseActivity
         implements ToolbarView, PagerManageView, PopupManageView, SwipeBackManageView,
         Toolbar.OnMenuItemClickListener, View.OnClickListener, ViewPager.OnPageChangeListener,
-        SwipeBackLayout.OnSwipeListener, AuthManager.OnAuthDataChangedListener {
+        /*SwipeBackLayout.OnSwipeListener,*/ AuthManager.OnAuthDataChangedListener {
     // model.
     private PagerManageModel pagerManageModel;
     public static final int COLLECTION_ACTIVITY = 1;
@@ -142,6 +141,9 @@ public class MeActivity extends BaseActivity
             pagerManagePresenter.pagerScrollToTop();
         } else {
             super.onBackPressed();
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+                overridePendingTransition(0, R.anim.activity_slide_out_bottom);
+            }
         }
     }
 
@@ -153,9 +155,9 @@ public class MeActivity extends BaseActivity
                 if (resultCode == RESULT_OK) {
                     if (data.getBooleanExtra(CollectionActivity.DELETE_COLLECTION, false)) {
                         meProfileView.cutCollection(adapter);
-                        ((MeCollectionsView) pagers[1]).removeCollection(WallSplashApplication.getInstance().getCollection());
+                        ((MeCollectionsView) pagers[2]).removeCollection(WallSplashApplication.getInstance().getCollection());
                     } else {
-                        ((MeCollectionsView) pagers[1]).changeCollection(WallSplashApplication.getInstance().getCollection());
+                        ((MeCollectionsView) pagers[2]).changeCollection(WallSplashApplication.getInstance().getCollection());
                     }
                 }
                 break;
@@ -179,13 +181,13 @@ public class MeActivity extends BaseActivity
 
     // init.
     private void initView() {
-        SwipeBackLayout swipeBackLayout = (SwipeBackLayout) findViewById(R.id.activity_me_swipeBackLayout);
-        swipeBackLayout.setOnSwipeListener(this);
+        /*SwipeBackLayout swipeBackLayout = (SwipeBackLayout) findViewById(R.id.activity_me_swipeBackLayout);
+        swipeBackLayout.setOnSwipeListener(this);*/
 
-        StatusBarView statusBar = (StatusBarView) findViewById(R.id.activity_me_statusBar);
+       /* StatusBarView statusBar = (StatusBarView) findViewById(R.id.activity_me_statusBar);
         if (ThemeUtils.getInstance(this).isNeedSetStatusBarMask()) {
             statusBar.setMask(true);
-        }
+        }*/
 
         this.container = (CoordinatorLayout) findViewById(R.id.activity_me_container);
         this.appBar = (AppBarLayout) findViewById(R.id.activity_me_appBar);
@@ -215,16 +217,16 @@ public class MeActivity extends BaseActivity
     private void initPages() {
         List<View> pageList = new ArrayList<>();
         pageList.add(new MePhotosView(this, PhotosObject.PHOTOS_TYPE_PHOTOS));
-        pageList.add(new MeCollectionsView(this));
         pageList.add(new MePhotosView(this, PhotosObject.PHOTOS_TYPE_LIKES));
+        pageList.add(new MeCollectionsView(this));
         for (int i = 0; i < pageList.size(); i++) {
             pagers[i] = (PagerView) pageList.get(i);
         }
 
         List<String> tabList = new ArrayList<>();
         tabList.add("PHOTOS");
-        tabList.add("COLLECTIONS");
         tabList.add("LIKES");
+        tabList.add("COLLECTIONS");
         this.adapter = new MyPagerAdapter(pageList, tabList);
 
         ViewPager viewPager = (ViewPager) findViewById(R.id.activity_me_viewPager);
@@ -275,7 +277,7 @@ public class MeActivity extends BaseActivity
                     .into(imgBg);
         } else {
             Glide.with(this)
-                    .load(R.drawable.default_avatar)
+                    .load(R.drawable.ic_avatar)
                     .priority(Priority.HIGH)
                     .override(128, 128)
                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)
@@ -351,7 +353,7 @@ public class MeActivity extends BaseActivity
 
     // on swipe listener.(swipe back listener)
 
-    @Override
+    /*@Override
     public boolean canSwipeBack(int dir) {
         return swipeBackManagePresenter.checkCanSwipeBack(dir);
     }
@@ -359,7 +361,7 @@ public class MeActivity extends BaseActivity
     @Override
     public void onSwipeFinish() {
         swipeBackManagePresenter.swipeBackFinish();
-    }
+    }*/
 
     // on author data changed listener.
 
@@ -417,6 +419,7 @@ public class MeActivity extends BaseActivity
                         && AuthManager.getInstance().getMe() != null) {
                     Intent u = new Intent(this, UpdateMeActivity.class);
                     startActivity(u);
+                    overridePendingTransition(R.anim.activity_in, 0);
                 }
                 break;
 
@@ -464,7 +467,7 @@ public class MeActivity extends BaseActivity
 
     @Override
     public int getPagerItemCount(int position) {
-        return pagers[position].getItemCount();
+        return pagers[position].getItemCounts();
     }
 
     // popup manage view.
@@ -494,11 +497,20 @@ public class MeActivity extends BaseActivity
     }
 
     @Override
-    public void swipeBackFinish() {
+    public void swipeBackFinish(int dir) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             finishAfterTransition();
         } else {
             finish();
+            switch (dir) {
+                case SwipeBackLayout.UP_DIR:
+                    overridePendingTransition(0, R.anim.activity_slide_out_top);
+                    break;
+
+                case SwipeBackLayout.DOWN_DIR:
+                    overridePendingTransition(0, R.anim.activity_slide_out_bottom);
+                    break;
+            }
         }
     }
 }

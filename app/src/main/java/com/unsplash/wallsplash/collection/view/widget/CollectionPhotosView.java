@@ -19,7 +19,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.clockbyte.admobadapter.expressads.AdmobExpressRecyclerAdapterWrapper;
 import com.github.rahatarmanahmed.cpv.CircularProgressView;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
 import com.unsplash.wallsplash.R;
 import com.unsplash.wallsplash.WallSplashApplication;
 import com.unsplash.wallsplash._common.data.data.Collection;
@@ -72,6 +75,7 @@ public class CollectionPhotosView extends FrameLayout
     private LoadPresenter loadPresenter;
     private ScrollPresenter scrollPresenter;
     private SwipeBackPresenter swipeBackPresenter;
+    private AdmobExpressRecyclerAdapterWrapper adapterWrapper;
 
     /**
      * <br> life cycle.
@@ -99,7 +103,7 @@ public class CollectionPhotosView extends FrameLayout
     }
 
     @SuppressLint("InflateParams")
-    private void initialize() {
+    public void initialize() {
         View loadingView = LayoutInflater.from(getContext()).inflate(R.layout.container_loading_view_large, null);
         addView(loadingView);
 
@@ -146,7 +150,15 @@ public class CollectionPhotosView extends FrameLayout
         }
 
         this.recyclerView = (RecyclerView) findViewById(R.id.container_photo_list_recyclerView);
-        recyclerView.setAdapter(photosModel.getAdapter());
+        String[] testDevicesIds = new String[]{getContext().getString(R.string.testDeviceID), AdRequest.DEVICE_ID_EMULATOR};
+        adapterWrapper = new AdmobExpressRecyclerAdapterWrapper(getContext(), "ca-app-pub-2257698129050878/7146096743", testDevicesIds, new AdSize(AdSize.FULL_WIDTH, 250));
+        adapterWrapper.setAdapter(photosModel.getAdapter());
+        adapterWrapper.setLimitOfAds(3);
+        adapterWrapper.setNoOfDataBetweenAds(10);
+        adapterWrapper.setFirstAdIndex(2);
+        adapterWrapper.setViewTypeBiggestSource(100);
+        recyclerView.setAdapter(adapterWrapper);
+        recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         recyclerView.addOnScrollListener(onScrollListener);
     }

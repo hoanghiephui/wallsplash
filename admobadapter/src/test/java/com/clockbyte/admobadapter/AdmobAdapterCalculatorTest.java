@@ -24,7 +24,6 @@ import static org.powermock.api.mockito.PowerMockito.mockStatic;
 public class AdmobAdapterCalculatorTest {
 
     AdmobAdapterCalculator admobAdapterCalculator;
-
     @Before
     public void setUp() throws Exception {
         admobAdapterCalculator = new AdmobAdapterCalculator();

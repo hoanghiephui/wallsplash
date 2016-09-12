@@ -134,9 +134,9 @@ public class MeProfileView extends FrameLayout
         }
 
         List<String> titleList = new ArrayList<>();
-        titleList.add(me.total_photos + (me.total_photos > 1 ? " PHOTOS" : " PHOTO"));
-        titleList.add(me.total_collections + (me.total_collections > 1 ? " COLLECTIONS" : " COLLECTION"));
-        titleList.add(me.total_likes + (me.total_likes > 1 ? " LIKES" : " LIKE"));
+        titleList.add(me.total_photos > 1 ? me.total_photos + " " + getResources().getString(R.string.photos) : getResources().getString(R.string.photo));
+        titleList.add(me.total_likes > 1 ? me.total_likes + " " + getResources().getString(R.string.likes) : getResources().getString(R.string.like));
+        titleList.add(me.total_collections > 1 ? me.total_collections + " " + getResources().getString(R.string.collections) : getResources().getString(R.string.collection));
         adapter.titleList = titleList;
         adapter.notifyDataSetChanged();
 

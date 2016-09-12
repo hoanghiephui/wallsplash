@@ -1,11 +1,11 @@
 package com.unsplash.wallsplash._common.ui.dialog;
 
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.DialogFragment;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -21,7 +21,7 @@ import android.widget.Toast;
 import com.github.rahatarmanahmed.cpv.CircularProgressView;
 import com.unsplash.wallsplash.R;
 import com.unsplash.wallsplash.WallSplashApplication;
-import com.unsplash.wallsplash._common.data.data.AddPhotoToCollectionResult;
+import com.unsplash.wallsplash._common.data.data.ChangeCollectionPhotoResult;
 import com.unsplash.wallsplash._common.data.data.Collection;
 import com.unsplash.wallsplash._common.data.data.Me;
 import com.unsplash.wallsplash._common.data.data.Photo;
@@ -41,10 +41,10 @@ import retrofit2.Response;
  * Select collection dialog.
  */
 
-public class SelectCollectionDialog extends DialogFragment
+public class SelectCollectionPhotoDialog extends DialogFragment
         implements View.OnClickListener, AuthManager.OnAuthDataChangedListener,
         CollectionMiniAdapter.OnCollectionResponseListener, CollectionService.OnRequestCollectionsListener,
-        CollectionService.OnRequestACollectionListener, CollectionService.OnAddPhotoToCollectionListener {
+        CollectionService.OnRequestACollectionListener, CollectionService.OnChangeCollectionPhotoListener {
     // widget
     private CircularProgressView progressView;
 
@@ -96,9 +96,7 @@ public class SelectCollectionDialog extends DialogFragment
         service.cancel();
     }
 
-    /**
-     * <br> UI.
-     */
+    /** <br> UI. */
 
     private void initWidget(View v) {
         this.progressView = (CircularProgressView) v.findViewById(R.id.dialog_select_collection_progressView);
@@ -189,9 +187,21 @@ public class SelectCollectionDialog extends DialogFragment
         manager.hideSoftInputFromWindow(descriptionTxt.getWindowToken(), 0);
     }
 
-    /**
-     * <br> data.
-     */
+    private void notifyCreateFailed() {
+        Toast.makeText(
+                getActivity(),
+                getString(R.string.feedback_create_collection_failed),
+                Toast.LENGTH_SHORT).show();
+    }
+
+    private void notifyAddFailed() {
+        Toast.makeText(
+                getActivity(),
+                getString(R.string.feedback_add_photo_failed),
+                Toast.LENGTH_SHORT).show();
+    }
+
+    /** <br> data. */
 
     private void initData() {
         this.me = AuthManager.getInstance().getMe();
@@ -245,14 +255,12 @@ public class SelectCollectionDialog extends DialogFragment
         }
     }
 
-    /**
-     * <br> interface.
-     */
+    /** <br> interface. */
 
     public interface OnCollectionsChangedListener {
         void onAddCollection(Collection c);
 
-        void onAddPhotoToCollection(Collection c, Me me);
+        void onAddPhotoToCollection(Collection c, ChangeCollectionPhotoResult.User u);
     }
 
     public void setOnCollectionsChangedListener(OnCollectionsChangedListener l) {
@@ -319,15 +327,19 @@ public class SelectCollectionDialog extends DialogFragment
     @Override
     public void onRequestCollectionsSuccess(Call<List<Collection>> call, Response<List<Collection>> response) {
         if (response.isSuccessful()) {
-            for (int i = 0; i < response.body().size(); i++) {
+            for (int i = 0; i < response.body().size(); i ++) {
                 adapter.insertItem(response.body().get(i), adapter.getRealItemCount());
             }
             if (response.body().size() < 10) {
                 setState(SHOW_COLLECTIONS_STATE);
             } else {
-                page++;
+                page ++;
                 requestCollections();
             }
+        } else if (Integer.parseInt(response.headers().get("X-Ratelimit-Remaining")) < 0) {
+            dismiss();
+            RateLimitDialog dialog = new RateLimitDialog();
+            dialog.show(getFragmentManager(), null);
         } else {
             requestCollections();
         }
@@ -351,41 +363,45 @@ public class SelectCollectionDialog extends DialogFragment
             if (listener != null) {
                 listener.onAddCollection(response.body());
             }
+        } else if (Integer.parseInt(response.headers().get("X-Ratelimit-Remaining")) < 0) {
+            dismiss();
+            RateLimitDialog dialog = new RateLimitDialog();
+            dialog.show(getFragmentManager(), null);
         } else {
-            createCollection();
+            setState(INPUT_COLLECTION_STATE);
+            notifyCreateFailed();
         }
     }
 
     @Override
     public void onRequestACollectionFailed(Call<Collection> call, Throwable t) {
-        createCollection();
+        setState(INPUT_COLLECTION_STATE);
+        notifyCreateFailed();
     }
 
     // on add photo to collection listener.
 
     @Override
-    public void onAddPhotoSuccess(Call<AddPhotoToCollectionResult> call,
-                                  Response<AddPhotoToCollectionResult> response) {
+    public void onChangePhotoSuccess(Call<ChangeCollectionPhotoResult> call,
+                                     Response<ChangeCollectionPhotoResult> response) {
         if (response.isSuccessful()) {
             if (listener != null) {
-                listener.onAddPhotoToCollection(response.body().collection, response.body().me);
+                listener.onAddPhotoToCollection(response.body().collection, response.body().user);
             }
             dismiss();
+        } else if (Integer.parseInt(response.headers().get("X-Ratelimit-Remaining")) < 0) {
+            dismiss();
+            RateLimitDialog dialog = new RateLimitDialog();
+            dialog.show(getFragmentManager(), null);
         } else {
-            Toast.makeText(
-                    getActivity(),
-                    getString(R.string.feedback_add_photo_to_collection_failed),
-                    Toast.LENGTH_SHORT).show();
             setState(SHOW_COLLECTIONS_STATE);
+            notifyAddFailed();
         }
     }
 
     @Override
-    public void onAddPhotoFailed(Call<AddPhotoToCollectionResult> call, Throwable t) {
-        Toast.makeText(
-                getActivity(),
-                getString(R.string.feedback_add_photo_to_collection_failed),
-                Toast.LENGTH_SHORT).show();
+    public void onChangePhotoFailed(Call<ChangeCollectionPhotoResult> call, Throwable t) {
         setState(SHOW_COLLECTIONS_STATE);
+        notifyAddFailed();
     }
 }

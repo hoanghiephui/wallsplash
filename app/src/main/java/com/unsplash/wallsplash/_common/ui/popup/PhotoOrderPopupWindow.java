@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -42,6 +43,7 @@ public class PhotoOrderPopupWindow extends PopupWindow
      * <br> life cycle.
      */
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public PhotoOrderPopupWindow(Context c, View anchor, String valueNow, int type) {
         super(c);
         this.initialize(c, anchor, valueNow, type);
@@ -54,6 +56,7 @@ public class PhotoOrderPopupWindow extends PopupWindow
         });
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @SuppressLint("InflateParams")
     private void initialize(Context c, View anchor, String valueNow, int type) {
         View v = LayoutInflater.from(c).inflate(R.layout.popup_photo_order, null);
@@ -97,9 +100,9 @@ public class PhotoOrderPopupWindow extends PopupWindow
         latestTxt.setText(names[0]);
         if (values[0].equals(valueNow)) {
             if (ThemeUtils.getInstance(v.getContext()).isLightTheme()) {
-                latestTxt.setTextColor(ContextCompat.getColor(v.getContext(), R.color.colorTextSubtitle_light));
+                latestTxt.setTextColor(ContextCompat.getColor(v.getContext(), R.color.colorAccent_light));
             } else {
-                latestTxt.setTextColor(ContextCompat.getColor(v.getContext(), R.color.colorTextSubtitle_dark));
+                latestTxt.setTextColor(ContextCompat.getColor(v.getContext(), R.color.colorAccent_light));
             }
         }
 
@@ -108,9 +111,9 @@ public class PhotoOrderPopupWindow extends PopupWindow
         oldestTxt.setText(names[1]);
         if (values[1].equals(valueNow)) {
             if (ThemeUtils.getInstance(v.getContext()).isLightTheme()) {
-                oldestTxt.setTextColor(ContextCompat.getColor(v.getContext(), R.color.colorTextSubtitle_light));
+                oldestTxt.setTextColor(ContextCompat.getColor(v.getContext(), R.color.colorAccent_light));
             } else {
-                oldestTxt.setTextColor(ContextCompat.getColor(v.getContext(), R.color.colorTextSubtitle_dark));
+                oldestTxt.setTextColor(ContextCompat.getColor(v.getContext(), R.color.colorAccent_light));
             }
         }
 
@@ -119,9 +122,9 @@ public class PhotoOrderPopupWindow extends PopupWindow
         popularTxt.setText(names[2]);
         if (values[2].equals(valueNow)) {
             if (ThemeUtils.getInstance(v.getContext()).isLightTheme()) {
-                popularTxt.setTextColor(ContextCompat.getColor(v.getContext(), R.color.colorTextSubtitle_light));
+                popularTxt.setTextColor(ContextCompat.getColor(v.getContext(), R.color.colorAccent_light));
             } else {
-                popularTxt.setTextColor(ContextCompat.getColor(v.getContext(), R.color.colorTextSubtitle_dark));
+                popularTxt.setTextColor(ContextCompat.getColor(v.getContext(), R.color.colorAccent_light));
             }
         }
 
@@ -130,9 +133,9 @@ public class PhotoOrderPopupWindow extends PopupWindow
         randomTxt.setText(names[3]);
         if (values[3].equals(valueNow)) {
             if (ThemeUtils.getInstance(v.getContext()).isLightTheme()) {
-                randomTxt.setTextColor(ContextCompat.getColor(v.getContext(), R.color.colorTextSubtitle_light));
+                randomTxt.setTextColor(ContextCompat.getColor(v.getContext(), R.color.colorAccent_light));
             } else {
-                randomTxt.setTextColor(ContextCompat.getColor(v.getContext(), R.color.colorTextSubtitle_dark));
+                randomTxt.setTextColor(ContextCompat.getColor(v.getContext(), R.color.colorAccent_light));
             }
         }
 

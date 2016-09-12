@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/item_photo_background"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?attr/root_color"
     android:foreground="?attr/selectableItemBackground"
     android:stateListAnimator="@animator/touch_rise"
-    tools:layout_marginTop="24dp"
-    tools:ignore="UnusedAttribute">
+    tools:ignore="UnusedAttribute"
+    tools:layout_marginTop="24dp">
+
 
     <com.unsplash.wallsplash._common.ui.widget.FreedomImageView
         android:id="@+id/item_photo_image"
@@ -19,47 +20,114 @@
         app:fiv_text_position="bottom"
         tools:src="@drawable/design_about_app" />
 
+
+    <com.mikhaellopez.circularimageview.CircularImageView
+        android:id="@+id/avatar"
+        android:layout_width="@dimen/large_icon_size"
+        android:layout_height="@dimen/large_icon_size"
+        android:layout_margin="@dimen/little_margin"
+        android:scaleType="centerCrop"
+        android:src="?attr/line_color"
+        android:transitionName="@string/transition_me_avatar"
+        app:civ_border_color="@color/semiTransparentWhite"
+        app:civ_border_width="3dp"
+        tools:ignore="RtlHardcoded"
+        tools:src="@drawable/ic_avatar" />
+
+    <com.unsplash.wallsplash._common.ui.widget.MaterialProgressBar
+        android:layout_centerInParent="true"
+        android:id="@+id/progress"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:indeterminate="true"
+        android:layout_marginLeft="@dimen/mini_icon_size"
+        android:layout_marginRight="@dimen/mini_icon_size"
+        android:visibility="visible"
+        app:duration="2000"
+        app:progressColour="@color/colorAccent_light"
+        app:backgroundColour="@color/colorPrimary_light" />
+
+    <LinearLayout
+        android:id="@+id/view"
+        android:layout_width="55dp"
+        android:layout_height="34dp"
+        android:layout_alignBottom="@+id/item_photo_image"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="@dimen/little_margin"
+        android:layout_marginRight="@dimen/little_margin"
+        android:background="@drawable/bg_like"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/item_photo_likeButton"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="@dimen/mini_margin"
+            tools:ignore="ContentDescription,RtlHardcoded"
+            tools:src="@drawable/ic_item_heart_red" />
+
+        <com.unsplash.wallsplash._common.ui.widget.ScrollingTextView
+            android:id="@+id/tvNumberLike"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            tools:text="10"
+            android:maxLines="1"
+            android:textColor="@color/colorWhite" />
+    </LinearLayout>
+
     <ImageButton
-        android:id="@+id/item_photo_likeButton"
+        android:id="@+id/item_photo_deleteButton"
+        android:src="@drawable/ic_item_close"
         android:layout_width="34dp"
         android:layout_height="34dp"
         android:padding="@dimen/little_margin"
         android:layout_marginRight="@dimen/little_margin"
-        android:layout_marginBottom="@dimen/little_margin"
+        android:layout_marginTop="@dimen/little_margin"
         android:background="?attr/selectableItemBackgroundBorderless"
-        android:layout_alignBottom="@+id/item_photo_image"
+        android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
-        tools:src="@drawable/ic_item_heart_red"
         tools:ignore="ContentDescription,RtlHardcoded" />
 
     <ImageButton
         android:id="@+id/item_photo_collectionButton"
-        android:src="@drawable/ic_item_plus"
         android:layout_width="34dp"
         android:layout_height="34dp"
-        android:padding="@dimen/little_margin"
-        android:layout_marginBottom="@dimen/little_margin"
-        android:background="?attr/selectableItemBackgroundBorderless"
         android:layout_alignBottom="@+id/item_photo_image"
-        android:layout_toLeftOf="@id/item_photo_likeButton"
+        android:layout_marginBottom="@dimen/little_margin"
+        android:layout_marginRight="@dimen/mini_margin"
+        android:layout_toLeftOf="@id/view"
+        android:background="@drawable/bg_like"
+        android:padding="@dimen/little_margin"
+        android:src="@drawable/ic_item_plus"
         tools:ignore="ContentDescription,RtlHardcoded" />
+
+    <com.unsplash.wallsplash._common.ui.widget.ShortTimeView
+        tools:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvTime"
+        android:layout_alignBottom="@+id/avatar"
+        android:layout_toRightOf="@+id/avatar"
+        android:layout_toEndOf="@+id/avatar"
+        android:layout_marginBottom="7dp"
+        android:textColor="@color/colorTextLight" />
 
     <TextView
         android:id="@+id/item_photo_title"
-        android:textColor="@color/colorTextLight"
+        style="@style/subtitle_text"
+        android:shadowColor="@color/colorTextDark2nd"
         android:shadowDx="1"
         android:shadowDy="1"
         android:shadowRadius="1"
-        android:shadowColor="@color/colorTextDark2nd"
-        android:layout_marginLeft="@dimen/normal_margin"
-        android:layout_marginRight="@dimen/normal_margin"
-        android:layout_marginBottom="@dimen/little_margin"
-        android:layout_alignBottom="@+id/item_photo_image"
-        android:layout_alignParentLeft="true"
-        android:layout_toLeftOf="@id/item_photo_collectionButton"
-        android:singleLine="true"
-        style="@style/subtitle_text"
+        android:maxLines="1"
+        android:textColor="@color/colorTextLight"
+        tools:ignore="RtlHardcoded"
         tools:text="By Alfredo Wong, On 2016-7-21"
-        tools:ignore="RtlHardcoded" />
+        android:layout_alignTop="@+id/avatar"
+        android:layout_toRightOf="@+id/avatar"
+        android:layout_toEndOf="@+id/avatar"
+        android:layout_marginTop="7dp" />
 
 </RelativeLayout>

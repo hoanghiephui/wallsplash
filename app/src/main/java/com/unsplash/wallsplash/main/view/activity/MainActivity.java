@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -80,7 +81,9 @@ public class MainActivity extends BaseActivity
     private TextView navSubtitle;
     private ImageButton navButton;
     private ImageView navImgBg;
+    private FloatingActionButton fabUpload;
     private SafeHandler<MainActivity> handler;
+    private DrawerLayout drawer;
 
     // presenter.
     private FragmentManagePresenter fragmentManagePresenter;
@@ -129,7 +132,7 @@ public class MainActivity extends BaseActivity
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.activity_main_drawerLayout);
+
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else if (WallSplashApplication.getInstance().isActivityInBackstage()) {
@@ -190,6 +193,7 @@ public class MainActivity extends BaseActivity
     @SuppressLint("SetTextI18n")
     private void initView() {
         this.handler = new SafeHandler<>(this);
+        this.drawer = (DrawerLayout) findViewById(R.id.activity_main_drawerLayout);
 
         NavigationView nav = (NavigationView) findViewById(R.id.activity_main_navView);
         if (ThemeUtils.getInstance(this).isLightTheme()) {
@@ -200,6 +204,7 @@ public class MainActivity extends BaseActivity
         nav.setNavigationItemSelectedListener(this);
 
         View header = nav.getHeaderView(0);
+        header.setOnClickListener(this);
         this.navAvatar = (CircleImageView) header.findViewById(R.id.container_nav_header_avatar);
         navAvatar.setOnClickListener(this);
 
@@ -219,6 +224,8 @@ public class MainActivity extends BaseActivity
         navButton.setOnClickListener(this);
 
         this.navImgBg = (ImageView) header.findViewById(R.id.imvBg);
+        this.fabUpload = (FloatingActionButton) findViewById(R.id.fabUpload);
+        fabUpload.setOnClickListener(this);
 
         drawMeAvatar();
         drawMeTitle();
@@ -259,13 +266,20 @@ public class MainActivity extends BaseActivity
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.container_nav_header_avatar:
-            case R.id.container_nav_header_appIcon:
+            case R.id.container_nav_header:
+                if (drawer.isDrawerOpen(GravityCompat.START)) {
+                    drawer.closeDrawer(GravityCompat.START);
+                }
                 meManagePresenter.touchMeAvatar(this);
                 break;
 
             case R.id.container_nav_header_button:
+                if (drawer.isDrawerOpen(GravityCompat.START)) {
+                    drawer.closeDrawer(GravityCompat.START);
+                }
                 meManagePresenter.touchMeButton(this);
+                break;
+            case R.id.fabUpload:
                 break;
         }
     }
@@ -275,6 +289,9 @@ public class MainActivity extends BaseActivity
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         drawerPresenter.touchNavItem(item.getItemId());
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        }
         return true;
     }
 
@@ -380,16 +397,19 @@ public class MainActivity extends BaseActivity
             case R.id.action_download_manage:
                 Intent d = new Intent(this, DownloadManageActivity.class);
                 startActivity(d);
+                overridePendingTransition(R.anim.activity_in, 0);
                 break;
 
             case R.id.action_settings:
                 Intent s = new Intent(this, SettingsActivity.class);
                 startActivity(s);
+                overridePendingTransition(R.anim.activity_in, 0);
                 break;
 
             case R.id.action_about:
                 Intent a = new Intent(this, AboutActivity.class);
                 startActivity(a);
+                overridePendingTransition(R.anim.activity_in, 0);
                 break;
 
             default:
@@ -418,7 +438,7 @@ public class MainActivity extends BaseActivity
             appIcon.setVisibility(View.GONE);
             navImgBg.setVisibility(View.VISIBLE);
             Glide.with(WallSplashApplication.getInstance())
-                    .load(R.drawable.default_avatar)
+                    .load(R.drawable.ic_avatar)
                     .override(128, 128)
                     .into(navAvatar);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -494,7 +514,8 @@ public class MainActivity extends BaseActivity
     @Override
     public void touchNavItem(int id) {
         messageManagePresenter.sendMessage(id, null);
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.activity_main_drawerLayout);
-        drawer.closeDrawer(GravityCompat.START);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        }
     }
 }

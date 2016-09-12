@@ -63,6 +63,7 @@ public class PhotoDetailsView extends FrameLayout
     private PhotoDetailsPresenter photoDetailsPresenter;
     private LoadPresenter loadPresenter;
 
+
     /**
      * <br> life cycle.
      */
@@ -269,6 +270,7 @@ public class PhotoDetailsView extends FrameLayout
 
     @Override
     public void drawExif(PhotoDetails details) {
+
         String text;
 
         text = details.width + " × " + details.height;
@@ -344,4 +346,6 @@ public class PhotoDetailsView extends FrameLayout
     public void resetLoadingState() {
         // do nothing.
     }
+
+
 }

@@ -1,6 +1,5 @@
 package com.unsplash.wallsplash._common.ui.fragment;
 
-import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.ListPreference;
@@ -8,6 +7,7 @@ import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.unsplash.wallsplash.R;
@@ -143,7 +143,7 @@ public class SettingsFragment extends PreferenceFragment
     private View.OnClickListener rebootListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            List<Activity> list = WallSplashApplication.getInstance().getActivityList();
+            List<AppCompatActivity> list = WallSplashApplication.getInstance().getActivityList();
             MainActivity a = (MainActivity) list.get(0);
             a.reboot();
         }

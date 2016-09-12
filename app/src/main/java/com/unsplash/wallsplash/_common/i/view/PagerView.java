@@ -24,5 +24,5 @@ public interface PagerView {
 
     boolean canSwipeBack(int dir);
 
-    int getItemCount();
+    int getItemCounts();
 }

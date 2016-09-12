@@ -12,10 +12,15 @@ import android.graphics.ColorMatrixColorFilter;
 import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.Interpolator;
+import android.view.animation.LinearInterpolator;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -28,10 +33,13 @@ import com.unsplash.wallsplash.R;
 import com.unsplash.wallsplash.WallSplashApplication;
 import com.unsplash.wallsplash._common.data.data.Collection;
 import com.unsplash.wallsplash._common.ui.widget.FreedomImageView;
+import com.unsplash.wallsplash._common.ui.widget.MaterialProgressBar;
+import com.unsplash.wallsplash._common.ui.widget.ShortTimeView;
 import com.unsplash.wallsplash._common.utils.AnimUtils;
 import com.unsplash.wallsplash._common.utils.ColorUtils;
 import com.unsplash.wallsplash._common.utils.ObservableColorMatrix;
 import com.unsplash.wallsplash._common.utils.TypefaceUtils;
+import com.unsplash.wallsplash._common.utils.ValueUtils;
 import com.unsplash.wallsplash.collection.view.activity.CollectionActivity;
 import com.unsplash.wallsplash.me.view.activity.MeActivity;
 
@@ -41,21 +49,38 @@ import java.util.List;
  * Collection adapter. (Recycler view)
  */
 
-public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.ViewHolder> {
+public class CollectionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     // widget
-    private Context a;
+    private Context mContext;
     private List<Collection> itemList;
 
     // data
     private boolean own = false;
+    private Animation animation;
+    private int mDuration = 500;
+    private Interpolator mInterpolator = new LinearInterpolator();
+    protected int lastPosition = -1;
 
     /**
      * <br> life cycle.
      */
 
-    public CollectionAdapter(Context a, List<Collection> list) {
-        this.a = a;
+    public CollectionAdapter(Context context, List<Collection> list) {
+        this.mContext = context;
         this.itemList = list;
+        animation = AnimationUtils.loadAnimation(mContext, R.anim.slide_in_bottom);
+    }
+
+    private void setAnimation(View viewToAnimate, int position) {
+        // If the bound view wasn't previously displayed on screen, it's animated
+        if (position > lastPosition) {
+            ObjectAnimator anim = ObjectAnimator.ofFloat(viewToAnimate, "translationY", viewToAnimate.getMeasuredHeight(), 0);
+            anim.setInterpolator(mInterpolator);
+            anim.setDuration(mDuration).start();
+            lastPosition = position;
+        } else {
+            ViewCompat.setTranslationY(viewToAnimate, 0);
+        }
     }
 
     /**
@@ -70,23 +95,25 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Vi
 
     @SuppressLint({"RecyclerView", "SetTextI18n"})
     @Override
-    public void onBindViewHolder(final ViewHolder holder, final int position) {
-        holder.title.setText("");
-        holder.subtitle.setText("");
-        holder.image.setShowShadow(false);
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
+        setAnimation(holder.itemView, position);
+        ((ViewHolder) holder).title.setText("");
+        ((ViewHolder) holder).subtitle.setText("");
+        ((ViewHolder) holder).image.setShowShadow(false);
         if (itemList.get(position).cover_photo != null) {
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-                Glide.with(a)
+                Glide.with(mContext)
                         .load(itemList.get(position).cover_photo.urls.regular)
                         .listener(new RequestListener<String, GlideDrawable>() {
                             @Override
                             public boolean onResourceReady(GlideDrawable resource, String model,
                                                            Target<GlideDrawable> target,
                                                            boolean isFromMemoryCache, boolean isFirstResource) {
-                                holder.title.setText(itemList.get(position).title.toUpperCase());
+                                ((ViewHolder) holder).progressBar.setVisibility(View.GONE);
+                                ((ViewHolder) holder).title.setText(itemList.get(position).title.toUpperCase());
                                 int photoNum = itemList.get(position).total_photos;
-                                holder.subtitle.setText(photoNum + (photoNum > 1 ? " photos" : " photo"));
-                                holder.image.setShowShadow(true);
+                                ((ViewHolder) holder).subtitle.setText(photoNum + (photoNum > 1 ? " photos" : " photo"));
+                                ((ViewHolder) holder).image.setShowShadow(true);
                                 return false;
                             }
 
@@ -96,17 +123,20 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Vi
                             }
                         })
                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                        .into(holder.image);
+                        .into(((ViewHolder) holder).image);
             } else {
-                Glide.with(a)
+                Glide.with(mContext)
                         .load(itemList.get(position).cover_photo.urls.regular)
                         .listener(new RequestListener<String, GlideDrawable>() {
                             @Override
                             public boolean onResourceReady(GlideDrawable resource, String model,
                                                            Target<GlideDrawable> target,
                                                            boolean isFromMemoryCache, boolean isFirstResource) {
+                                ((ViewHolder) holder).progressBar.setVisibility(View.GONE);
                                 if (!itemList.get(position).cover_photo.hasFadeIn) {
-                                    holder.image.setHasTransientState(true);
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                                        ((ViewHolder) holder).image.setHasTransientState(true);
+                                    }
                                     final ObservableColorMatrix matrix = new ObservableColorMatrix();
                                     final ObjectAnimator saturation = ObjectAnimator.ofFloat(
                                             matrix, ObservableColorMatrix.SATURATION, 0f, 1f);
@@ -115,28 +145,30 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Vi
                                         @Override
                                         public void onAnimationUpdate(ValueAnimator valueAnimator) {
                                             // just animating the color matrix does not invalidate the
-                                            // drawable so need this update listener.  Also have to create a
+                                            // drawable so need this update listener.  Also have to create mContext
                                             // new CMCF as the matrix is immutable :(
-                                            holder.image.setColorFilter(new ColorMatrixColorFilter(matrix));
+                                            ((ViewHolder) holder).image.setColorFilter(new ColorMatrixColorFilter(matrix));
                                         }
                                     });
                                     saturation.setDuration(2000L);
-                                    saturation.setInterpolator(AnimUtils.getFastOutSlowInInterpolator(a));
+                                    saturation.setInterpolator(AnimUtils.getFastOutSlowInInterpolator(mContext));
                                     saturation.addListener(new AnimatorListenerAdapter() {
                                         @Override
                                         public void onAnimationEnd(Animator animation) {
-                                            holder.image.clearColorFilter();
-                                            holder.image.setHasTransientState(false);
+                                            ((ViewHolder) holder).image.clearColorFilter();
+                                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                                                ((ViewHolder) holder).image.setHasTransientState(false);
+                                            }
                                         }
                                     });
                                     saturation.start();
                                     itemList.get(position).cover_photo.hasFadeIn = true;
                                 }
 
-                                holder.title.setText(itemList.get(position).title.toUpperCase());
+                                ((ViewHolder) holder).title.setText(itemList.get(position).title.toUpperCase());
                                 int photoNum = itemList.get(position).total_photos;
-                                holder.subtitle.setText(photoNum + (photoNum > 1 ? " photos" : " photo"));
-                                holder.image.setShowShadow(true);
+                                ((ViewHolder) holder).subtitle.setText(photoNum + (photoNum > 1 ? " photos" : " photo"));
+                                ((ViewHolder) holder).image.setShowShadow(true);
                                 return false;
                             }
 
@@ -146,27 +178,58 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Vi
                             }
                         })
                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                        .into(holder.image);
+                        .into(((ViewHolder) holder).image);
             }
-            holder.background.setBackgroundColor(
+            ((ViewHolder) holder).background.setBackgroundColor(
                     ColorUtils.calcCardBackgroundColor(
-                            a,
+                            mContext,
                             itemList.get(position).cover_photo.color));
+            ((ViewHolder) holder).tvTime.setTime(ValueUtils.getFormattedDate(itemList.get(position).published_at));
+            setOnClick((ViewHolder) holder, position);
         } else {
-            holder.image.setImageResource(R.color.colorTextContent_light);
-            holder.title.setText(itemList.get(position).title.toUpperCase());
+            ((ViewHolder) holder).image.setImageResource(R.color.colorTextContent_light);
+            ((ViewHolder) holder).title.setText(itemList.get(position).title.toUpperCase());
             int photoNum = itemList.get(position).total_photos;
-            holder.subtitle.setText(photoNum + (photoNum > 1 ? " photos" : " photo"));
+            ((ViewHolder) holder).subtitle.setText(photoNum + (photoNum > 1 ? " photos" : " photo"));
         }
     }
 
+    private void setOnClick(ViewHolder holder, final int position) {
+        holder.background.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mContext instanceof Activity) {
+                    Collection c = itemList.get(position);
+                    WallSplashApplication.getInstance().setCollection(c);
+                    WallSplashApplication.getInstance().setMyOwnCollection(own);
+
+                    Intent intent = new Intent(mContext, CollectionActivity.class);
+                    ActivityOptionsCompat options = ActivityOptionsCompat
+                            .makeScaleUpAnimation(
+                                    view,
+                                    (int) view.getX(), (int) view.getY(),
+                                    view.getMeasuredWidth(), view.getMeasuredHeight());
+                    if (own) {
+                        ActivityCompat.startActivityForResult(
+                                (Activity) mContext,
+                                intent,
+                                MeActivity.COLLECTION_ACTIVITY,
+                                options.toBundle());
+                    } else {
+                        ActivityCompat.startActivity((Activity) mContext, intent, options.toBundle());
+                    }
+                }
+            }
+        });
+    }
+
     @Override
-    public void onViewRecycled(ViewHolder holder) {
-        Glide.clear(holder.image);
+    public void onViewRecycled(RecyclerView.ViewHolder holder) {
+        Glide.clear(((ViewHolder) holder).image);
     }
 
     public void setActivity(Activity a) {
-        this.a = a;
+        this.mContext = a;
     }
 
     /**
@@ -178,10 +241,6 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Vi
         return itemList.size();
     }
 
-    @Override
-    public int getItemViewType(int position) {
-        return position;
-    }
 
     public void insertItem(Collection c, int position) {
         itemList.add(position, c);
@@ -229,19 +288,19 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Vi
 
     // view holder.
 
-    public class ViewHolder extends RecyclerView.ViewHolder
-            implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder {
         // widget
         public RelativeLayout background;
         public FreedomImageView image;
         public TextView title;
         public TextView subtitle;
+        private MaterialProgressBar progressBar;
+        private ShortTimeView tvTime;
 
         public ViewHolder(View itemView, int position) {
             super(itemView);
 
             this.background = (RelativeLayout) itemView.findViewById(R.id.item_collection_background);
-            background.setOnClickListener(this);
 
             this.image = (FreedomImageView) itemView.findViewById(R.id.item_collection_cover);
             if (itemList.get(position).cover_photo != null) {
@@ -252,35 +311,10 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Vi
 
             this.subtitle = (TextView) itemView.findViewById(R.id.item_collection_subtitle);
             TypefaceUtils.setTypeface(itemView.getContext(), subtitle);
+            this.progressBar = (MaterialProgressBar) itemView.findViewById(R.id.progress);
+            this.tvTime = (ShortTimeView) itemView.findViewById(R.id.tvTime);
+            TypefaceUtils.setTypeface(itemView.getContext(), tvTime);
         }
 
-        @Override
-        public void onClick(View view) {
-            switch (view.getId()) {
-                case R.id.item_collection_background:
-                    if (a instanceof Activity) {
-                        Collection c = itemList.get(getAdapterPosition());
-                        WallSplashApplication.getInstance().setCollection(c);
-                        WallSplashApplication.getInstance().setMyOwnCollection(own);
-
-                        Intent intent = new Intent(a, CollectionActivity.class);
-                        ActivityOptionsCompat options = ActivityOptionsCompat
-                                .makeScaleUpAnimation(
-                                        view,
-                                        (int) view.getX(), (int) view.getY(),
-                                        view.getMeasuredWidth(), view.getMeasuredHeight());
-                        if (own) {
-                            ActivityCompat.startActivityForResult(
-                                    (Activity) a,
-                                    intent,
-                                    MeActivity.COLLECTION_ACTIVITY,
-                                    options.toBundle());
-                        } else {
-                            ActivityCompat.startActivity((Activity) a, intent, options.toBundle());
-                        }
-                    }
-                    break;
-            }
-        }
     }
 }

@@ -14,7 +14,7 @@
 
         <ImageView
             android:id="@+id/popup_collection_type_allIcon"
-            android:src="@drawable/ic_mountain_light"
+            android:src="@drawable/ic_select_all_grey_600_24dp"
             style="@style/material_icon"
             tools:ignore="ContentDescription" />
 
@@ -38,7 +38,7 @@
 
         <ImageView
             android:id="@+id/popup_collection_type_curatedIcon"
-            android:src="@drawable/ic_star_outline_light"
+            android:src="@drawable/ic_select_all_grey_600_24dp"
             style="@style/material_icon"
             tools:ignore="ContentDescription" />
 
@@ -62,7 +62,7 @@
 
         <ImageView
             android:id="@+id/popup_collection_type_featuredIcon"
-            android:src="@drawable/ic_feature_light"
+            android:src="@drawable/ic_featured"
             style="@style/material_icon"
             tools:ignore="ContentDescription" />
 

@@ -28,7 +28,7 @@
             android:layout_height="120dp"
             android:layout_marginBottom="@dimen/normal_margin"
             android:layout_centerHorizontal="true"
-            tools:src="@drawable/feedback_load_failed"
+            tools:src="@mipmap/ic_launcher"
             tools:ignore="ContentDescription" />
 
         <TextView

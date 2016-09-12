@@ -11,6 +11,7 @@ import com.unsplash.wallsplash._common.data.service.PhotoService;
 import com.unsplash.wallsplash._common.i.model.SearchModel;
 import com.unsplash.wallsplash._common.i.presenter.SearchPresenter;
 import com.unsplash.wallsplash._common.i.view.SearchView;
+import com.unsplash.wallsplash._common.ui.dialog.RateLimitDialog;
 
 import java.util.List;
 
@@ -174,6 +175,9 @@ public class SearchImplementor
             } else {
                 view.showButton();
                 view.requestPhotosFailed(c.getString(R.string.feedback_search_failed_tv));
+                RateLimitDialog.checkAndNotify(
+                        WallSplashApplication.getInstance().getActivityList().get(WallSplashApplication.getInstance().getActivityList().size()),
+                        response.headers().get("X-Ratelimit-Remaining"));
             }
         }
 

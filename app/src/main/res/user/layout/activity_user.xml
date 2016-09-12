@@ -75,7 +75,7 @@
             <android.support.design.widget.TabLayout
                 android:id="@+id/activity_user_tabLayout"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/tab_layout_height"
+                android:layout_height="?attr/actionBarSize"
                 android:layout_below="@id/activity_user_profileView"
                 app:tabIndicatorHeight="2dp"
                 app:tabIndicatorColor="?attr/title_color"

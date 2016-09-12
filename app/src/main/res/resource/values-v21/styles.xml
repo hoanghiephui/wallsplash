@@ -87,14 +87,17 @@
 
     <!-- me activity. -->
 
-    <style name="MysplashTheme_light.Translucent.Me" parent="MysplashTheme_light.Translucent">
+    <style name="MysplashTheme_light.Translucent.Me" parent="MysplashTheme_light">
+        <item name="android:windowTranslucentStatus">true</item>
         <item name="android:windowEnterTransition">@transition/me_activity_enter</item>
         <item name="android:windowReturnTransition">@transition/me_activity_return</item>
         <item name="android:windowSharedElementEnterTransition">@transition/me_activity_shared_enter</item>
         <item name="android:windowSharedElementReturnTransition">@transition/me_activity_shared_return</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
 
-    <style name="MysplashTheme_dark.Translucent.Me" parent="MysplashTheme_dark.Translucent">
+    <style name="MysplashTheme_dark.Translucent.Me" parent="MysplashTheme_dark">
+        <item name="android:windowTranslucentStatus">true</item>
         <item name="android:windowEnterTransition">@transition/me_activity_enter</item>
         <item name="android:windowReturnTransition">@transition/me_activity_return</item>
         <item name="android:windowSharedElementEnterTransition">@transition/me_activity_shared_enter</item>
@@ -110,6 +113,12 @@
     <style name="MysplashTheme_dark.Translucent.Settings" parent="MysplashTheme_dark.Translucent">
         <item name="android:alertDialogTheme">@style/MysplashDialogTheme_dark</item>
     </style>
+
+    <!-- common activity theme. -->
+
+    <style name="MysplashTheme_light.Translucent.Common" parent="MysplashTheme_light.Translucent" />
+
+    <style name="MysplashTheme_dark.Translucent.Common" parent="MysplashTheme_dark.Translucent" />
 
     <!-- popup. -->
 

@@ -1,5 +1,7 @@
 package com.unsplash.wallsplash._common.data.data;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 /**
@@ -26,12 +28,15 @@ public class Photo {
      */
 
     public String id;
+    @SerializedName("created_at")
     public String created_at;
     public int width;
     public int height;
     public String color;
     public int likes;
     public boolean liked_by_user;
+
+
     /**
      * id : pXhwzz1JtQU
      * username : poorkane

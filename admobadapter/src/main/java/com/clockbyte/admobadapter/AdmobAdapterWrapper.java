@@ -64,14 +64,12 @@ public class AdmobAdapterWrapper extends BaseAdapter implements AdmobFetcherBase
     private AdmobFetcher adFetcher;
     private Context mContext;
     private AdmobAdapterCalculator AdapterCalculator = new AdmobAdapterCalculator();
-
     /*
     * Gets an object which incapsulates transformation of the source and ad blocks indices
     */
     public AdmobAdapterCalculator getAdapterCalculator() {
         return AdapterCalculator;
     }
-
     /*
 * Injects an object which incapsulates transformation of the source and ad blocks indices. You could override calculations
 * by inheritance of AdmobAdapterCalculator class
@@ -114,7 +112,6 @@ public class AdmobAdapterWrapper extends BaseAdapter implements AdmobFetcherBase
     public int getNoOfDataBetweenAds() {
         return AdapterCalculator.getNoOfDataBetweenAds();
     }
-
     /*
     * Sets the number of your data items between ad blocks, by default it equals to 10.
     * You should set it according to the Admob's policies and rules which says not to
@@ -128,7 +125,6 @@ public class AdmobAdapterWrapper extends BaseAdapter implements AdmobFetcherBase
     public int getFirstAdIndex() {
         return AdapterCalculator.getFirstAdIndex();
     }
-
     /*
     * Sets the first ad block index (zero-based) in the adapter, by default it equals to 0
     */
@@ -185,20 +181,18 @@ public class AdmobAdapterWrapper extends BaseAdapter implements AdmobFetcherBase
     /**
      * Use this constructor for test purposes. if you are going to release the live version
      * please use the appropriate constructor
-     *
-     * @param testDevicesId sets a devices ID to test ads interaction.
-     *                      You could pass null but it's better to set ids for all your test devices
-     *                      including emulators. for emulator just use the
      * @see #AdmobAdapterWrapper(Context, String)
+     * @param testDevicesId sets a devices ID to test ads interaction.
+     * You could pass null but it's better to set ids for all your test devices
+     * including emulators. for emulator just use the
      * @see {AdRequest.DEVICE_ID_EMULATOR}
      */
     public AdmobAdapterWrapper(Context context, String[] testDevicesId) {
         this(context, testDevicesId, EnumSet.allOf(EAdType.class));
     }
-
     /**
      * @param admobReleaseUnitId sets a release unit ID for admob banners.
-     *                           If you are testing the ads please use constructor for tests
+     * If you are testing the ads please use constructor for tests
      * @see #AdmobAdapterWrapper(Context, String[])
      * ID should be active, please check it in your Admob's account.
      * Be careful: don't set it or set to null if you still haven't deployed a Release.
@@ -211,30 +205,28 @@ public class AdmobAdapterWrapper extends BaseAdapter implements AdmobFetcherBase
     /**
      * Use this constructor for test purposes. if you are going to release the live version
      * please use the appropriate constructor
-     *
-     * @param testDevicesId sets a devices ID to test ads interaction.
-     *                      You could pass null but it's better to set ids for all your test devices
-     *                      including emulators. for emulator just use the
-     * @param adTypesToShow sets the types of ads to show in the list.
-     *                      By default all types are loaded by wrapper.
-     *                      i.e. pass EnumSet.of(EAdType.ADVANCED_INSTALLAPP) to show only install app ads
      * @see #AdmobAdapterWrapper(Context, String)
+     * @param testDevicesId sets a devices ID to test ads interaction.
+     * You could pass null but it's better to set ids for all your test devices
+     * including emulators. for emulator just use the
      * @see {AdRequest.DEVICE_ID_EMULATOR}
+     * @param adTypesToShow sets the types of ads to show in the list.
+     * By default all types are loaded by wrapper.
+     * i.e. pass EnumSet.of(EAdType.ADVANCED_INSTALLAPP) to show only install app ads
      */
     public AdmobAdapterWrapper(Context context, String[] testDevicesId, EnumSet<EAdType> adTypesToShow) {
         init(context, null, testDevicesId, adTypesToShow);
     }
-
     /**
      * @param admobReleaseUnitId sets a release unit ID for admob banners.
-     *                           If you are testing the ads please use constructor for tests
-     * @param adTypesToShow      sets the types of ads to show in the list.
-     *                           By default all types are loaded by wrapper.
-     *                           i.e. pass EnumSet.of(EAdType.ADVANCED_INSTALLAPP) to show only install app ads
+     * If you are testing the ads please use constructor for tests
      * @see #AdmobAdapterWrapper(Context, String[])
      * ID should be active, please check it in your Admob's account.
      * Be careful: don't set it or set to null if you still haven't deployed a Release.
      * Otherwise your Admob account could be banned
+     * @param adTypesToShow sets the types of ads to show in the list.
+     * By default all types are loaded by wrapper.
+     * i.e. pass EnumSet.of(EAdType.ADVANCED_INSTALLAPP) to show only install app ads
      */
     public AdmobAdapterWrapper(Context context, String admobReleaseUnitId, EnumSet<EAdType> adTypesToShow) {
         init(context, admobReleaseUnitId, null, adTypesToShow);

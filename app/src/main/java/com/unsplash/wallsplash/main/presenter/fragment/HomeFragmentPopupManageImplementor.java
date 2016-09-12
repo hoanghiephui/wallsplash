@@ -1,6 +1,8 @@
 package com.unsplash.wallsplash.main.presenter.fragment;
 
 import android.content.Context;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.view.View;
 
 import com.unsplash.wallsplash._common.i.presenter.PopupManagePresenter;
@@ -29,6 +31,7 @@ public class HomeFragmentPopupManageImplementor
      * <br> presenter.
      */
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void showPopup(Context c, View anchor, String value, final int position) {
         if (position < 2) {

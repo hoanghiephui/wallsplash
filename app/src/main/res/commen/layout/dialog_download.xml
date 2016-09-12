@@ -13,7 +13,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <com.unsplash.wallsplash._common.ui.widget.MaterialProgressBar
+            android:id="@+id/progress"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:indeterminate="true"
+            android:visibility="visible"
+            app:duration="2000"
+            app:progressColour="@color/colorAccent_light"
+            app:backgroundColour="@color/colorPrimary_light" />
+
         <com.github.rahatarmanahmed.cpv.CircularProgressView
+            android:visibility="gone"
             android:id="@+id/dialog_download_progress"
             android:layout_width="@dimen/circular_progress_height"
             android:layout_height="@dimen/circular_progress_height"
@@ -28,6 +39,7 @@
             tools:text="@string/feedback_downloading"
             android:textStyle="bold"
             android:layout_toRightOf="@id/dialog_download_progress"
+            android:layout_margin="@dimen/normal_margin"
             android:layout_centerVertical="true"
             style="@style/subtitle_text"
             tools:ignore="HardcodedText,RtlHardcoded" />

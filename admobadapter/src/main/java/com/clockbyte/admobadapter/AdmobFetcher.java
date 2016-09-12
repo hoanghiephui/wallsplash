@@ -52,14 +52,12 @@ public class AdmobFetcher extends AdmobFetcherBase {
     private SparseArray adMapAtIndex = new SparseArray();
 
     private EnumSet<EAdType> adTypeToFetch = EnumSet.allOf(EAdType.class);
-
     /**
      * Gets enumset which sets which of ad types this Fetcher should load
      */
     public EnumSet<EAdType> getAdTypeToFetch() {
         return adTypeToFetch;
     }
-
     /**
      * Gets enumset which sets which of ad types this Fetcher should load
      */
@@ -128,7 +126,7 @@ public class AdmobFetcher extends AdmobFetcherBase {
 
     /**
      * Destroys all the ads in Map to refresh it with new one
-     */
+     * */
     public synchronized void clearMapAds() {
         adMapAtIndex.clear();
         mFetchingAdsCnt = mPrefetchedAdList.size();

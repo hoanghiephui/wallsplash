@@ -1,12 +1,12 @@
 package com.unsplash.wallsplash._common.data.tools;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.thin.downloadmanager.DownloadRequest;
@@ -218,7 +218,7 @@ public class DownloadManager {
                     NotificationUtils.showActionSnackbar(
                             c.getString(R.string.feedback_download_success),
                             c.getString(R.string.check),
-                            Snackbar.LENGTH_SHORT,
+                            Snackbar.LENGTH_LONG,
                             this);
                     break;
 
@@ -226,7 +226,7 @@ public class DownloadManager {
                     Intent intent = new Intent(Intent.ACTION_SEND);
                     intent.putExtra(Intent.EXTRA_STREAM, file);
                     intent.setType("image/*");
-                    List<Activity> list = WallSplashApplication.getInstance().getActivityList();
+                    List<AppCompatActivity> list = WallSplashApplication.getInstance().getActivityList();
                     list.get(list.size() - 1).startActivity(
                             Intent.createChooser(
                                     intent,
@@ -238,7 +238,7 @@ public class DownloadManager {
                     Intent intent = new Intent(Intent.ACTION_ATTACH_DATA);
                     intent.setDataAndType(file, "image/jpg");
                     intent.putExtra("mimeType", "image/jpg");
-                    List<Activity> list = WallSplashApplication.getInstance().getActivityList();
+                    List<AppCompatActivity> list = WallSplashApplication.getInstance().getActivityList();
                     list.get(list.size() - 1).startActivity(
                             Intent.createChooser(
                                     intent,
@@ -263,7 +263,7 @@ public class DownloadManager {
                 NotificationUtils.showActionSnackbar(
                         c.getString(R.string.feedback_download_failed),
                         c.getString(R.string.check),
-                        Snackbar.LENGTH_SHORT,
+                        Snackbar.LENGTH_LONG,
                         this);
             }
         }

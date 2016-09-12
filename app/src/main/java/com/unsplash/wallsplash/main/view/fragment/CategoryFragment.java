@@ -62,6 +62,7 @@ public class CategoryFragment extends Fragment
     public void onDestroy() {
         super.onDestroy();
         photosView.cancelRequest();
+        photosView.onDestroy();
     }
 
     /**

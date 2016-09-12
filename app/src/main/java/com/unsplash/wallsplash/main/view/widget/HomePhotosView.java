@@ -15,7 +15,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.clockbyte.admobadapter.expressads.AdmobExpressRecyclerAdapterWrapper;
 import com.github.rahatarmanahmed.cpv.CircularProgressView;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
 import com.unsplash.wallsplash.R;
 import com.unsplash.wallsplash._common.i.model.LoadModel;
 import com.unsplash.wallsplash._common.i.model.PhotosModel;
@@ -60,16 +63,17 @@ public class HomePhotosView extends FrameLayout
 
     private BothWaySwipeRefreshLayout refreshLayout;
     private RecyclerView recyclerView;
+    private AdmobExpressRecyclerAdapterWrapper adapterWrapper;
 
     // presenter.
     private PhotosPresenter photosPresenter;
     private PagerPresenter pagerPresenter;
     private LoadPresenter loadPresenter;
     private ScrollPresenter scrollPresenter;
-
     /**
      * <br> life cycle.
      */
+
 
     public HomePhotosView(Activity a, int photosType) {
         super(a);
@@ -78,10 +82,10 @@ public class HomePhotosView extends FrameLayout
 
     @SuppressLint("InflateParams")
     private void initialize(Activity a, int photosType) {
-        View loadingView = LayoutInflater.from(getContext()).inflate(R.layout.container_loading_view_large, null);
+        View loadingView = LayoutInflater.from(getContext()).inflate(R.layout.container_loading_view_large, null, false);
         addView(loadingView);
 
-        View contentView = LayoutInflater.from(getContext()).inflate(R.layout.container_photo_list, null);
+        View contentView = LayoutInflater.from(getContext()).inflate(R.layout.container_photo_list, null, false);
         addView(contentView);
 
         initModel(a, photosType);
@@ -114,7 +118,7 @@ public class HomePhotosView extends FrameLayout
         refreshLayout.setOnRefreshAndLoadListener(this);
         refreshLayout.setVisibility(GONE);
         if (ThemeUtils.getInstance(getContext()).isLightTheme()) {
-            refreshLayout.setColorSchemeColors(ContextCompat.getColor(getContext(), R.color.colorTextContent_light));
+            refreshLayout.setColorSchemeColors(ContextCompat.getColor(getContext(), R.color.colorWhite));
             refreshLayout.setProgressBackgroundColorSchemeResource(R.color.colorPrimary_light);
         } else {
             refreshLayout.setColorSchemeColors(ContextCompat.getColor(getContext(), R.color.colorTextContent_dark));
@@ -122,8 +126,17 @@ public class HomePhotosView extends FrameLayout
         }
 
         this.recyclerView = (RecyclerView) findViewById(R.id.container_photo_list_recyclerView);
-        recyclerView.setAdapter(photosModel.getAdapter());
+        String[] testDevicesIds = new String[]{getContext().getString(R.string.testDeviceID), AdRequest.DEVICE_ID_EMULATOR};
+        adapterWrapper = new AdmobExpressRecyclerAdapterWrapper(getContext(), "ca-app-pub-2257698129050878/7146096743", testDevicesIds, new AdSize(AdSize.FULL_WIDTH, 250));
+        adapterWrapper.setAdapter(photosModel.getAdapter());
+        adapterWrapper.setLimitOfAds(3);
+        adapterWrapper.setNoOfDataBetweenAds(10);
+        adapterWrapper.setFirstAdIndex(2);
+        adapterWrapper.setViewTypeBiggestSource(100);
+        recyclerView.setAdapter(adapterWrapper);
+        //recyclerView.setAdapter(photosModel.getAdapter());
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+        recyclerView.setHasFixedSize(true);
         recyclerView.addOnScrollListener(onScrollListener);
     }
 
@@ -264,6 +277,7 @@ public class HomePhotosView extends FrameLayout
     @Override
     public void cancelRequest() {
         photosPresenter.cancelRequest();
+        onDestroy();
     }
 
     @Override
@@ -282,7 +296,7 @@ public class HomePhotosView extends FrameLayout
     }
 
     @Override
-    public int getItemCount() {
+    public int getItemCounts() {
         if (loadPresenter.getLoadState() != LoadObject.NORMAL_STATE) {
             return 0;
         } else {
@@ -363,5 +377,9 @@ public class HomePhotosView extends FrameLayout
     public boolean needBackToTop() {
         return !scrollPresenter.isToTop()
                 && loadPresenter.getLoadState() == LoadObject.NORMAL_STATE;
+    }
+
+    public void onDestroy() {
+        adapterWrapper.destroyAds();
     }
 }

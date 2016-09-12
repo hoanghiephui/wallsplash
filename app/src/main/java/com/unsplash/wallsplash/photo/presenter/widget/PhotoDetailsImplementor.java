@@ -3,11 +3,13 @@ package com.unsplash.wallsplash.photo.presenter.widget;
 import android.content.Context;
 import android.support.design.widget.Snackbar;
 
+import com.unsplash.wallsplash.WallSplashApplication;
 import com.unsplash.wallsplash._common.data.data.PhotoDetails;
 import com.unsplash.wallsplash._common.data.service.PhotoService;
 import com.unsplash.wallsplash._common.i.model.PhotoDetailsModel;
 import com.unsplash.wallsplash._common.i.presenter.PhotoDetailsPresenter;
 import com.unsplash.wallsplash._common.i.view.PhotoDetailsView;
+import com.unsplash.wallsplash._common.ui.dialog.RateLimitDialog;
 import com.unsplash.wallsplash._common.utils.NotificationUtils;
 import com.unsplash.wallsplash._common.utils.ValueUtils;
 
@@ -79,6 +81,9 @@ public class PhotoDetailsImplementor
                 view.requestDetailsSuccess();
             } else {
                 requestPhotoDetails(c);
+                RateLimitDialog.checkAndNotify(
+                        WallSplashApplication.getInstance().getActivityList().get(WallSplashApplication.getInstance().getActivityList().size()),
+                        response.headers().get("X-Ratelimit-Remaining"));
             }
         }
 

@@ -1,6 +1,8 @@
 package com.unsplash.wallsplash.me.presenter.activity;
 
 import android.content.Context;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.Snackbar;
 import android.view.View;
 
@@ -31,6 +33,7 @@ public class PopupManageImplementor
      * <br> presenter.
      */
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void showPopup(Context c, View anchor, String value, final int position) {
         if (position % 2 == 0) {

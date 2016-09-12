@@ -13,6 +13,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
 
+import com.unsplash.wallsplash.JniBitmapHolder;
 import com.unsplash.wallsplash.R;
 
 /**
@@ -60,7 +61,10 @@ public class DisplayUtils {
 
     public static void setWindowTop(Activity activity) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Bitmap icon = BitmapFactory.decodeResource(activity.getResources(), R.drawable.ic_launcher);
+            Bitmap icon = BitmapFactory.decodeResource(activity.getResources(), R.mipmap.ic_launcher);
+            final JniBitmapHolder bitmapHolder = new JniBitmapHolder(icon);
+            icon.recycle();
+            icon = bitmapHolder.getBitmapAndFree();
             if (ThemeUtils.getInstance(activity).isLightTheme()) {
                 ActivityManager.TaskDescription taskDescription
                         = new ActivityManager.TaskDescription(

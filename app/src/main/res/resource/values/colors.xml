@@ -38,4 +38,5 @@
     <color name="colorBg">#ebebeb</color>
     <color name="tabTextColor">#e0e0e0</color>
     <color name="semiTransparentWhite">#40FFFFFF</color>
+    <color name="sa_accent_transparent">#D8F3D8</color>
 </resources>

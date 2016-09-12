@@ -1,10 +1,9 @@
 package com.unsplash.wallsplash._common.data.service;
 
 import com.google.gson.GsonBuilder;
-import com.unsplash.wallsplash.BuildConfig;
 import com.unsplash.wallsplash.WallSplashApplication;
 import com.unsplash.wallsplash._common.data.api.CollectionApi;
-import com.unsplash.wallsplash._common.data.data.AddPhotoToCollectionResult;
+import com.unsplash.wallsplash._common.data.data.ChangeCollectionPhotoResult;
 import com.unsplash.wallsplash._common.data.data.Collection;
 import com.unsplash.wallsplash._common.data.data.DeleteCollectionResult;
 import com.unsplash.wallsplash._common.data.data.Me;
@@ -14,7 +13,6 @@ import com.unsplash.wallsplash._common.data.tools.AuthInterceptor;
 import java.util.List;
 
 import okhttp3.OkHttpClient;
-import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -159,26 +157,49 @@ public class CollectionService {
     }
 
     public void addPhotoToCollection(int collection_id, String photo_id,
-                                     final OnAddPhotoToCollectionListener l) {
-        Call<AddPhotoToCollectionResult> addPhotoToCollection = buildApi(buildClient())
+                                     final OnChangeCollectionPhotoListener l) {
+        Call<ChangeCollectionPhotoResult> addPhotoToCollection = buildApi(buildClient())
                 .addPhotoToCollection(collection_id, photo_id);
-        addPhotoToCollection.enqueue(new Callback<AddPhotoToCollectionResult>() {
+        addPhotoToCollection.enqueue(new Callback<ChangeCollectionPhotoResult>() {
             @Override
-            public void onResponse(Call<AddPhotoToCollectionResult> call,
-                                   Response<AddPhotoToCollectionResult> response) {
+            public void onResponse(Call<ChangeCollectionPhotoResult> call,
+                                   Response<ChangeCollectionPhotoResult> response) {
                 if (l != null) {
-                    l.onAddPhotoSuccess(call, response);
+                    l.onChangePhotoSuccess(call, response);
                 }
             }
 
             @Override
-            public void onFailure(Call<AddPhotoToCollectionResult> call, Throwable t) {
+            public void onFailure(Call<ChangeCollectionPhotoResult> call, Throwable t) {
                 if (l != null) {
-                    l.onAddPhotoFailed(call, t);
+                    l.onChangePhotoFailed(call, t);
                 }
             }
         });
         call = addPhotoToCollection;
+    }
+
+    public void deletePhotoFromCollection(int collection_id, String photo_id,
+                                          final OnChangeCollectionPhotoListener l) {
+        Call<ChangeCollectionPhotoResult> deletePhotoFromCollection = buildApi(buildClient())
+                .deletePhotoFromCollection(collection_id, photo_id);
+        deletePhotoFromCollection.enqueue(new Callback<ChangeCollectionPhotoResult>() {
+            @Override
+            public void onResponse(Call<ChangeCollectionPhotoResult> call,
+                                   Response<ChangeCollectionPhotoResult> response) {
+                if (l != null) {
+                    l.onChangePhotoSuccess(call, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ChangeCollectionPhotoResult> call, Throwable t) {
+                if (l != null) {
+                    l.onChangePhotoFailed(call, t);
+                }
+            }
+        });
+        call = deletePhotoFromCollection;
     }
 
     public void updateCollection(int id, String title, String description, boolean privateX,
@@ -229,21 +250,15 @@ public class CollectionService {
         }
     }
 
-    /**
-     * <br> build.
-     */
+    /** <br> build. */
 
     public static CollectionService getService() {
         return new CollectionService();
     }
 
     public OkHttpClient buildClient() {
-        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-        logging.setLevel(BuildConfig.DEBUG ? HttpLoggingInterceptor.Level.BODY
-                : HttpLoggingInterceptor.Level.NONE);
         return new OkHttpClient.Builder()
                 .addInterceptor(new AuthInterceptor())
-                .addInterceptor(logging)
                 .build();
     }
 
@@ -260,31 +275,26 @@ public class CollectionService {
                 .create((CollectionApi.class));
     }
 
-    /**
-     * <br> interface.
-     */
+    /** <br> interface. */
 
     public interface OnRequestCollectionsListener {
         void onRequestCollectionsSuccess(Call<List<Collection>> call, retrofit2.Response<List<Collection>> response);
-
         void onRequestCollectionsFailed(Call<List<Collection>> call, Throwable t);
     }
 
     public interface OnRequestACollectionListener {
         void onRequestACollectionSuccess(Call<Collection> call, retrofit2.Response<Collection> response);
-
         void onRequestACollectionFailed(Call<Collection> call, Throwable t);
     }
 
-    public interface OnAddPhotoToCollectionListener {
-        void onAddPhotoSuccess(Call<AddPhotoToCollectionResult> call, retrofit2.Response<AddPhotoToCollectionResult> response);
+    public interface OnChangeCollectionPhotoListener {
+        void onChangePhotoSuccess(Call<ChangeCollectionPhotoResult> call, retrofit2.Response<ChangeCollectionPhotoResult> response);
 
-        void onAddPhotoFailed(Call<AddPhotoToCollectionResult> call, Throwable t);
+        void onChangePhotoFailed(Call<ChangeCollectionPhotoResult> call, Throwable t);
     }
 
     public interface OnDeleteCollectionListener {
         void onDeleteCollectionSuccess(Call<DeleteCollectionResult> call, Response<DeleteCollectionResult> response);
-
         void onDeleteCollectionFailed(Call<DeleteCollectionResult> call, Throwable t);
     }
 }

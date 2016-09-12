@@ -1,6 +1,8 @@
 package com.unsplash.wallsplash.main.presenter.fragment;
 
 import android.content.Context;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.view.View;
 
 import com.unsplash.wallsplash._common.i.presenter.PopupManagePresenter;
@@ -29,10 +31,11 @@ public class CategoryFragmentPopupManageImplementor
      * <br> presenter.
      */
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
-    public void showPopup(Context c, View anchor, String value, int position) {
+    public void showPopup(Context context, View anchor, String value, int position) {
         PhotoOrderPopupWindow window = new PhotoOrderPopupWindow(
-                c,
+                context,
                 anchor,
                 value,
                 PhotoOrderPopupWindow.CATEGORY_TYPE);

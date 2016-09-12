@@ -2,6 +2,8 @@ package com.unsplash.wallsplash._common.utils;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.support.annotation.ColorInt;
+import android.support.annotation.FloatRange;
 
 /**
  * Color utils.
@@ -25,5 +27,10 @@ public class ColorUtils {
                     (int) (green * 0.3),
                     (int) (blue * 0.3));
         }
+    }
+
+    public static int modifyAlpha(@ColorInt int color,
+                                  @FloatRange(from = 0f, to = 1f) float alpha) {
+        return modifyAlpha(color, (int) (255f * alpha));
     }
 }

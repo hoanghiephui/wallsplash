@@ -27,5 +27,6 @@
     <dimen name="little_margin">8dp</dimen>
     <dimen name="mini_margin">4dp</dimen>
     <dimen name="nano_margin">2dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
 
 </resources>

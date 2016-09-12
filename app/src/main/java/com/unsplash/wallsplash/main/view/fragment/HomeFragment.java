@@ -1,6 +1,8 @@
 package com.unsplash.wallsplash.main.view.fragment;
 
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -8,6 +10,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -78,6 +81,7 @@ public class HomeFragment extends Fragment
         for (PagerView p : pagers) {
             p.cancelRequest();
         }
+
     }
 
     /**
@@ -194,6 +198,7 @@ public class HomeFragment extends Fragment
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
         // do nothing.
+        Log.d("TAG", "onPageScrolled: " + position);
     }
 
     @Override
@@ -229,6 +234,7 @@ public class HomeFragment extends Fragment
         pagers[pagerManagePresenter.getPagerPosition()].scrollToPageTop();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void touchMenuItem(int itemId) {
         switch (itemId) {
@@ -261,7 +267,7 @@ public class HomeFragment extends Fragment
 
     @Override
     public int getPagerItemCount(int position) {
-        return pagers[position].getItemCount();
+        return pagers[position].getItemCounts();
     }
 
     // popup manage view.
