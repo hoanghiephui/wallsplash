@@ -24,24 +24,6 @@ import com.github.rahatarmanahmed.cpv.CircularProgressView;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
 import com.unsplash.wallsplash.R;
-import com.unsplash.wallsplash.WallSplashApplication;
-import com.unsplash.wallsplash._common.data.data.Collection;
-import com.unsplash.wallsplash._common.i.model.LoadModel;
-import com.unsplash.wallsplash._common.i.model.PhotosModel;
-import com.unsplash.wallsplash._common.i.model.ScrollModel;
-import com.unsplash.wallsplash._common.i.presenter.LoadPresenter;
-import com.unsplash.wallsplash._common.i.presenter.PhotosPresenter;
-import com.unsplash.wallsplash._common.i.presenter.ScrollPresenter;
-import com.unsplash.wallsplash._common.i.presenter.SwipeBackPresenter;
-import com.unsplash.wallsplash._common.i.view.LoadView;
-import com.unsplash.wallsplash._common.i.view.PhotosView;
-import com.unsplash.wallsplash._common.i.view.ScrollView;
-import com.unsplash.wallsplash._common.i.view.SwipeBackView;
-import com.unsplash.wallsplash._common.ui.widget.SwipeBackLayout;
-import com.unsplash.wallsplash._common.ui.widget.swipeRefreshLayout.BothWaySwipeRefreshLayout;
-import com.unsplash.wallsplash._common.utils.AnimUtils;
-import com.unsplash.wallsplash._common.utils.BackToTopUtils;
-import com.unsplash.wallsplash._common.utils.ThemeUtils;
 import com.unsplash.wallsplash.collection.model.widget.LoadObject;
 import com.unsplash.wallsplash.collection.model.widget.PhotosObject;
 import com.unsplash.wallsplash.collection.model.widget.ScrollObject;
@@ -49,6 +31,23 @@ import com.unsplash.wallsplash.collection.presenter.widget.LoadImplementor;
 import com.unsplash.wallsplash.collection.presenter.widget.PhotosImplementor;
 import com.unsplash.wallsplash.collection.presenter.widget.ScrollImplementor;
 import com.unsplash.wallsplash.collection.presenter.widget.SwipeBackImplementor;
+import com.unsplash.wallsplash.common.data.data.Collection;
+import com.unsplash.wallsplash.common.i.model.LoadModel;
+import com.unsplash.wallsplash.common.i.model.PhotosModel;
+import com.unsplash.wallsplash.common.i.model.ScrollModel;
+import com.unsplash.wallsplash.common.i.presenter.LoadPresenter;
+import com.unsplash.wallsplash.common.i.presenter.PhotosPresenter;
+import com.unsplash.wallsplash.common.i.presenter.ScrollPresenter;
+import com.unsplash.wallsplash.common.i.presenter.SwipeBackPresenter;
+import com.unsplash.wallsplash.common.i.view.LoadView;
+import com.unsplash.wallsplash.common.i.view.PhotosView;
+import com.unsplash.wallsplash.common.i.view.ScrollView;
+import com.unsplash.wallsplash.common.i.view.SwipeBackView;
+import com.unsplash.wallsplash.common.ui.widget.SwipeBackLayout;
+import com.unsplash.wallsplash.common.ui.widget.swipeRefreshLayout.BothWaySwipeRefreshLayout;
+import com.unsplash.wallsplash.common.utils.AnimUtils;
+import com.unsplash.wallsplash.common.utils.BackToTopUtils;
+import com.unsplash.wallsplash.common.utils.ThemeUtils;
 
 /**
  * Collection photos view.
@@ -110,9 +109,22 @@ public class CollectionPhotosView extends FrameLayout
         View contentView = LayoutInflater.from(getContext()).inflate(R.layout.container_photo_list, null);
         addView(contentView);
 
-        initModel();
+
         initView();
+
+    }
+
+    public void initMP(Activity a, Collection c) {
+        initModel(a, c);
         initPresenter();
+        String[] testDevicesIds = new String[]{getContext().getString(R.string.testDeviceID), AdRequest.DEVICE_ID_EMULATOR};
+        adapterWrapper = new AdmobExpressRecyclerAdapterWrapper(getContext(), getContext().getString(R.string.id_ads), testDevicesIds, new AdSize(AdSize.FULL_WIDTH, 250));
+        adapterWrapper.setAdapter(photosModel.getAdapter());
+        adapterWrapper.setLimitOfAds(100);
+        adapterWrapper.setNoOfDataBetweenAds(10);
+        adapterWrapper.setFirstAdIndex(2);
+        adapterWrapper.setViewTypeBiggestSource(100);
+        recyclerView.setAdapter(adapterWrapper);
     }
 
     /**
@@ -150,14 +162,8 @@ public class CollectionPhotosView extends FrameLayout
         }
 
         this.recyclerView = (RecyclerView) findViewById(R.id.container_photo_list_recyclerView);
-        String[] testDevicesIds = new String[]{getContext().getString(R.string.testDeviceID), AdRequest.DEVICE_ID_EMULATOR};
-        adapterWrapper = new AdmobExpressRecyclerAdapterWrapper(getContext(), "ca-app-pub-2257698129050878/7146096743", testDevicesIds, new AdSize(AdSize.FULL_WIDTH, 250));
-        adapterWrapper.setAdapter(photosModel.getAdapter());
-        adapterWrapper.setLimitOfAds(3);
-        adapterWrapper.setNoOfDataBetweenAds(10);
-        adapterWrapper.setFirstAdIndex(2);
-        adapterWrapper.setViewTypeBiggestSource(100);
-        recyclerView.setAdapter(adapterWrapper);
+
+        //recyclerView.setAdapter(adapterWrapper);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         recyclerView.addOnScrollListener(onScrollListener);
@@ -171,7 +177,7 @@ public class CollectionPhotosView extends FrameLayout
 
         ImageView feedbackImg = (ImageView) findViewById(R.id.container_loading_view_large_feedbackImg);
         Glide.with(getContext())
-                .load(R.drawable.feedback_load_failed)
+                .load(R.drawable.ic_launcher)
                 .dontAnimate()
                 .into(feedbackImg);
 
@@ -192,12 +198,11 @@ public class CollectionPhotosView extends FrameLayout
      */
 
     // init.
-    private void initModel() {
+    private void initModel(Activity a, Collection c) {
         this.photosModel = new PhotosObject(
-                getContext(),
-                WallSplashApplication.getInstance().getCollection(),
-                WallSplashApplication.getInstance().getCollection().curated
-                        ? PhotosObject.PHOTOS_TYPE_CURATED : PhotosObject.PHOTOS_TYPE_NORMAL);
+                a,
+                c,
+                c.curated ? PhotosObject.PHOTOS_TYPE_CURATED : PhotosObject.PHOTOS_TYPE_NORMAL);
         this.loadModel = new LoadObject(LoadObject.LOADING_STATE);
         this.scrollModel = new ScrollObject();
     }
@@ -385,5 +390,9 @@ public class CollectionPhotosView extends FrameLayout
     public boolean checkCanSwipeBack(int dir) {
         return SwipeBackLayout.canSwipeBack(recyclerView, dir)
                 || photosPresenter.getAdapterItemCount() <= 0;
+    }
+
+    public void onDestroy() {
+        adapterWrapper.destroyAds();
     }
 }

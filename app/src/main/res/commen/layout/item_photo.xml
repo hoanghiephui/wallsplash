@@ -12,13 +12,13 @@
     tools:layout_marginTop="24dp">
 
 
-    <com.unsplash.wallsplash._common.ui.widget.FreedomImageView
+    <com.unsplash.wallsplash.common.ui.widget.FreedomImageView
         android:id="@+id/item_photo_image"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:scaleType="centerCrop"
         app:fiv_text_position="bottom"
-        tools:src="@drawable/design_about_app" />
+        tools:src="@drawable/bg_blur" />
 
 
     <com.mikhaellopez.circularimageview.CircularImageView
@@ -34,7 +34,7 @@
         tools:ignore="RtlHardcoded"
         tools:src="@drawable/ic_avatar" />
 
-    <com.unsplash.wallsplash._common.ui.widget.MaterialProgressBar
+    <com.unsplash.wallsplash.common.ui.widget.MaterialProgressBar
         android:layout_centerInParent="true"
         android:id="@+id/progress"
         android:layout_width="match_parent"
@@ -59,16 +59,17 @@
         android:gravity="center"
         android:orientation="horizontal">
 
-        <ImageButton
+        <com.unsplash.wallsplash.common.ui.widget.LikeImageButton
             android:id="@+id/item_photo_likeButton"
             android:layout_width="34dp"
             android:layout_height="34dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
+            android:background="@android:color/transparent"
+            android:foreground="?attr/selectableItemBackgroundBorderless"
             android:padding="@dimen/mini_margin"
             tools:ignore="ContentDescription,RtlHardcoded"
             tools:src="@drawable/ic_item_heart_red" />
 
-        <com.unsplash.wallsplash._common.ui.widget.ScrollingTextView
+        <com.unsplash.wallsplash.common.ui.widget.ScrollingTextView
             android:id="@+id/tvNumberLike"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -85,7 +86,8 @@
         android:padding="@dimen/little_margin"
         android:layout_marginRight="@dimen/little_margin"
         android:layout_marginTop="@dimen/little_margin"
-        android:background="?attr/selectableItemBackgroundBorderless"
+        android:background="@android:color/transparent"
+        android:foreground="?attr/selectableItemBackgroundBorderless"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         tools:ignore="ContentDescription,RtlHardcoded" />
@@ -103,7 +105,7 @@
         android:src="@drawable/ic_item_plus"
         tools:ignore="ContentDescription,RtlHardcoded" />
 
-    <com.unsplash.wallsplash._common.ui.widget.ShortTimeView
+    <com.unsplash.wallsplash.common.ui.widget.ShortTimeView
         tools:text="TextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -4,9 +4,9 @@ import android.support.v4.app.Fragment;
 
 import com.unsplash.wallsplash.R;
 import com.unsplash.wallsplash.WallSplashApplication;
-import com.unsplash.wallsplash._common.i.model.FragmentManageModel;
-import com.unsplash.wallsplash._common.i.presenter.FragmentManagePresenter;
-import com.unsplash.wallsplash._common.i.view.FragmentManageView;
+import com.unsplash.wallsplash.common.i.model.FragmentManageModel;
+import com.unsplash.wallsplash.common.i.presenter.FragmentManagePresenter;
+import com.unsplash.wallsplash.common.i.view.FragmentManageView;
 import com.unsplash.wallsplash.main.view.fragment.CategoryFragment;
 import com.unsplash.wallsplash.main.view.fragment.HomeFragment;
 import com.unsplash.wallsplash.main.view.fragment.SearchFragment;

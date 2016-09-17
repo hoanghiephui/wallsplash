@@ -1,7 +1,7 @@
 package com.unsplash.wallsplash.photo.model.activity;
 
-import com.unsplash.wallsplash._common.data.data.Photo;
-import com.unsplash.wallsplash._common.i.model.DownloadModel;
+import com.unsplash.wallsplash.common.data.data.Photo;
+import com.unsplash.wallsplash.common.i.model.DownloadModel;
 
 /**
  * Download object.

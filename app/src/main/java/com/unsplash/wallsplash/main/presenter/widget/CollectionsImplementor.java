@@ -6,13 +6,13 @@ import android.support.design.widget.Snackbar;
 
 import com.unsplash.wallsplash.R;
 import com.unsplash.wallsplash.WallSplashApplication;
-import com.unsplash.wallsplash._common.data.data.Collection;
-import com.unsplash.wallsplash._common.data.service.CollectionService;
-import com.unsplash.wallsplash._common.i.model.CollectionsModel;
-import com.unsplash.wallsplash._common.i.presenter.CollectionsPresenter;
-import com.unsplash.wallsplash._common.i.view.CollectionsView;
-import com.unsplash.wallsplash._common.ui.dialog.RateLimitDialog;
-import com.unsplash.wallsplash._common.utils.NotificationUtils;
+import com.unsplash.wallsplash.common.data.data.Collection;
+import com.unsplash.wallsplash.common.data.service.CollectionService;
+import com.unsplash.wallsplash.common.i.model.CollectionsModel;
+import com.unsplash.wallsplash.common.i.presenter.CollectionsPresenter;
+import com.unsplash.wallsplash.common.i.view.CollectionsView;
+import com.unsplash.wallsplash.common.ui.dialog.RateLimitDialog;
+import com.unsplash.wallsplash.common.utils.NotificationUtils;
 
 import java.util.List;
 
@@ -211,7 +211,7 @@ public class CollectionsImplementor
             } else {
                 view.requestCollectionsFailed(c.getString(R.string.feedback_load_nothing_tv));
                 RateLimitDialog.checkAndNotify(
-                        WallSplashApplication.getInstance().getActivityList().get(WallSplashApplication.getInstance().getActivityList().size()),
+                        WallSplashApplication.getInstance().getActivityList().get(WallSplashApplication.getInstance().getActivityList().size() - 1),
                         response.headers().get("X-Ratelimit-Remaining"));
             }
         }

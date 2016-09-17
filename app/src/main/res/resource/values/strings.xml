@@ -177,7 +177,8 @@
 
     <string name="welcome_back">Welcome back</string>
     <string name="key_notified_set_back_to_top">notified_set_back_to_top</string>
-    <string name="id_app_admob">ca-app-pub-2257698129050878~1953322344</string>
+    <string name="id_app_admob">ca-app-pub-2257698129050878~5912075542</string>
+    <string name="id_ads">ca-app-pub-2257698129050878/7388808742</string>
     <string name="testDeviceID">AEF5B86790E2FFBE863DC449D15B4C63</string>
     <string name="created_at">Created at: %1$s</string>
     <string name="set_wallpaper">WALLPAPER</string>

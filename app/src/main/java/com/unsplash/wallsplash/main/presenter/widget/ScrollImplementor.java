@@ -1,8 +1,8 @@
 package com.unsplash.wallsplash.main.presenter.widget;
 
-import com.unsplash.wallsplash._common.i.model.ScrollModel;
-import com.unsplash.wallsplash._common.i.presenter.ScrollPresenter;
-import com.unsplash.wallsplash._common.i.view.ScrollView;
+import com.unsplash.wallsplash.common.i.model.ScrollModel;
+import com.unsplash.wallsplash.common.i.presenter.ScrollPresenter;
+import com.unsplash.wallsplash.common.i.view.ScrollView;
 
 /**
  * Scroll implementor.

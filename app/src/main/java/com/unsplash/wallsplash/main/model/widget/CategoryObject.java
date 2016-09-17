@@ -6,11 +6,11 @@ import android.preference.PreferenceManager;
 
 import com.unsplash.wallsplash.R;
 import com.unsplash.wallsplash.WallSplashApplication;
-import com.unsplash.wallsplash._common.data.api.PhotoApi;
-import com.unsplash.wallsplash._common.data.data.Photo;
-import com.unsplash.wallsplash._common.data.service.PhotoService;
-import com.unsplash.wallsplash._common.i.model.CategoryModel;
-import com.unsplash.wallsplash._common.ui.adapter.PhotoAdapter;
+import com.unsplash.wallsplash.common.data.api.PhotoApi;
+import com.unsplash.wallsplash.common.data.data.Photo;
+import com.unsplash.wallsplash.common.data.service.PhotoService;
+import com.unsplash.wallsplash.common.i.model.CategoryModel;
+import com.unsplash.wallsplash.common.ui.adapter.PhotoAdapter;
 
 import java.util.ArrayList;
 import java.util.List;

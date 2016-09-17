@@ -3,9 +3,9 @@ package com.unsplash.wallsplash.main.presenter.fragment;
 import android.content.Context;
 import android.view.View;
 
-import com.unsplash.wallsplash._common.i.presenter.PopupManagePresenter;
-import com.unsplash.wallsplash._common.i.view.PopupManageView;
-import com.unsplash.wallsplash._common.ui.popup.SearchOrientationPopupWindow;
+import com.unsplash.wallsplash.common.i.presenter.PopupManagePresenter;
+import com.unsplash.wallsplash.common.i.view.PopupManageView;
+import com.unsplash.wallsplash.common.ui.popup.SearchOrientationPopupWindow;
 
 /**
  * Search fragment popup manage implementor.

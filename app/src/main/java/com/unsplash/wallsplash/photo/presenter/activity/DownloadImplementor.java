@@ -1,12 +1,12 @@
 package com.unsplash.wallsplash.photo.presenter.activity;
 
 import com.unsplash.wallsplash.WallSplashApplication;
-import com.unsplash.wallsplash._common.data.data.Photo;
-import com.unsplash.wallsplash._common.data.tools.DownloadManager;
-import com.unsplash.wallsplash._common.i.model.DownloadModel;
-import com.unsplash.wallsplash._common.i.presenter.DownloadPresenter;
-import com.unsplash.wallsplash._common.i.view.DownloadView;
-import com.unsplash.wallsplash._common.utils.FileUtils;
+import com.unsplash.wallsplash.common.data.data.Photo;
+import com.unsplash.wallsplash.common.data.tools.DownloadManager;
+import com.unsplash.wallsplash.common.i.model.DownloadModel;
+import com.unsplash.wallsplash.common.i.presenter.DownloadPresenter;
+import com.unsplash.wallsplash.common.i.view.DownloadView;
+import com.unsplash.wallsplash.common.utils.FileUtils;
 import com.unsplash.wallsplash.photo.model.activity.DownloadObject;
 
 /**

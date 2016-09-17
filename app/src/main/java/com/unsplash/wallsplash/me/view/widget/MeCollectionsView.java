@@ -11,28 +11,31 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 
+import com.clockbyte.admobadapter.expressads.AdmobExpressRecyclerAdapterWrapper;
 import com.github.rahatarmanahmed.cpv.CircularProgressView;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
 import com.unsplash.wallsplash.R;
-import com.unsplash.wallsplash._common.data.data.Collection;
-import com.unsplash.wallsplash._common.i.model.CollectionsModel;
-import com.unsplash.wallsplash._common.i.model.LoadModel;
-import com.unsplash.wallsplash._common.i.model.ScrollModel;
-import com.unsplash.wallsplash._common.i.presenter.CollectionsPresenter;
-import com.unsplash.wallsplash._common.i.presenter.LoadPresenter;
-import com.unsplash.wallsplash._common.i.presenter.PagerPresenter;
-import com.unsplash.wallsplash._common.i.presenter.ScrollPresenter;
-import com.unsplash.wallsplash._common.i.presenter.SwipeBackPresenter;
-import com.unsplash.wallsplash._common.i.view.CollectionsView;
-import com.unsplash.wallsplash._common.i.view.LoadView;
-import com.unsplash.wallsplash._common.i.view.PagerView;
-import com.unsplash.wallsplash._common.i.view.ScrollView;
-import com.unsplash.wallsplash._common.i.view.SwipeBackView;
-import com.unsplash.wallsplash._common.ui.widget.SwipeBackLayout;
-import com.unsplash.wallsplash._common.ui.widget.swipeRefreshLayout.BothWaySwipeRefreshLayout;
-import com.unsplash.wallsplash._common.utils.AnimUtils;
-import com.unsplash.wallsplash._common.utils.BackToTopUtils;
-import com.unsplash.wallsplash._common.utils.ThemeUtils;
 import com.unsplash.wallsplash.collection.presenter.widget.SwipeBackImplementor;
+import com.unsplash.wallsplash.common.data.data.Collection;
+import com.unsplash.wallsplash.common.i.model.CollectionsModel;
+import com.unsplash.wallsplash.common.i.model.LoadModel;
+import com.unsplash.wallsplash.common.i.model.ScrollModel;
+import com.unsplash.wallsplash.common.i.presenter.CollectionsPresenter;
+import com.unsplash.wallsplash.common.i.presenter.LoadPresenter;
+import com.unsplash.wallsplash.common.i.presenter.PagerPresenter;
+import com.unsplash.wallsplash.common.i.presenter.ScrollPresenter;
+import com.unsplash.wallsplash.common.i.presenter.SwipeBackPresenter;
+import com.unsplash.wallsplash.common.i.view.CollectionsView;
+import com.unsplash.wallsplash.common.i.view.LoadView;
+import com.unsplash.wallsplash.common.i.view.PagerView;
+import com.unsplash.wallsplash.common.i.view.ScrollView;
+import com.unsplash.wallsplash.common.i.view.SwipeBackView;
+import com.unsplash.wallsplash.common.ui.widget.SwipeBackLayout;
+import com.unsplash.wallsplash.common.ui.widget.swipeRefreshLayout.BothWaySwipeRefreshLayout;
+import com.unsplash.wallsplash.common.utils.AnimUtils;
+import com.unsplash.wallsplash.common.utils.BackToTopUtils;
+import com.unsplash.wallsplash.common.utils.ThemeUtils;
 import com.unsplash.wallsplash.me.model.widget.CollectionsObject;
 import com.unsplash.wallsplash.me.model.widget.LoadObject;
 import com.unsplash.wallsplash.me.model.widget.ScrollObject;
@@ -67,6 +70,7 @@ public class MeCollectionsView extends FrameLayout
     private LoadPresenter loadPresenter;
     private ScrollPresenter scrollPresenter;
     private SwipeBackPresenter swipeBackPresenter;
+    private AdmobExpressRecyclerAdapterWrapper adapterWrapper;
 
     /**
      * <br> life cycle.
@@ -125,8 +129,19 @@ public class MeCollectionsView extends FrameLayout
 
         this.recyclerView = (RecyclerView) findViewById(R.id.container_photo_list_recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-        recyclerView.setAdapter(collectionsModel.getAdapter());
+        String[] testDevicesIds = new String[]{getContext().getString(R.string.testDeviceID), AdRequest.DEVICE_ID_EMULATOR};
+        adapterWrapper = new AdmobExpressRecyclerAdapterWrapper(getContext(), getContext().getString(R.string.id_ads), testDevicesIds, new AdSize(AdSize.FULL_WIDTH, 250));
+        adapterWrapper.setAdapter(collectionsModel.getAdapter());
+        adapterWrapper.setLimitOfAds(50);
+        adapterWrapper.setNoOfDataBetweenAds(10);
+        adapterWrapper.setFirstAdIndex(2);
+        adapterWrapper.setViewTypeBiggestSource(100);
+        recyclerView.setAdapter(adapterWrapper);
         recyclerView.addOnScrollListener(scrollListener);
+    }
+
+    public void onDestroy() {
+        adapterWrapper.destroyAds();
     }
 
     // interface.
@@ -377,4 +392,6 @@ public class MeCollectionsView extends FrameLayout
         return SwipeBackLayout.canSwipeBack(recyclerView, dir)
                 || collectionsPresenter.getAdapterItemCount() <= 0;
     }
+
+
 }

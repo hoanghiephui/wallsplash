@@ -1,6 +1,6 @@
 package com.unsplash.wallsplash.main.model.fragment;
 
-import com.unsplash.wallsplash._common.i.model.CategoryManageModel;
+import com.unsplash.wallsplash.common.i.model.CategoryManageModel;
 
 /**
  * Category manage object.

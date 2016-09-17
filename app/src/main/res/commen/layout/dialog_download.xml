@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <com.unsplash.wallsplash._common.ui.widget.MaterialProgressBar
+        <com.unsplash.wallsplash.common.ui.widget.MaterialProgressBar
             android:id="@+id/progress"
             android:layout_width="match_parent"
             android:layout_height="2dp"

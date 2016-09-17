@@ -12,7 +12,6 @@ import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -21,19 +20,19 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.github.rahatarmanahmed.cpv.CircularProgressView;
 import com.unsplash.wallsplash.R;
-import com.unsplash.wallsplash._common.i.model.LoadModel;
-import com.unsplash.wallsplash._common.i.model.ScrollModel;
-import com.unsplash.wallsplash._common.i.model.SearchModel;
-import com.unsplash.wallsplash._common.i.presenter.LoadPresenter;
-import com.unsplash.wallsplash._common.i.presenter.ScrollPresenter;
-import com.unsplash.wallsplash._common.i.presenter.SearchPresenter;
-import com.unsplash.wallsplash._common.i.view.LoadView;
-import com.unsplash.wallsplash._common.i.view.ScrollView;
-import com.unsplash.wallsplash._common.i.view.SearchView;
-import com.unsplash.wallsplash._common.ui.widget.swipeRefreshLayout.BothWaySwipeRefreshLayout;
-import com.unsplash.wallsplash._common.utils.AnimUtils;
-import com.unsplash.wallsplash._common.utils.BackToTopUtils;
-import com.unsplash.wallsplash._common.utils.ThemeUtils;
+import com.unsplash.wallsplash.common.i.model.LoadModel;
+import com.unsplash.wallsplash.common.i.model.ScrollModel;
+import com.unsplash.wallsplash.common.i.model.SearchModel;
+import com.unsplash.wallsplash.common.i.presenter.LoadPresenter;
+import com.unsplash.wallsplash.common.i.presenter.ScrollPresenter;
+import com.unsplash.wallsplash.common.i.presenter.SearchPresenter;
+import com.unsplash.wallsplash.common.i.view.LoadView;
+import com.unsplash.wallsplash.common.i.view.ScrollView;
+import com.unsplash.wallsplash.common.i.view.SearchView;
+import com.unsplash.wallsplash.common.ui.widget.swipeRefreshLayout.BothWaySwipeRefreshLayout;
+import com.unsplash.wallsplash.common.utils.AnimUtils;
+import com.unsplash.wallsplash.common.utils.BackToTopUtils;
+import com.unsplash.wallsplash.common.utils.ThemeUtils;
 import com.unsplash.wallsplash.main.model.widget.LoadObject;
 import com.unsplash.wallsplash.main.model.widget.ScrollObject;
 import com.unsplash.wallsplash.main.model.widget.SearchObject;
@@ -47,7 +46,7 @@ import com.unsplash.wallsplash.main.presenter.widget.SearchImplementor;
 
 public class SearchPhotosView extends FrameLayout
         implements SearchView, LoadView, ScrollView,
-        View.OnClickListener, BothWaySwipeRefreshLayout.OnRefreshAndLoadListener {
+        BothWaySwipeRefreshLayout.OnRefreshAndLoadListener {
     // model.
     private SearchModel searchModel;
     private LoadModel loadModel;
@@ -60,7 +59,7 @@ public class SearchPhotosView extends FrameLayout
     private CircularProgressView progressView;
     private RelativeLayout feedbackContainer;
     private TextView feedbackText;
-    private Button retryButton;
+
 
     // presenter.
     private SearchPresenter searchPresenter;
@@ -152,16 +151,14 @@ public class SearchPhotosView extends FrameLayout
 
         ImageView feedbackImage = (ImageView) findViewById(R.id.container_searching_view_large_feedbackImg);
         Glide.with(getContext())
-                .load(R.drawable.feedback_search_photo)
+                .load(R.drawable.searchicon)
                 .dontAnimate()
                 .into(feedbackImage);
 
         this.feedbackText = (TextView) findViewById(R.id.container_searching_view_large_feedbackTxt);
         feedbackText.setText(getContext().getString(R.string.feedback_search_tv));
 
-        this.retryButton = (Button) findViewById(R.id.container_searching_view_large_feedbackBtn);
-        retryButton.setOnClickListener(this);
-        retryButton.setVisibility(GONE);
+
     }
 
     // interface.
@@ -205,15 +202,6 @@ public class SearchPhotosView extends FrameLayout
      * <br> interface.
      */
 
-    // on click listener.
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.container_searching_view_large_feedbackBtn:
-                searchPresenter.initRefresh(getContext());
-                break;
-        }
-    }
 
     // on refresh and load listener.
 
@@ -262,10 +250,6 @@ public class SearchPhotosView extends FrameLayout
         refreshLayout.setPermitLoad(permit);
     }
 
-    @Override
-    public void showButton() {
-        retryButton.setVisibility(VISIBLE);
-    }
 
     @Override
     public void setBackgroundOpacity() {

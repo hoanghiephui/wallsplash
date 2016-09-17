@@ -5,10 +5,10 @@ import android.support.design.widget.Snackbar;
 import android.view.View;
 
 import com.unsplash.wallsplash.R;
-import com.unsplash.wallsplash._common.i.presenter.PopupManagePresenter;
-import com.unsplash.wallsplash._common.i.view.PopupManageView;
-import com.unsplash.wallsplash._common.ui.popup.PhotoOrderPopupWindow;
-import com.unsplash.wallsplash._common.utils.NotificationUtils;
+import com.unsplash.wallsplash.common.i.presenter.PopupManagePresenter;
+import com.unsplash.wallsplash.common.i.view.PopupManageView;
+import com.unsplash.wallsplash.common.ui.popup.PhotoOrderPopupWindow;
+import com.unsplash.wallsplash.common.utils.NotificationUtils;
 
 /**
  * Popup manage implementor.

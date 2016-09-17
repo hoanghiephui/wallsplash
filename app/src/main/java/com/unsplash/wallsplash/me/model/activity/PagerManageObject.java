@@ -1,6 +1,6 @@
 package com.unsplash.wallsplash.me.model.activity;
 
-import com.unsplash.wallsplash._common.i.model.PagerManageModel;
+import com.unsplash.wallsplash.common.i.model.PagerManageModel;
 
 /**
  * Pager manage object.

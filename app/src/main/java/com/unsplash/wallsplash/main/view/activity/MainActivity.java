@@ -26,27 +26,27 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.unsplash.wallsplash.R;
 import com.unsplash.wallsplash.WallSplashApplication;
-import com.unsplash.wallsplash._common.data.tools.AuthManager;
-import com.unsplash.wallsplash._common.data.tools.DownloadManager;
-import com.unsplash.wallsplash._common.i.model.DrawerModel;
-import com.unsplash.wallsplash._common.i.model.FragmentManageModel;
-import com.unsplash.wallsplash._common.i.presenter.DrawerPresenter;
-import com.unsplash.wallsplash._common.i.presenter.FragmentManagePresenter;
-import com.unsplash.wallsplash._common.i.presenter.MeManagePresenter;
-import com.unsplash.wallsplash._common.i.presenter.MessageManagePresenter;
-import com.unsplash.wallsplash._common.i.view.DrawerView;
-import com.unsplash.wallsplash._common.i.view.FragmentManageView;
-import com.unsplash.wallsplash._common.i.view.MeManageView;
-import com.unsplash.wallsplash._common.i.view.MessageManageView;
-import com.unsplash.wallsplash._common.ui.activity.AboutActivity;
-import com.unsplash.wallsplash._common.ui.activity.BaseActivity;
-import com.unsplash.wallsplash._common.ui.activity.DownloadManageActivity;
-import com.unsplash.wallsplash._common.ui.activity.SettingsActivity;
-import com.unsplash.wallsplash._common.ui.widget.CircleImageView;
-import com.unsplash.wallsplash._common.utils.BackToTopUtils;
-import com.unsplash.wallsplash._common.utils.SafeHandler;
-import com.unsplash.wallsplash._common.utils.ThemeUtils;
-import com.unsplash.wallsplash._common.utils.TypefaceUtils;
+import com.unsplash.wallsplash.common.data.tools.AuthManager;
+import com.unsplash.wallsplash.common.data.tools.DownloadManager;
+import com.unsplash.wallsplash.common.i.model.DrawerModel;
+import com.unsplash.wallsplash.common.i.model.FragmentManageModel;
+import com.unsplash.wallsplash.common.i.presenter.DrawerPresenter;
+import com.unsplash.wallsplash.common.i.presenter.FragmentManagePresenter;
+import com.unsplash.wallsplash.common.i.presenter.MeManagePresenter;
+import com.unsplash.wallsplash.common.i.presenter.MessageManagePresenter;
+import com.unsplash.wallsplash.common.i.view.DrawerView;
+import com.unsplash.wallsplash.common.i.view.FragmentManageView;
+import com.unsplash.wallsplash.common.i.view.MeManageView;
+import com.unsplash.wallsplash.common.i.view.MessageManageView;
+import com.unsplash.wallsplash.common.ui.activity.AboutActivity;
+import com.unsplash.wallsplash.common.ui.activity.BaseActivity;
+import com.unsplash.wallsplash.common.ui.activity.DownloadManageActivity;
+import com.unsplash.wallsplash.common.ui.activity.SettingsActivity;
+import com.unsplash.wallsplash.common.ui.widget.CircleImageView;
+import com.unsplash.wallsplash.common.utils.BackToTopUtils;
+import com.unsplash.wallsplash.common.utils.SafeHandler;
+import com.unsplash.wallsplash.common.utils.ThemeUtils;
+import com.unsplash.wallsplash.common.utils.TypefaceUtils;
 import com.unsplash.wallsplash.main.model.activity.DrawerObject;
 import com.unsplash.wallsplash.main.model.activity.FragmentManageObject;
 import com.unsplash.wallsplash.main.presenter.activity.DrawerImplementor;
@@ -99,6 +99,8 @@ public class MainActivity extends BaseActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        initModel();
+        initPresenter();
     }
 
     @Override
@@ -106,9 +108,9 @@ public class MainActivity extends BaseActivity
         super.onStart();
         if (!isStarted()) {
             setStarted();
-            initModel();
+
             initView();
-            initPresenter();
+
             fragmentManagePresenter.changeFragment(R.id.action_home);
         }
     }

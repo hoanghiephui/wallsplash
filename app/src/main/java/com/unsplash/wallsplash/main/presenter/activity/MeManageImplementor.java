@@ -11,11 +11,11 @@ import android.support.v4.util.Pair;
 import android.view.View;
 
 import com.unsplash.wallsplash.R;
-import com.unsplash.wallsplash._common.data.tools.AuthManager;
-import com.unsplash.wallsplash._common.i.presenter.MeManagePresenter;
-import com.unsplash.wallsplash._common.i.view.MeManageView;
-import com.unsplash.wallsplash._common.ui.activity.LoginActivity;
-import com.unsplash.wallsplash._common.utils.NotificationUtils;
+import com.unsplash.wallsplash.common.data.tools.AuthManager;
+import com.unsplash.wallsplash.common.i.presenter.MeManagePresenter;
+import com.unsplash.wallsplash.common.i.view.MeManageView;
+import com.unsplash.wallsplash.common.ui.activity.LoginActivity;
+import com.unsplash.wallsplash.common.utils.NotificationUtils;
 import com.unsplash.wallsplash.me.view.activity.MeActivity;
 
 /**

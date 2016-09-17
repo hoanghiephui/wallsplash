@@ -1,7 +1,7 @@
 package com.unsplash.wallsplash.main.presenter.activity;
 
-import com.unsplash.wallsplash._common.i.presenter.MessageManagePresenter;
-import com.unsplash.wallsplash._common.i.view.MessageManageView;
+import com.unsplash.wallsplash.common.i.presenter.MessageManagePresenter;
+import com.unsplash.wallsplash.common.i.view.MessageManageView;
 
 /**
  * Message manage implementor.

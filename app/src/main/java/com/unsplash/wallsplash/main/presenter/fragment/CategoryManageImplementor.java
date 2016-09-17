@@ -1,7 +1,7 @@
 package com.unsplash.wallsplash.main.presenter.fragment;
 
-import com.unsplash.wallsplash._common.i.model.CategoryManageModel;
-import com.unsplash.wallsplash._common.i.presenter.CategoryManagePresenter;
+import com.unsplash.wallsplash.common.i.model.CategoryManageModel;
+import com.unsplash.wallsplash.common.i.presenter.CategoryManagePresenter;
 
 /**
  * Category manage implementor.

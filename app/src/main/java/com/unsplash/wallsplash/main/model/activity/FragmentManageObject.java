@@ -2,7 +2,7 @@ package com.unsplash.wallsplash.main.model.activity;
 
 import android.support.v4.app.Fragment;
 
-import com.unsplash.wallsplash._common.i.model.FragmentManageModel;
+import com.unsplash.wallsplash.common.i.model.FragmentManageModel;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,8 +1,8 @@
 package com.unsplash.wallsplash.photo.presenter.widget;
 
-import com.unsplash.wallsplash._common.i.model.LoadModel;
-import com.unsplash.wallsplash._common.i.presenter.LoadPresenter;
-import com.unsplash.wallsplash._common.i.view.LoadView;
+import com.unsplash.wallsplash.common.i.model.LoadModel;
+import com.unsplash.wallsplash.common.i.presenter.LoadPresenter;
+import com.unsplash.wallsplash.common.i.view.LoadView;
 import com.unsplash.wallsplash.photo.model.widget.LoadObject;
 
 /**

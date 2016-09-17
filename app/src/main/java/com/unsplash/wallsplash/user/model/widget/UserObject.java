@@ -1,9 +1,9 @@
 package com.unsplash.wallsplash.user.model.widget;
 
 import com.unsplash.wallsplash.WallSplashApplication;
-import com.unsplash.wallsplash._common.data.data.User;
-import com.unsplash.wallsplash._common.data.service.UserService;
-import com.unsplash.wallsplash._common.i.model.UserModel;
+import com.unsplash.wallsplash.common.data.data.User;
+import com.unsplash.wallsplash.common.data.service.UserService;
+import com.unsplash.wallsplash.common.i.model.UserModel;
 
 /**
  * User object.

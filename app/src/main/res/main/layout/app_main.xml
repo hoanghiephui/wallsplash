@@ -14,7 +14,7 @@
         android:layout_margin="@dimen/fab_margin"
         app:backgroundTint="?attr/colorAccent"
         android:src="@drawable/ic_cloud_upload_white_24dp"
-        app:layout_behavior="com.unsplash.wallsplash._common.ui.widget.ScrollAwareFABBehavior" />
+        app:layout_behavior="com.unsplash.wallsplash.common.ui.widget.ScrollAwareFABBehavior" />
 
     <FrameLayout
         android:id="@+id/activity_main_fragment"

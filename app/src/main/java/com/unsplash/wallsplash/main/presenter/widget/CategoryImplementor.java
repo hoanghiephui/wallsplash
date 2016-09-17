@@ -6,15 +6,15 @@ import android.support.design.widget.Snackbar;
 
 import com.unsplash.wallsplash.R;
 import com.unsplash.wallsplash.WallSplashApplication;
-import com.unsplash.wallsplash._common.data.api.PhotoApi;
-import com.unsplash.wallsplash._common.data.data.Photo;
-import com.unsplash.wallsplash._common.data.service.PhotoService;
-import com.unsplash.wallsplash._common.i.model.CategoryModel;
-import com.unsplash.wallsplash._common.i.presenter.CategoryPresenter;
-import com.unsplash.wallsplash._common.i.view.CategoryView;
-import com.unsplash.wallsplash._common.ui.dialog.RateLimitDialog;
-import com.unsplash.wallsplash._common.utils.NotificationUtils;
-import com.unsplash.wallsplash._common.utils.ValueUtils;
+import com.unsplash.wallsplash.common.data.api.PhotoApi;
+import com.unsplash.wallsplash.common.data.data.Photo;
+import com.unsplash.wallsplash.common.data.service.PhotoService;
+import com.unsplash.wallsplash.common.i.model.CategoryModel;
+import com.unsplash.wallsplash.common.i.presenter.CategoryPresenter;
+import com.unsplash.wallsplash.common.i.view.CategoryView;
+import com.unsplash.wallsplash.common.ui.dialog.RateLimitDialog;
+import com.unsplash.wallsplash.common.utils.NotificationUtils;
+import com.unsplash.wallsplash.common.utils.ValueUtils;
 
 import java.util.List;
 
@@ -219,7 +219,7 @@ public class CategoryImplementor
                 view.requestPhotosFailed(c.getString(R.string.feedback_load_nothing_tv));
                 RateLimitDialog.checkAndNotify(
                         WallSplashApplication.getInstance().getActivityList().get(
-                                WallSplashApplication.getInstance().getActivityList().size()),
+                                WallSplashApplication.getInstance().getActivityList().size() - 1),
                         response.headers().get("X-Ratelimit-Remaining"));
             }
         }

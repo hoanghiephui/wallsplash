@@ -1,6 +1,6 @@
 package com.unsplash.wallsplash.main.model.widget;
 
-import com.unsplash.wallsplash._common.i.model.ScrollModel;
+import com.unsplash.wallsplash.common.i.model.ScrollModel;
 
 /**
  * Scroll object.

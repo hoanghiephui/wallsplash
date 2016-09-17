@@ -1,6 +1,6 @@
 package com.unsplash.wallsplash.me.model.widget;
 
-import com.unsplash.wallsplash._common.i.model.LoadModel;
+import com.unsplash.wallsplash.common.i.model.LoadModel;
 
 /**
  * Load object.

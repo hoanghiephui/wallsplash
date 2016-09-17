@@ -1,9 +1,9 @@
 package com.unsplash.wallsplash.collection.presenter.widget;
 
-import com.unsplash.wallsplash._common.i.model.LoadModel;
-import com.unsplash.wallsplash._common.i.presenter.LoadPresenter;
-import com.unsplash.wallsplash._common.i.view.LoadView;
 import com.unsplash.wallsplash.collection.model.widget.LoadObject;
+import com.unsplash.wallsplash.common.i.model.LoadModel;
+import com.unsplash.wallsplash.common.i.presenter.LoadPresenter;
+import com.unsplash.wallsplash.common.i.view.LoadView;
 
 /**
  * Load implementor.

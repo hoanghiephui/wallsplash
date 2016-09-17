@@ -1,9 +1,9 @@
 package com.unsplash.wallsplash.photo.model.activity;
 
 import com.unsplash.wallsplash.WallSplashApplication;
-import com.unsplash.wallsplash._common.data.data.Photo;
-import com.unsplash.wallsplash._common.data.data.PhotoDetails;
-import com.unsplash.wallsplash._common.i.model.PhotoInfoModel;
+import com.unsplash.wallsplash.common.data.data.Photo;
+import com.unsplash.wallsplash.common.data.data.PhotoDetails;
+import com.unsplash.wallsplash.common.i.model.PhotoInfoModel;
 
 /**
  * Photo info object.

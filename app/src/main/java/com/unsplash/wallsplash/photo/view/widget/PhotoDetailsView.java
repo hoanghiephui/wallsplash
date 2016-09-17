@@ -15,16 +15,17 @@ import android.widget.TextView;
 
 import com.github.rahatarmanahmed.cpv.CircularProgressView;
 import com.unsplash.wallsplash.R;
-import com.unsplash.wallsplash._common.data.data.PhotoDetails;
-import com.unsplash.wallsplash._common.i.model.LoadModel;
-import com.unsplash.wallsplash._common.i.model.PhotoDetailsModel;
-import com.unsplash.wallsplash._common.i.presenter.LoadPresenter;
-import com.unsplash.wallsplash._common.i.presenter.PhotoDetailsPresenter;
-import com.unsplash.wallsplash._common.i.view.LoadView;
-import com.unsplash.wallsplash._common.ui.adapter.TagAdapter;
-import com.unsplash.wallsplash._common.utils.AnimUtils;
-import com.unsplash.wallsplash._common.utils.ThemeUtils;
-import com.unsplash.wallsplash._common.utils.TypefaceUtils;
+import com.unsplash.wallsplash.common.data.data.Photo;
+import com.unsplash.wallsplash.common.data.data.PhotoDetails;
+import com.unsplash.wallsplash.common.i.model.LoadModel;
+import com.unsplash.wallsplash.common.i.model.PhotoDetailsModel;
+import com.unsplash.wallsplash.common.i.presenter.LoadPresenter;
+import com.unsplash.wallsplash.common.i.presenter.PhotoDetailsPresenter;
+import com.unsplash.wallsplash.common.i.view.LoadView;
+import com.unsplash.wallsplash.common.ui.adapter.TagAdapter;
+import com.unsplash.wallsplash.common.utils.AnimUtils;
+import com.unsplash.wallsplash.common.utils.ThemeUtils;
+import com.unsplash.wallsplash.common.utils.TypefaceUtils;
 import com.unsplash.wallsplash.photo.model.widget.LoadObject;
 import com.unsplash.wallsplash.photo.model.widget.PhotoDetailsObject;
 import com.unsplash.wallsplash.photo.presenter.widget.LoadImplementor;
@@ -36,7 +37,7 @@ import com.zhy.view.flowlayout.TagFlowLayout;
  */
 
 public class PhotoDetailsView extends FrameLayout
-        implements com.unsplash.wallsplash._common.i.view.PhotoDetailsView, LoadView,
+        implements com.unsplash.wallsplash.common.i.view.PhotoDetailsView, LoadView,
         View.OnClickListener {
     // model.
     private PhotoDetailsModel photoDetailsModel;
@@ -94,8 +95,13 @@ public class PhotoDetailsView extends FrameLayout
         View v = LayoutInflater.from(getContext()).inflate(R.layout.container_photo_details, null);
         addView(v);
 
-        initModel();
+
         initView();
+        initPresenter();
+    }
+
+    public void initMP(Photo p) {
+        initModel(p);
         initPresenter();
     }
 
@@ -182,8 +188,8 @@ public class PhotoDetailsView extends FrameLayout
      */
 
     // init.
-    private void initModel() {
-        this.photoDetailsModel = new PhotoDetailsObject();
+    private void initModel(Photo photo) {
+        this.photoDetailsModel = new PhotoDetailsObject(photo);
         this.loadModel = new LoadObject(LoadObject.LOADING_STATE);
     }
 

@@ -1,8 +1,8 @@
 package com.unsplash.wallsplash.main.presenter.fragment;
 
-import com.unsplash.wallsplash._common.i.model.SearchBarModel;
-import com.unsplash.wallsplash._common.i.presenter.SearchBarPresenter;
-import com.unsplash.wallsplash._common.i.view.SearchBarView;
+import com.unsplash.wallsplash.common.i.model.SearchBarModel;
+import com.unsplash.wallsplash.common.i.presenter.SearchBarPresenter;
+import com.unsplash.wallsplash.common.i.view.SearchBarView;
 
 /**
  * Search bar implementor.

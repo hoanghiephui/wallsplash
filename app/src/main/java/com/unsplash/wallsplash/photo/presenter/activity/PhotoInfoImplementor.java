@@ -1,12 +1,12 @@
 package com.unsplash.wallsplash.photo.presenter.activity;
 
 import com.unsplash.wallsplash.WallSplashApplication;
-import com.unsplash.wallsplash._common.data.data.Photo;
-import com.unsplash.wallsplash._common.data.data.PhotoDetails;
-import com.unsplash.wallsplash._common.data.data.User;
-import com.unsplash.wallsplash._common.i.model.PhotoInfoModel;
-import com.unsplash.wallsplash._common.i.presenter.PhotoInfoPresenter;
-import com.unsplash.wallsplash._common.i.view.PhotoInfoView;
+import com.unsplash.wallsplash.common.data.data.Photo;
+import com.unsplash.wallsplash.common.data.data.PhotoDetails;
+import com.unsplash.wallsplash.common.data.data.User;
+import com.unsplash.wallsplash.common.i.model.PhotoInfoModel;
+import com.unsplash.wallsplash.common.i.presenter.PhotoInfoPresenter;
+import com.unsplash.wallsplash.common.i.view.PhotoInfoView;
 
 /**
  * Photo info implementor.

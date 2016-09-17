@@ -1,7 +1,7 @@
 package com.unsplash.wallsplash.user.presenter.activity;
 
-import com.unsplash.wallsplash._common.i.presenter.ToolbarPresenter;
-import com.unsplash.wallsplash._common.i.view.ToolbarView;
+import com.unsplash.wallsplash.common.i.presenter.ToolbarPresenter;
+import com.unsplash.wallsplash.common.i.view.ToolbarView;
 
 /**
  * Toolbar implementor.

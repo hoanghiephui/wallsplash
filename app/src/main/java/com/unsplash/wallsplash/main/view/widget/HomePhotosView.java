@@ -20,21 +20,21 @@ import com.github.rahatarmanahmed.cpv.CircularProgressView;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
 import com.unsplash.wallsplash.R;
-import com.unsplash.wallsplash._common.i.model.LoadModel;
-import com.unsplash.wallsplash._common.i.model.PhotosModel;
-import com.unsplash.wallsplash._common.i.model.ScrollModel;
-import com.unsplash.wallsplash._common.i.presenter.LoadPresenter;
-import com.unsplash.wallsplash._common.i.presenter.PagerPresenter;
-import com.unsplash.wallsplash._common.i.presenter.PhotosPresenter;
-import com.unsplash.wallsplash._common.i.presenter.ScrollPresenter;
-import com.unsplash.wallsplash._common.i.view.LoadView;
-import com.unsplash.wallsplash._common.i.view.PagerView;
-import com.unsplash.wallsplash._common.i.view.PhotosView;
-import com.unsplash.wallsplash._common.i.view.ScrollView;
-import com.unsplash.wallsplash._common.ui.widget.swipeRefreshLayout.BothWaySwipeRefreshLayout;
-import com.unsplash.wallsplash._common.utils.AnimUtils;
-import com.unsplash.wallsplash._common.utils.BackToTopUtils;
-import com.unsplash.wallsplash._common.utils.ThemeUtils;
+import com.unsplash.wallsplash.common.i.model.LoadModel;
+import com.unsplash.wallsplash.common.i.model.PhotosModel;
+import com.unsplash.wallsplash.common.i.model.ScrollModel;
+import com.unsplash.wallsplash.common.i.presenter.LoadPresenter;
+import com.unsplash.wallsplash.common.i.presenter.PagerPresenter;
+import com.unsplash.wallsplash.common.i.presenter.PhotosPresenter;
+import com.unsplash.wallsplash.common.i.presenter.ScrollPresenter;
+import com.unsplash.wallsplash.common.i.view.LoadView;
+import com.unsplash.wallsplash.common.i.view.PagerView;
+import com.unsplash.wallsplash.common.i.view.PhotosView;
+import com.unsplash.wallsplash.common.i.view.ScrollView;
+import com.unsplash.wallsplash.common.ui.widget.swipeRefreshLayout.BothWaySwipeRefreshLayout;
+import com.unsplash.wallsplash.common.utils.AnimUtils;
+import com.unsplash.wallsplash.common.utils.BackToTopUtils;
+import com.unsplash.wallsplash.common.utils.ThemeUtils;
 import com.unsplash.wallsplash.main.model.widget.LoadObject;
 import com.unsplash.wallsplash.main.model.widget.PhotosObject;
 import com.unsplash.wallsplash.main.model.widget.ScrollObject;
@@ -127,9 +127,9 @@ public class HomePhotosView extends FrameLayout
 
         this.recyclerView = (RecyclerView) findViewById(R.id.container_photo_list_recyclerView);
         String[] testDevicesIds = new String[]{getContext().getString(R.string.testDeviceID), AdRequest.DEVICE_ID_EMULATOR};
-        adapterWrapper = new AdmobExpressRecyclerAdapterWrapper(getContext(), "ca-app-pub-2257698129050878/7146096743", testDevicesIds, new AdSize(AdSize.FULL_WIDTH, 250));
+        adapterWrapper = new AdmobExpressRecyclerAdapterWrapper(getContext(), getContext().getString(R.string.id_ads), testDevicesIds, new AdSize(AdSize.FULL_WIDTH, 250));
         adapterWrapper.setAdapter(photosModel.getAdapter());
-        adapterWrapper.setLimitOfAds(3);
+        adapterWrapper.setLimitOfAds(100);
         adapterWrapper.setNoOfDataBetweenAds(10);
         adapterWrapper.setFirstAdIndex(2);
         adapterWrapper.setViewTypeBiggestSource(100);
@@ -148,7 +148,7 @@ public class HomePhotosView extends FrameLayout
 
         ImageView feedbackImg = (ImageView) findViewById(R.id.container_loading_view_large_feedbackImg);
         Glide.with(getContext())
-                .load(R.drawable.feedback_load_failed)
+                .load(R.drawable.ic_launcher)
                 .dontAnimate()
                 .into(feedbackImg);
 

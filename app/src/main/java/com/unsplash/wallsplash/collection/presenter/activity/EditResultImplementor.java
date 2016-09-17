@@ -1,10 +1,10 @@
 package com.unsplash.wallsplash.collection.presenter.activity;
 
 import com.unsplash.wallsplash.WallSplashApplication;
-import com.unsplash.wallsplash._common.data.data.Collection;
-import com.unsplash.wallsplash._common.i.model.EditResultModel;
-import com.unsplash.wallsplash._common.i.presenter.EditResultPresenter;
-import com.unsplash.wallsplash._common.i.view.EditResultView;
+import com.unsplash.wallsplash.common.data.data.Collection;
+import com.unsplash.wallsplash.common.i.model.EditResultModel;
+import com.unsplash.wallsplash.common.i.presenter.EditResultPresenter;
+import com.unsplash.wallsplash.common.i.view.EditResultView;
 
 /**
  * Edit result implementor.

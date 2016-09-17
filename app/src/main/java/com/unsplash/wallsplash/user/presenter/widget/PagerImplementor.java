@@ -1,7 +1,7 @@
 package com.unsplash.wallsplash.user.presenter.widget;
 
-import com.unsplash.wallsplash._common.i.presenter.PagerPresenter;
-import com.unsplash.wallsplash._common.i.view.PagerView;
+import com.unsplash.wallsplash.common.i.presenter.PagerPresenter;
+import com.unsplash.wallsplash.common.i.view.PagerView;
 
 /**
  * Pager implementor.

@@ -5,9 +5,9 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.view.View;
 
-import com.unsplash.wallsplash._common.i.presenter.PopupManagePresenter;
-import com.unsplash.wallsplash._common.i.view.PopupManageView;
-import com.unsplash.wallsplash._common.ui.popup.PhotoOrderPopupWindow;
+import com.unsplash.wallsplash.common.i.presenter.PopupManagePresenter;
+import com.unsplash.wallsplash.common.i.view.PopupManageView;
+import com.unsplash.wallsplash.common.ui.popup.PhotoOrderPopupWindow;
 
 /**
  * Category fragment popup manage implementor.

@@ -28,7 +28,7 @@
             android:label="@string/app_name" />
 
         <activity
-            android:name="._common.ui.activity.PreviewPhotoActivity"
+            android:name=".common.ui.activity.PreviewPhotoActivity"
             android:theme="@style/MysplashTheme_light.Translucent.PhotoPreview"
             android:label="@string/app_name" />
 
@@ -42,7 +42,8 @@
             android:theme="@style/MysplashTheme_light.Translucent.User"
             android:label="@string/app_name" />
 
-        <activity android:name="._common.ui.activity.LoginActivity"
+        <activity
+            android:name=".common.ui.activity.LoginActivity"
             android:theme="@style/MysplashTheme_light.Translucent"
             android:label="@string/app_name"
             android:launchMode="singleTop">
@@ -61,22 +62,23 @@
             android:theme="@style/MysplashTheme_light.Translucent.Me"
             android:label="@string/app_name" />
 
-        <activity android:name="._common.ui.activity.UpdateMeActivity"
+        <activity
+            android:name=".common.ui.activity.UpdateMeActivity"
             android:theme="@style/MysplashTheme_light.Translucent"
             android:label="@string/app_name" />
 
         <activity
-            android:name="._common.ui.activity.DownloadManageActivity"
+            android:name=".common.ui.activity.DownloadManageActivity"
             android:theme="@style/MysplashTheme_light.Translucent"
             android:label="@string/app_name" />
 
         <activity
-            android:name="._common.ui.activity.SettingsActivity"
+            android:name=".common.ui.activity.SettingsActivity"
             android:theme="@style/MysplashTheme_light.Translucent.Settings"
             android:label="@string/action_settings" />
 
         <activity
-            android:name="._common.ui.activity.AboutActivity"
+            android:name=".common.ui.activity.AboutActivity"
             android:theme="@style/MysplashTheme_light.Translucent"
             android:label="@string/action_about"/>
 

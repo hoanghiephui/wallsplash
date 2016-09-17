@@ -50,7 +50,7 @@
         android:layout_height="wrap_content"
         android:layout_above="@id/container_nav_header_title">
 
-        <com.unsplash.wallsplash._common.ui.widget.CircleImageView
+        <com.unsplash.wallsplash.common.ui.widget.CircleImageView
             android:id="@+id/container_nav_header_avatar"
             android:layout_width="@dimen/large_icon_size"
             android:layout_height="@dimen/large_icon_size"

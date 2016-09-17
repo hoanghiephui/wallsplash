@@ -1,7 +1,7 @@
 package com.unsplash.wallsplash.collection.presenter.widget;
 
-import com.unsplash.wallsplash._common.i.presenter.SwipeBackPresenter;
-import com.unsplash.wallsplash._common.i.view.SwipeBackView;
+import com.unsplash.wallsplash.common.i.presenter.SwipeBackPresenter;
+import com.unsplash.wallsplash.common.i.view.SwipeBackView;
 
 /**
  * Swipe back implementor.

@@ -11,13 +11,13 @@
     tools:layout_marginTop="24dp"
     tools:ignore="UnusedAttribute">
 
-    <com.unsplash.wallsplash._common.ui.widget.FreedomImageView
+    <com.unsplash.wallsplash.common.ui.widget.FreedomImageView
         android:id="@+id/item_collection_cover"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:scaleType="centerCrop"
         app:fiv_text_position="top"
-        tools:src="@drawable/design_about_app" />
+        tools:src="@drawable/bg_blur" />
 
     <TextView
         android:id="@+id/item_collection_subtitle"
@@ -34,7 +34,7 @@
         style="@style/subtitle_text"
         tools:text="3 photos"/>
 
-    <com.unsplash.wallsplash._common.ui.widget.ShortTimeView
+    <com.unsplash.wallsplash.common.ui.widget.ShortTimeView
         tools:text="TextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -45,7 +45,7 @@
         android:layout_marginLeft="8dp"
         android:textColor="@color/colorTextLight" />
 
-    <com.unsplash.wallsplash._common.ui.widget.MaterialProgressBar
+    <com.unsplash.wallsplash.common.ui.widget.MaterialProgressBar
         android:layout_centerInParent="true"
         android:id="@+id/progress"
         android:layout_width="match_parent"

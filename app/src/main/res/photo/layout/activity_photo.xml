@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.unsplash.wallsplash._common.ui.widget.SwipeBackLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.unsplash.wallsplash.common.ui.widget.SwipeBackLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_photo_swipeBackLayout"
@@ -14,7 +14,7 @@
         android:transitionName="@string/transition_photo_background"
         tools:ignore="UnusedAttribute">
 
-        <com.unsplash.wallsplash._common.ui.widget.StatusBarView
+        <com.unsplash.wallsplash.common.ui.widget.StatusBarView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?attr/colorPrimary"
@@ -43,14 +43,14 @@
                     android:layout_height="wrap_content"
                     android:fitsSystemWindows="true">
 
-                    <com.unsplash.wallsplash._common.ui.widget.FreedomImageView
+                    <com.unsplash.wallsplash.common.ui.widget.FreedomImageView
                         android:id="@+id/activity_photo_image"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:fitsSystemWindows="true"
                         android:foreground="?attr/selectableItemBackground"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/design_about_app"
+                        android:src="@drawable/functiongraphic"
                         android:transitionName="@string/transition_photo_image"
                         app:fiv_cover_mode="true"
 
@@ -58,7 +58,7 @@
                         app:layout_collapseMode="parallax"
                         tools:ignore="UnusedAttribute" />
 
-                    <com.unsplash.wallsplash._common.ui.widget.FreedomTouchView
+                    <com.unsplash.wallsplash.common.ui.widget.FreedomTouchView
                         android:id="@+id/activity_photo_touchView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -136,7 +136,7 @@
                                 tools:ignore="RtlHardcoded"
                                 tools:text="TAKEN BY Alfredo Wong" />
 
-                            <com.unsplash.wallsplash._common.ui.widget.ShortTimeView
+                            <com.unsplash.wallsplash.common.ui.widget.ShortTimeView
                                 android:id="@+id/activity_photo_subtitle"
                                 style="@style/subtitle_text"
                                 android:layout_below="@id/activity_photo_title"
@@ -146,7 +146,7 @@
                                 tools:ignore="RtlHardcoded"
                                 tools:text="ON 2016-07-23" />
 
-                            <com.unsplash.wallsplash._common.ui.widget.CircleImageView
+                            <com.unsplash.wallsplash.common.ui.widget.CircleImageView
                                 android:id="@+id/activity_photo_avatar"
                                 android:layout_width="@dimen/large_icon_size"
                                 android:layout_height="@dimen/large_icon_size"
@@ -269,4 +269,4 @@
 
     </android.support.design.widget.CoordinatorLayout>
 
-</com.unsplash.wallsplash._common.ui.widget.SwipeBackLayout>
+</com.unsplash.wallsplash.common.ui.widget.SwipeBackLayout>

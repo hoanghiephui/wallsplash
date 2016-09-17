@@ -22,28 +22,28 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.unsplash.wallsplash.R;
 import com.unsplash.wallsplash.WallSplashApplication;
-import com.unsplash.wallsplash._common.data.data.Collection;
-import com.unsplash.wallsplash._common.data.data.User;
-import com.unsplash.wallsplash._common.i.model.EditResultModel;
-import com.unsplash.wallsplash._common.i.presenter.EditResultPresenter;
-import com.unsplash.wallsplash._common.i.presenter.SwipeBackManagePresenter;
-import com.unsplash.wallsplash._common.i.presenter.ToolbarPresenter;
-import com.unsplash.wallsplash._common.i.view.EditResultView;
-import com.unsplash.wallsplash._common.i.view.SwipeBackManageView;
-import com.unsplash.wallsplash._common.i.view.ToolbarView;
-import com.unsplash.wallsplash._common.ui.activity.BaseActivity;
-import com.unsplash.wallsplash._common.ui.dialog.UpdateCollectionDialog;
-import com.unsplash.wallsplash._common.ui.widget.StatusBarView;
-import com.unsplash.wallsplash._common.ui.widget.SwipeBackLayout;
-import com.unsplash.wallsplash._common.utils.AnimUtils;
-import com.unsplash.wallsplash._common.utils.BackToTopUtils;
-import com.unsplash.wallsplash._common.utils.ThemeUtils;
-import com.unsplash.wallsplash._common.utils.TypefaceUtils;
 import com.unsplash.wallsplash.collection.model.activity.EditResultObject;
 import com.unsplash.wallsplash.collection.presenter.activity.EditResultImplementor;
 import com.unsplash.wallsplash.collection.presenter.activity.SwipeBackManageImplementor;
 import com.unsplash.wallsplash.collection.presenter.activity.ToolbarImplementor;
 import com.unsplash.wallsplash.collection.view.widget.CollectionPhotosView;
+import com.unsplash.wallsplash.common.data.data.Collection;
+import com.unsplash.wallsplash.common.data.data.User;
+import com.unsplash.wallsplash.common.i.model.EditResultModel;
+import com.unsplash.wallsplash.common.i.presenter.EditResultPresenter;
+import com.unsplash.wallsplash.common.i.presenter.SwipeBackManagePresenter;
+import com.unsplash.wallsplash.common.i.presenter.ToolbarPresenter;
+import com.unsplash.wallsplash.common.i.view.EditResultView;
+import com.unsplash.wallsplash.common.i.view.SwipeBackManageView;
+import com.unsplash.wallsplash.common.i.view.ToolbarView;
+import com.unsplash.wallsplash.common.ui.activity.BaseActivity;
+import com.unsplash.wallsplash.common.ui.dialog.UpdateCollectionDialog;
+import com.unsplash.wallsplash.common.ui.widget.StatusBarView;
+import com.unsplash.wallsplash.common.ui.widget.SwipeBackLayout;
+import com.unsplash.wallsplash.common.utils.AnimUtils;
+import com.unsplash.wallsplash.common.utils.BackToTopUtils;
+import com.unsplash.wallsplash.common.utils.ThemeUtils;
+import com.unsplash.wallsplash.common.utils.TypefaceUtils;
 import com.unsplash.wallsplash.user.view.activity.UserActivity;
 
 /**
@@ -78,6 +78,8 @@ public class CollectionActivity extends BaseActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_collection);
+        initModel();
+        initPresenter();
     }
 
     @Override
@@ -85,9 +87,7 @@ public class CollectionActivity extends BaseActivity
         super.onStart();
         if (!isStarted()) {
             setStarted();
-            initModel();
             initView();
-            initPresenter();
             AnimUtils.animInitShow(photosView, 400);
         }
     }
@@ -96,6 +96,7 @@ public class CollectionActivity extends BaseActivity
     protected void onDestroy() {
         super.onDestroy();
         photosView.cancelRequest();
+        photosView.onDestroy();
     }
 
     @Override
@@ -212,7 +213,7 @@ public class CollectionActivity extends BaseActivity
         subtitle.setText("By " + c.user.name);
 
         this.photosView = (CollectionPhotosView) findViewById(R.id.activity_collection_photosView);
-        photosView.setActivity(this);
+        photosView.initMP(this, (Collection) editResultPresenter.getEditKey());
         photosView.initRefresh();
     }
 

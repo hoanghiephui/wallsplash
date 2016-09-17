@@ -1,10 +1,9 @@
 package com.unsplash.wallsplash.photo.model.widget;
 
-import com.unsplash.wallsplash.WallSplashApplication;
-import com.unsplash.wallsplash._common.data.data.Photo;
-import com.unsplash.wallsplash._common.data.data.PhotoDetails;
-import com.unsplash.wallsplash._common.data.service.PhotoService;
-import com.unsplash.wallsplash._common.i.model.PhotoDetailsModel;
+import com.unsplash.wallsplash.common.data.data.Photo;
+import com.unsplash.wallsplash.common.data.data.PhotoDetails;
+import com.unsplash.wallsplash.common.data.service.PhotoService;
+import com.unsplash.wallsplash.common.i.model.PhotoDetailsModel;
 
 /**
  * Photo details object.
@@ -21,9 +20,9 @@ public class PhotoDetailsObject
      * <br> life cycle.
      */
 
-    public PhotoDetailsObject() {
+    public PhotoDetailsObject(Photo p) {
         service = PhotoService.getService();
-        photo = WallSplashApplication.getInstance().getPhoto();
+        photo = p;
     }
 
     /**

@@ -3,9 +3,9 @@ package com.unsplash.wallsplash.photo.presenter.activity;
 import android.content.Context;
 import android.view.View;
 
-import com.unsplash.wallsplash._common.i.presenter.PopupManagePresenter;
-import com.unsplash.wallsplash._common.i.view.PopupManageView;
-import com.unsplash.wallsplash._common.ui.popup.PhotoMenuPopupWindow;
+import com.unsplash.wallsplash.common.i.presenter.PopupManagePresenter;
+import com.unsplash.wallsplash.common.i.view.PopupManageView;
+import com.unsplash.wallsplash.common.ui.popup.PhotoMenuPopupWindow;
 
 /**
  * Photo activity popup manage implementor.

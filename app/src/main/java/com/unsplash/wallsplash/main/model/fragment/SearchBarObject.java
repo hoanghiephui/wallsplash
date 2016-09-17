@@ -1,7 +1,7 @@
 package com.unsplash.wallsplash.main.model.fragment;
 
-import com.unsplash.wallsplash._common.data.api.PhotoApi;
-import com.unsplash.wallsplash._common.i.model.SearchBarModel;
+import com.unsplash.wallsplash.common.data.api.PhotoApi;
+import com.unsplash.wallsplash.common.i.model.SearchBarModel;
 
 /**
  * Search bar object.

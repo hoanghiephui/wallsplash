@@ -1,9 +1,9 @@
 package com.unsplash.wallsplash.main.presenter.activity;
 
 import com.unsplash.wallsplash.R;
-import com.unsplash.wallsplash._common.i.model.DrawerModel;
-import com.unsplash.wallsplash._common.i.presenter.DrawerPresenter;
-import com.unsplash.wallsplash._common.i.view.DrawerView;
+import com.unsplash.wallsplash.common.i.model.DrawerModel;
+import com.unsplash.wallsplash.common.i.presenter.DrawerPresenter;
+import com.unsplash.wallsplash.common.i.view.DrawerView;
 
 /**
  * Drawer implementor.

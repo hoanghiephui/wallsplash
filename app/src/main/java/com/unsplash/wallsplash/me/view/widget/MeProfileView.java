@@ -15,15 +15,15 @@ import android.widget.TextView;
 
 import com.github.rahatarmanahmed.cpv.CircularProgressView;
 import com.unsplash.wallsplash.R;
-import com.unsplash.wallsplash._common.data.data.Me;
-import com.unsplash.wallsplash._common.data.tools.AuthManager;
-import com.unsplash.wallsplash._common.i.model.LoadModel;
-import com.unsplash.wallsplash._common.i.presenter.LoadPresenter;
-import com.unsplash.wallsplash._common.i.view.LoadView;
-import com.unsplash.wallsplash._common.ui.adapter.MyPagerAdapter;
-import com.unsplash.wallsplash._common.utils.AnimUtils;
-import com.unsplash.wallsplash._common.utils.ThemeUtils;
-import com.unsplash.wallsplash._common.utils.TypefaceUtils;
+import com.unsplash.wallsplash.common.data.data.Me;
+import com.unsplash.wallsplash.common.data.tools.AuthManager;
+import com.unsplash.wallsplash.common.i.model.LoadModel;
+import com.unsplash.wallsplash.common.i.presenter.LoadPresenter;
+import com.unsplash.wallsplash.common.i.view.LoadView;
+import com.unsplash.wallsplash.common.ui.adapter.MyPagerAdapter;
+import com.unsplash.wallsplash.common.utils.AnimUtils;
+import com.unsplash.wallsplash.common.utils.ThemeUtils;
+import com.unsplash.wallsplash.common.utils.TypefaceUtils;
 import com.unsplash.wallsplash.me.model.widget.LoadObject;
 import com.unsplash.wallsplash.me.presenter.widget.LoadImplementor;
 

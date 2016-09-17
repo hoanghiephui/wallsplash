@@ -1,9 +1,9 @@
 package com.unsplash.wallsplash.user.presenter.activity;
 
-import com.unsplash.wallsplash._common.i.model.PagerManageModel;
-import com.unsplash.wallsplash._common.i.presenter.PagerManagePresenter;
-import com.unsplash.wallsplash._common.i.view.PagerManageView;
-import com.unsplash.wallsplash._common.i.view.PagerView;
+import com.unsplash.wallsplash.common.i.model.PagerManageModel;
+import com.unsplash.wallsplash.common.i.presenter.PagerManagePresenter;
+import com.unsplash.wallsplash.common.i.view.PagerManageView;
+import com.unsplash.wallsplash.common.i.view.PagerView;
 
 /**
  * Pager manage implementor.

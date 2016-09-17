@@ -4,14 +4,14 @@ import android.content.Context;
 import android.support.design.widget.Snackbar;
 
 import com.unsplash.wallsplash.WallSplashApplication;
-import com.unsplash.wallsplash._common.data.data.PhotoDetails;
-import com.unsplash.wallsplash._common.data.service.PhotoService;
-import com.unsplash.wallsplash._common.i.model.PhotoDetailsModel;
-import com.unsplash.wallsplash._common.i.presenter.PhotoDetailsPresenter;
-import com.unsplash.wallsplash._common.i.view.PhotoDetailsView;
-import com.unsplash.wallsplash._common.ui.dialog.RateLimitDialog;
-import com.unsplash.wallsplash._common.utils.NotificationUtils;
-import com.unsplash.wallsplash._common.utils.ValueUtils;
+import com.unsplash.wallsplash.common.data.data.PhotoDetails;
+import com.unsplash.wallsplash.common.data.service.PhotoService;
+import com.unsplash.wallsplash.common.i.model.PhotoDetailsModel;
+import com.unsplash.wallsplash.common.i.presenter.PhotoDetailsPresenter;
+import com.unsplash.wallsplash.common.i.view.PhotoDetailsView;
+import com.unsplash.wallsplash.common.ui.dialog.RateLimitDialog;
+import com.unsplash.wallsplash.common.utils.NotificationUtils;
+import com.unsplash.wallsplash.common.utils.ValueUtils;
 
 import retrofit2.Call;
 import retrofit2.Response;
@@ -82,7 +82,7 @@ public class PhotoDetailsImplementor
             } else {
                 requestPhotoDetails(c);
                 RateLimitDialog.checkAndNotify(
-                        WallSplashApplication.getInstance().getActivityList().get(WallSplashApplication.getInstance().getActivityList().size()),
+                        WallSplashApplication.getInstance().getActivityList().get(WallSplashApplication.getInstance().getActivityList().size() - 1),
                         response.headers().get("X-Ratelimit-Remaining"));
             }
         }

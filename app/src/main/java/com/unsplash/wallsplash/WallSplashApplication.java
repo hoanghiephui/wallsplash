@@ -6,10 +6,10 @@ import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 
 import com.google.android.gms.ads.MobileAds;
-import com.unsplash.wallsplash._common.data.data.Collection;
-import com.unsplash.wallsplash._common.data.data.Photo;
-import com.unsplash.wallsplash._common.data.data.User;
-import com.unsplash.wallsplash._common.utils.ValueUtils;
+import com.unsplash.wallsplash.common.data.data.Collection;
+import com.unsplash.wallsplash.common.data.data.Photo;
+import com.unsplash.wallsplash.common.data.data.User;
+import com.unsplash.wallsplash.common.utils.ValueUtils;
 
 import java.util.ArrayList;
 import java.util.List;

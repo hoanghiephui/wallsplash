@@ -3,11 +3,11 @@ package com.unsplash.wallsplash.user.model.widget;
 import android.app.Activity;
 
 import com.unsplash.wallsplash.WallSplashApplication;
-import com.unsplash.wallsplash._common.data.data.Collection;
-import com.unsplash.wallsplash._common.data.data.User;
-import com.unsplash.wallsplash._common.data.service.CollectionService;
-import com.unsplash.wallsplash._common.i.model.CollectionsModel;
-import com.unsplash.wallsplash._common.ui.adapter.CollectionAdapter;
+import com.unsplash.wallsplash.common.data.data.Collection;
+import com.unsplash.wallsplash.common.data.data.User;
+import com.unsplash.wallsplash.common.data.service.CollectionService;
+import com.unsplash.wallsplash.common.i.model.CollectionsModel;
+import com.unsplash.wallsplash.common.ui.adapter.CollectionAdapter;
 
 import java.util.ArrayList;
 

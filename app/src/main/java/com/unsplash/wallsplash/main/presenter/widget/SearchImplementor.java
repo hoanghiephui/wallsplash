@@ -6,12 +6,12 @@ import android.widget.Toast;
 
 import com.unsplash.wallsplash.R;
 import com.unsplash.wallsplash.WallSplashApplication;
-import com.unsplash.wallsplash._common.data.data.Photo;
-import com.unsplash.wallsplash._common.data.service.PhotoService;
-import com.unsplash.wallsplash._common.i.model.SearchModel;
-import com.unsplash.wallsplash._common.i.presenter.SearchPresenter;
-import com.unsplash.wallsplash._common.i.view.SearchView;
-import com.unsplash.wallsplash._common.ui.dialog.RateLimitDialog;
+import com.unsplash.wallsplash.common.data.data.Photo;
+import com.unsplash.wallsplash.common.data.service.PhotoService;
+import com.unsplash.wallsplash.common.i.model.SearchModel;
+import com.unsplash.wallsplash.common.i.presenter.SearchPresenter;
+import com.unsplash.wallsplash.common.i.view.SearchView;
+import com.unsplash.wallsplash.common.ui.dialog.RateLimitDialog;
 
 import java.util.List;
 
@@ -173,10 +173,10 @@ public class SearchImplementor
                 }
                 view.requestPhotosSuccess();
             } else {
-                view.showButton();
+
                 view.requestPhotosFailed(c.getString(R.string.feedback_search_failed_tv));
                 RateLimitDialog.checkAndNotify(
-                        WallSplashApplication.getInstance().getActivityList().get(WallSplashApplication.getInstance().getActivityList().size()),
+                        WallSplashApplication.getInstance().getActivityList().get(WallSplashApplication.getInstance().getActivityList().size() - 1),
                         response.headers().get("X-Ratelimit-Remaining"));
             }
         }
@@ -194,7 +194,7 @@ public class SearchImplementor
                     c,
                     c.getString(R.string.feedback_search_failed_toast) + "\n" + t.getMessage(),
                     Toast.LENGTH_SHORT).show();
-            view.showButton();
+
             view.requestPhotosFailed(c.getString(R.string.feedback_load_failed_tv));
         }
     }

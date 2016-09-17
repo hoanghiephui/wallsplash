@@ -1,7 +1,7 @@
 package com.unsplash.wallsplash.me.presenter.activity;
 
-import com.unsplash.wallsplash._common.i.presenter.SwipeBackManagePresenter;
-import com.unsplash.wallsplash._common.i.view.SwipeBackManageView;
+import com.unsplash.wallsplash.common.i.presenter.SwipeBackManagePresenter;
+import com.unsplash.wallsplash.common.i.view.SwipeBackManageView;
 
 /**
  * Swipe back manage implementor.

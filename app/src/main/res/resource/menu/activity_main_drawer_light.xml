@@ -8,7 +8,7 @@
         <item
             android:id="@+id/action_home"
             android:orderInCategory="100"
-            android:icon="@drawable/ic_mountain_light"
+            android:icon="@drawable/ic_home_grey_600_24dp"
             android:title="@string/action_home"
             android:checked="true" />
 
@@ -21,19 +21,19 @@
         <item
             android:id="@+id/action_category_food_drink"
             android:orderInCategory="100"
-            android:icon="@drawable/ic_drink_light"
+            android:icon="@drawable/ic_restaurant"
             android:title="@string/action_category_food_drink" />
 
         <item
             android:id="@+id/action_category_nature"
             android:orderInCategory="100"
-            android:icon="@drawable/ic_duck_light"
+            android:icon="@drawable/ic_nature_grey_600_24dp"
             android:title="@string/action_category_nature" />
 
         <item
             android:id="@+id/action_category_objects"
             android:orderInCategory="100"
-            android:icon="@drawable/ic_cube_light"
+            android:icon="@drawable/ic_pets_grey_600_24dp"
             android:title="@string/action_category_objects" />
 
         <item
@@ -45,7 +45,7 @@
         <item
             android:id="@+id/action_category_technology"
             android:orderInCategory="100"
-            android:icon="@drawable/ic_technology_light"
+            android:icon="@drawable/ic_technology"
             android:title="@string/action_category_technology" />
 
     </group>
@@ -55,6 +55,7 @@
         android:checkableBehavior="none">
 
         <item
+            android:visible="false"
             android:id="@+id/action_change_theme"
             android:orderInCategory="100"
             android:icon="@drawable/ic_theme_light"
