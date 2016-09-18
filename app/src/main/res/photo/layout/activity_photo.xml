@@ -54,7 +54,7 @@
                         android:transitionName="@string/transition_photo_image"
                         app:fiv_cover_mode="true"
 
-                        app:layout_behavior="._common.ui.behavior.CoverBehavior"
+                        app:layout_behavior=".common.ui.behavior.CoverBehavior"
                         app:layout_collapseMode="parallax"
                         tools:ignore="UnusedAttribute" />
 

@@ -18,7 +18,7 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_behavior="._common.ui.behavior.PreviewWidgetBehavior">
+        app:layout_behavior=".common.ui.behavior.PreviewWidgetBehavior">
 
         <com.unsplash.wallsplash.common.ui.widget.StatusBarView
             android:layout_width="match_parent"
@@ -64,7 +64,7 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_behavior="._common.ui.behavior.PreviewIconBehavior">
+        app:layout_behavior=".common.ui.behavior.PreviewIconBehavior">
 
         <LinearLayout
             android:orientation="horizontal"
