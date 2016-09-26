@@ -11,7 +11,6 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -24,6 +23,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.mikhaellopez.circularimageview.CircularImageView;
 import com.unsplash.wallsplash.R;
 import com.unsplash.wallsplash.WallSplashApplication;
 import com.unsplash.wallsplash.common.data.tools.AuthManager;
@@ -35,14 +35,9 @@ import com.unsplash.wallsplash.common.i.presenter.FragmentManagePresenter;
 import com.unsplash.wallsplash.common.i.presenter.MeManagePresenter;
 import com.unsplash.wallsplash.common.i.presenter.MessageManagePresenter;
 import com.unsplash.wallsplash.common.i.view.DrawerView;
-import com.unsplash.wallsplash.common.i.view.FragmentManageView;
 import com.unsplash.wallsplash.common.i.view.MeManageView;
 import com.unsplash.wallsplash.common.i.view.MessageManageView;
-import com.unsplash.wallsplash.common.ui.activity.AboutActivity;
 import com.unsplash.wallsplash.common.ui.activity.BaseActivity;
-import com.unsplash.wallsplash.common.ui.activity.DownloadManageActivity;
-import com.unsplash.wallsplash.common.ui.activity.SettingsActivity;
-import com.unsplash.wallsplash.common.ui.widget.CircleImageView;
 import com.unsplash.wallsplash.common.utils.BackToTopUtils;
 import com.unsplash.wallsplash.common.utils.SafeHandler;
 import com.unsplash.wallsplash.common.utils.ThemeUtils;
@@ -67,7 +62,7 @@ import jp.wasabeef.glide.transformations.BlurTransformation;
  */
 
 public class MainActivity extends BaseActivity
-        implements FragmentManageView, MessageManageView, MeManageView, DrawerView,
+        implements MessageManageView, MeManageView, DrawerView,
         View.OnClickListener, NavigationView.OnNavigationItemSelectedListener,
         AuthManager.OnAuthDataChangedListener, SafeHandler.HandlerContainer {
     // model.
@@ -75,7 +70,7 @@ public class MainActivity extends BaseActivity
     private DrawerModel drawerModel;
 
     // view
-    private CircleImageView navAvatar;
+    private CircularImageView navAvatar;
     private ImageView appIcon;
     private TextView navTitle;
     private TextView navSubtitle;
@@ -111,7 +106,7 @@ public class MainActivity extends BaseActivity
 
             initView();
 
-            fragmentManagePresenter.changeFragment(R.id.action_home);
+            fragmentManagePresenter.changeFragment(this, R.id.action_home);
         }
     }
 
@@ -146,10 +141,10 @@ public class MainActivity extends BaseActivity
                     && ((HomeFragment) f).needPagerBackToTop() && BackToTopUtils.getInstance(this).isSetBackToTop(true)) {
                 ((HomeFragment) f).pagerBackToTop();
             } else if (f instanceof SearchFragment
-                    && ((SearchFragment) f).needPagerBackToTop()) {
+                    && ((SearchFragment) f).needPagerBackToTop() && BackToTopUtils.getInstance(this).isSetBackToTop(true)) {
                 ((SearchFragment) f).pagerBackToTop();
             } else if (f instanceof CategoryFragment
-                    && ((CategoryFragment) f).needPagerBackToTop() && BackToTopUtils.getInstance(this).isSetBackToTop(true)) {
+                    && ((CategoryFragment) f).needPagerBackToTop()) {
                 ((CategoryFragment) f).pagerBackToTop();
             } else {
                 super.onBackPressed();
@@ -167,6 +162,14 @@ public class MainActivity extends BaseActivity
         }
     }
 
+    public void changeTheme() {
+        SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(this).edit();
+        editor.putBoolean(getString(R.string.key_light_theme), !ThemeUtils.getInstance(this).isLightTheme());
+        editor.apply();
+        ThemeUtils.getInstance(this).refresh(this);
+        reboot();
+    }
+
     public void reboot() {
         Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -181,7 +184,7 @@ public class MainActivity extends BaseActivity
      */
 
     private void initPresenter() {
-        this.fragmentManagePresenter = new FragmentManageImplementor(fragmentManageModel, this);
+        this.fragmentManagePresenter = new FragmentManageImplementor(fragmentManageModel);
         this.messageManagePresenter = new MessageManageImplementor(this);
         this.meManagePresenter = new MeManageImplementor(this);
         this.drawerPresenter = new DrawerImplementor(drawerModel, this);
@@ -207,7 +210,7 @@ public class MainActivity extends BaseActivity
 
         View header = nav.getHeaderView(0);
         header.setOnClickListener(this);
-        this.navAvatar = (CircleImageView) header.findViewById(R.id.container_nav_header_avatar);
+        this.navAvatar = (CircularImageView) header.findViewById(R.id.container_nav_header_avatar);
         navAvatar.setOnClickListener(this);
 
         this.appIcon = (ImageView) header.findViewById(R.id.container_nav_header_appIcon);
@@ -243,11 +246,19 @@ public class MainActivity extends BaseActivity
     // interface.
 
     public void insertFragment(int code) {
-        fragmentManagePresenter.addFragment(code);
+        fragmentManagePresenter.addFragment(this, code);
     }
 
     public void removeFragment() {
-        fragmentManagePresenter.popFragment();
+        fragmentManagePresenter.popFragment(this);
+    }
+
+    public void changeFragment(int code) {
+        fragmentManagePresenter.changeFragment(this, code);
+    }
+
+    public Fragment getTopFragment() {
+        return fragmentManagePresenter.getTopFragment();
     }
 
     /**
@@ -342,36 +353,11 @@ public class MainActivity extends BaseActivity
 
     @Override
     public void handleMessage(Message message) {
-        messageManagePresenter.responseMessage(message.what, message.obj);
+        messageManagePresenter.responseMessage(this, message.what, message.obj);
     }
 
     // view.
 
-    // fragment manage view.
-
-    @Override
-    public void addFragment(Fragment f) {
-        getSupportFragmentManager()
-                .beginTransaction()
-                .add(R.id.activity_main_fragment, f)
-                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                .addToBackStack(null)
-                .commit();
-    }
-
-    @Override
-    public void popFragment() {
-        getSupportFragmentManager().popBackStack();
-    }
-
-    @Override
-    public void changeFragment(Fragment f) {
-        getSupportFragmentManager()
-                .beginTransaction()
-                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                .replace(R.id.activity_main_fragment, f)
-                .commit();
-    }
 
     // message manage view.
 
@@ -387,37 +373,7 @@ public class MainActivity extends BaseActivity
 
     @Override
     public void responseMessage(int what, Object o) {
-        switch (what) {
-            case R.id.action_change_theme:
-                SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(this).edit();
-                editor.putBoolean(getString(R.string.key_light_theme), !ThemeUtils.getInstance(this).isLightTheme());
-                editor.apply();
-                ThemeUtils.getInstance(this).refresh(this);
-                reboot();
-                break;
-
-            case R.id.action_download_manage:
-                Intent d = new Intent(this, DownloadManageActivity.class);
-                startActivity(d);
-                overridePendingTransition(R.anim.activity_in, 0);
-                break;
-
-            case R.id.action_settings:
-                Intent s = new Intent(this, SettingsActivity.class);
-                startActivity(s);
-                overridePendingTransition(R.anim.activity_in, 0);
-                break;
-
-            case R.id.action_about:
-                Intent a = new Intent(this, AboutActivity.class);
-                startActivity(a);
-                overridePendingTransition(R.anim.activity_in, 0);
-                break;
-
-            default:
-                fragmentManagePresenter.changeFragment(what);
-                break;
-        }
+        // do nothing.
     }
 
     // me manage view.

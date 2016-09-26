@@ -179,16 +179,16 @@ public class CollectionMiniAdapter extends RecyclerView.Adapter<CollectionMiniAd
 
     // view holder.
 
-    public class ViewHolder extends RecyclerView.ViewHolder
+    class ViewHolder extends RecyclerView.ViewHolder
             implements View.OnClickListener {
         // widget
-        public CardView card;
+        private CardView card;
         public ImageView image;
         public TextView title;
         public TextView subtitle;
-        public ImageView lockIcon;
+        private ImageView lockIcon;
 
-        public ViewHolder(View itemView) {
+        private ViewHolder(View itemView) {
             super(itemView);
 
             this.card = (CardView) itemView.findViewById(R.id.item_collection_mini_card);

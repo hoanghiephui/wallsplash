@@ -1,9 +1,9 @@
 package com.unsplash.wallsplash.common.i.model;
 
 import android.app.Activity;
+import android.support.v7.widget.RecyclerView;
 
-import com.unsplash.wallsplash.common.data.service.PhotoService;
-import com.unsplash.wallsplash.common.ui.adapter.PhotoAdapter;
+import com.unsplash.wallsplash.common.data.service.SearchService;
 
 /**
  * Search model.
@@ -11,9 +11,9 @@ import com.unsplash.wallsplash.common.ui.adapter.PhotoAdapter;
 
 public interface SearchModel {
 
-    PhotoAdapter getAdapter();
+    RecyclerView.Adapter getAdapter();
 
-    PhotoService getService();
+    SearchService getService();
 
     void setActivity(Activity a);
 
@@ -21,9 +21,6 @@ public interface SearchModel {
 
     void setSearchQuery(String query);
 
-    String getSearchOrientation();
-
-    void setSearchOrientation(String orientation);
 
     int getPhotosPage();
 

@@ -1,5 +1,8 @@
 package com.unsplash.wallsplash.collection.presenter.activity;
 
+import android.app.Activity;
+
+import com.unsplash.wallsplash.collection.view.activity.CollectionActivity;
 import com.unsplash.wallsplash.common.i.presenter.SwipeBackManagePresenter;
 import com.unsplash.wallsplash.common.i.view.SwipeBackManageView;
 
@@ -30,7 +33,7 @@ public class SwipeBackManageImplementor
     }
 
     @Override
-    public void swipeBackFinish(int dir) {
-        view.swipeBackFinish(dir);
+    public void swipeBackFinish(Activity a, int dir) {
+        ((CollectionActivity) a).finishActivity(dir, false);
     }
 }

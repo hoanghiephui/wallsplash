@@ -59,7 +59,7 @@ public class CollectionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     private Animation animation;
     private int mDuration = 500;
     private Interpolator mInterpolator = new LinearInterpolator();
-    protected int lastPosition = -1;
+    private int lastPosition = -1;
 
     /**
      * <br> life cycle.
@@ -288,7 +288,7 @@ public class CollectionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     // view holder.
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    private class ViewHolder extends RecyclerView.ViewHolder {
         // widget
         public RelativeLayout background;
         public FreedomImageView image;
@@ -297,7 +297,7 @@ public class CollectionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         private MaterialProgressBar progressBar;
         private ShortTimeView tvTime;
 
-        public ViewHolder(View itemView, int position) {
+        private ViewHolder(View itemView, int position) {
             super(itemView);
 
             this.background = (RelativeLayout) itemView.findViewById(R.id.item_collection_background);

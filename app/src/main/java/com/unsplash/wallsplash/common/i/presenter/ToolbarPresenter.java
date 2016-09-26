@@ -1,14 +1,17 @@
 package com.unsplash.wallsplash.common.i.presenter;
 
+import android.app.Activity;
+import android.support.v7.app.AppCompatActivity;
+
 /**
  * Toolbar presenter.
  */
 
 public interface ToolbarPresenter {
 
-    void touchNavigatorIcon();
+    void touchNavigatorIcon(Activity activity);
 
-    void touchToolbar();
+    void touchToolbar(Activity activity);
 
-    void touchMenuItem(int itemId);
+    boolean touchMenuItem(AppCompatActivity activity, int itemId);
 }

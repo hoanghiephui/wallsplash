@@ -1,24 +1,19 @@
 package com.unsplash.wallsplash.common.i.presenter;
 
+import android.app.Activity;
+
 /**
  * Search bar presenter.
  */
 
 public interface SearchBarPresenter {
 
-    void touchNavigatorIcon();
+    void touchNavigatorIcon(Activity activity);
 
-    void touchMenuItem(int itemId);
-
-    void touchOrientationIcon();
-
-    void touchSearchBar();
+    boolean touchMenuItem(Activity activity, int itemId);
 
     void showKeyboard();
-
     void hideKeyboard();
-
-    void setOrientation(String orientation);
 
     void submitSearchInfo(String text);
 }

@@ -7,18 +7,17 @@ import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.unsplash.wallsplash.R;
 import com.unsplash.wallsplash.WallSplashApplication;
 import com.unsplash.wallsplash.common.data.api.PhotoApi;
+import com.unsplash.wallsplash.common.data.tools.DownloadManager;
+import com.unsplash.wallsplash.common.ui.dialog.ConfirmRebootDialog;
 import com.unsplash.wallsplash.common.utils.BackToTopUtils;
 import com.unsplash.wallsplash.common.utils.NotificationUtils;
 import com.unsplash.wallsplash.common.utils.ValueUtils;
 import com.unsplash.wallsplash.main.view.activity.MainActivity;
-
-import java.util.List;
 
 /**
  * Settings fragment.
@@ -38,43 +37,16 @@ public class SettingsFragment extends PreferenceFragment
         initView();
     }
 
-    /**
-     * <br> UI.
-     */
+    /** <br> UI. */
 
     private void initView() {
         initBasicPart();
+        initFilterPart();
+        initDownloadPart();
     }
 
     private void initBasicPart() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-
-        // default order.
-        ListPreference defaultOrder = (ListPreference) findPreference(getString(R.string.key_default_photo_order));
-        String orderValue = sharedPreferences.getString(
-                getString(R.string.key_default_photo_order),
-                PhotoApi.ORDER_BY_LATEST);
-        String orderName = ValueUtils.getOrderName(getActivity(), orderValue);
-        defaultOrder.setSummary("Now : " + orderName);
-        defaultOrder.setOnPreferenceChangeListener(this);
-
-        // collection type.
-        ListPreference collectionType = (ListPreference) findPreference(getString(R.string.key_default_collection_type));
-        String typeValue = sharedPreferences.getString(
-                getString(R.string.key_default_collection_type),
-                "featured");
-        String valueName = ValueUtils.getCollectionName(getActivity(), typeValue);
-        collectionType.setSummary("Now : " + valueName);
-        collectionType.setOnPreferenceChangeListener(this);
-
-        // download scale.
-        ListPreference downloadScale = (ListPreference) findPreference(getString(R.string.key_download_scale));
-        String scaleValue = sharedPreferences.getString(
-                getString(R.string.key_download_scale),
-                "compact");
-        String scaleName = ValueUtils.getScaleName(getActivity(), scaleValue);
-        downloadScale.setSummary("Now : " + scaleName);
-        downloadScale.setOnPreferenceChangeListener(this);
 
         // back to top.
         ListPreference backToTop = (ListPreference) findPreference(getString(R.string.key_back_to_top));
@@ -95,6 +67,41 @@ public class SettingsFragment extends PreferenceFragment
         language.setOnPreferenceChangeListener(this);
     }
 
+    private void initFilterPart() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+
+        // default order.
+        ListPreference defaultOrder = (ListPreference) findPreference(getString(R.string.key_default_photo_order));
+        String orderValue = sharedPreferences.getString(
+                getString(R.string.key_default_photo_order),
+                PhotoApi.ORDER_BY_LATEST);
+        String orderName = ValueUtils.getOrderName(getActivity(), orderValue);
+        defaultOrder.setSummary("Now : " + orderName);
+        defaultOrder.setOnPreferenceChangeListener(this);
+
+        // collection type.
+        ListPreference collectionType = (ListPreference) findPreference(getString(R.string.key_default_collection_type));
+        String typeValue = sharedPreferences.getString(
+                getString(R.string.key_default_collection_type),
+                "featured");
+        String valueName = ValueUtils.getCollectionName(getActivity(), typeValue);
+        collectionType.setSummary("Now : " + valueName);
+        collectionType.setOnPreferenceChangeListener(this);
+    }
+
+    private void initDownloadPart() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+
+        // download scale.
+        ListPreference downloadScale = (ListPreference) findPreference(getString(R.string.key_download_scale));
+        String scaleValue = sharedPreferences.getString(
+                getString(R.string.key_download_scale),
+                "compact");
+        String scaleName = ValueUtils.getScaleName(getActivity(), scaleValue);
+        downloadScale.setSummary("Now : " + scaleName);
+        downloadScale.setOnPreferenceChangeListener(this);
+    }
+
     private void showRebootSnackbar() {
         NotificationUtils.showActionSnackbar(
                 getString(R.string.feedback_notify_restart),
@@ -103,14 +110,23 @@ public class SettingsFragment extends PreferenceFragment
                 rebootListener);
     }
 
-    /**
-     * <br> interface.
-     */
+    /** <br> interface. */
 
     // on preference changed listener.
+
     @Override
     public boolean onPreferenceChange(Preference preference, Object o) {
-        if (preference.getKey().equals(getString(R.string.key_default_photo_order))) {
+        if (preference.getKey().equals(getString(R.string.key_back_to_top))) {
+            // back to top.
+            String backType = ValueUtils.getBackToTopName(getActivity(), (String) o);
+            preference.setSummary("Now : " + backType);
+            BackToTopUtils.getInstance(getActivity()).changeBackValue((String) o);
+        } else if (preference.getKey().equals(getString(R.string.key_language))) {
+            // language.
+            String language = ValueUtils.getLanguageName(getActivity(), (String) o);
+            preference.setSummary("Now : " + language);
+            showRebootSnackbar();
+        } else if (preference.getKey().equals(getString(R.string.key_default_photo_order))) {
             // default order.
             String order = ValueUtils.getOrderName(getActivity(), (String) o);
             preference.setSummary("Now : " + order);
@@ -124,16 +140,6 @@ public class SettingsFragment extends PreferenceFragment
             // download scale.
             String scale = ValueUtils.getScaleName(getActivity(), (String) o);
             preference.setSummary("Now : " + scale);
-        } else if (preference.getKey().equals(getString(R.string.key_back_to_top))) {
-            // back to top.
-            String backType = ValueUtils.getBackToTopName(getActivity(), (String) o);
-            preference.setSummary("Now : " + backType);
-            BackToTopUtils.getInstance(getActivity()).changeBackValue((String) o);
-        } else if (preference.getKey().equals(getString(R.string.key_language))) {
-            // language.
-            String language = ValueUtils.getLanguageName(getActivity(), (String) o);
-            preference.setSummary("Now : " + language);
-            showRebootSnackbar();
         }
         return true;
     }
@@ -143,9 +149,25 @@ public class SettingsFragment extends PreferenceFragment
     private View.OnClickListener rebootListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            List<AppCompatActivity> list = WallSplashApplication.getInstance().getActivityList();
-            MainActivity a = (MainActivity) list.get(0);
-            a.reboot();
+            if (DownloadManager.getInstance().getMissionList().size() > 0) {
+                ConfirmRebootDialog dialog = ConfirmRebootDialog.buildDialog(
+                        ConfirmRebootDialog.RESTART_APP_TYPE);
+                dialog.setOnConfirmRebootListener(new ConfirmRebootDialog.OnConfirmRebootListener() {
+                    @Override
+                    public void onConfirm() {
+                        MainActivity a = WallSplashApplication.getInstance().getMainActivity();
+                        if (a != null) {
+                            a.reboot();
+                        }
+                    }
+                });
+                dialog.show(WallSplashApplication.getInstance().getMainActivity().getSupportFragmentManager(), null);
+            } else {
+                MainActivity a = WallSplashApplication.getInstance().getMainActivity();
+                if (a != null) {
+                    a.reboot();
+                }
+            }
         }
     };
 }

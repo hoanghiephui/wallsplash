@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.unsplash.wallsplash.common.ui.widget.SwipeBackLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_download_manage_swipeBackLayout"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.unsplash.wallsplash.common.ui.widget.StatusBarView
+        android:id="@+id/activity_download_manage_statusBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimaryDark" />
+
+    <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/activity_download_manage_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?attr/root_color">
+
+        <android.support.design.widget.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:theme="@style/MysplashToolbarTheme">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/activity_download_manage_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary"
+                app:title="@string/action_download_manage"
+                app:popupTheme="@style/MysplashPopupMenuTheme"
+                tools:ignore="UnusedAttribute" />
+
+        </android.support.design.widget.AppBarLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/activity_download_manage_recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingTop="@dimen/little_margin"
+            android:clipToPadding="false"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+    </android.support.design.widget.CoordinatorLayout>
+
+</com.unsplash.wallsplash.common.ui.widget.SwipeBackLayout>

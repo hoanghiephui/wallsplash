@@ -1,5 +1,6 @@
 package com.unsplash.wallsplash.common.i.presenter;
 
+import android.app.Activity;
 import android.support.v4.app.Fragment;
 
 import java.util.List;
@@ -12,9 +13,11 @@ public interface FragmentManagePresenter {
 
     List<Fragment> getFragmentList();
 
-    void addFragment(int code);
+    Fragment getTopFragment();
 
-    void popFragment();
+    void addFragment(Activity activity, int code);
 
-    void changeFragment(int code);
+    void popFragment(Activity activity);
+
+    void changeFragment(Activity activity, int code);
 }

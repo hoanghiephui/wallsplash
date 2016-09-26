@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_me_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:ignore="UnusedAttribute">
+
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/activity_me_appBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        android:fitsSystemWindows="true">
+
+        <com.unsplash.wallsplash.common.ui.widget.StatusBarView
+            android:id="@+id/activity_me_statusBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            app:layout_scrollFlags="scroll|snap" />
+
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/collapsing_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fitsSystemWindows="true"
+            app:contentScrim="?attr/colorPrimary"
+            app:expandedTitleMarginEnd="64dp"
+            app:expandedTitleMarginStart="48dp"
+            app:layout_scrollFlags="scroll|snap"
+            app:titleEnabled="false">
+
+            <FrameLayout
+                app:layout_scrollFlags="scroll|snap"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fitsSystemWindows="true"
+                app:layout_collapseMode="parallax">
+
+                <ImageView
+                    android:id="@+id/imgBg"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fitsSystemWindows="true"
+                    app:layout_collapseMode="parallax"
+                    android:scaleType="centerCrop" />
+
+                <RelativeLayout
+                    android:fitsSystemWindows="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_scrollFlags="scroll|snap">
+
+                    <com.mikhaellopez.circularimageview.CircularImageView
+                        android:id="@+id/activity_me_avatar"
+                        android:layout_width="@dimen/design_icon_size"
+                        android:layout_height="@dimen/design_icon_size"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="@dimen/little_icon_size"
+                        android:scaleType="centerCrop"
+                        android:src="?attr/line_color"
+                        android:transitionName="@string/transition_me_avatar"
+                        app:civ_border_color="@color/semiTransparentWhite"
+                        app:civ_border_width="5dp"
+                        tools:ignore="RtlHardcoded" />
+
+                    <TextView
+                        android:id="@+id/activity_me_title"
+                        style="@style/title_text"
+                        android:layout_below="@id/activity_me_avatar"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginRight="@dimen/normal_margin"
+                        android:layout_marginTop="@dimen/normal_margin"
+                        android:text="..."
+                        android:textColor="?attr/title_color"
+                        android:textSize="@dimen/large_title_text_size"
+                        android:textStyle="bold"
+                        tools:ignore="HardcodedText,RtlHardcoded" />
+
+                    <com.unsplash.wallsplash.me.view.widget.MeProfileView
+                        android:id="@+id/activity_me_profileView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/activity_me_title" />
+
+                    <android.support.v7.widget.Toolbar
+                        android:id="@+id/activity_me_toolbar"
+                        android:layout_width="match_parent"
+                        android:layout_height="?attr/actionBarSize"
+                        android:background="@android:color/transparent"
+                        app:layout_scrollFlags="scroll|enterAlways|snap"
+                        android:fitsSystemWindows="true"
+                        app:popupTheme="@style/MysplashPopupMenuTheme" />
+
+                </RelativeLayout>
+            </FrameLayout>
+
+        </android.support.design.widget.CollapsingToolbarLayout>
+
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/activity_me_tabLayout"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_below="@id/activity_me_profileView"
+            app:tabGravity="center"
+            app:tabIndicatorColor="?attr/title_color"
+            app:tabIndicatorHeight="2dp"
+            app:tabMode="fixed"
+            app:tabSelectedTextColor="?attr/color_tab_selected"
+            app:tabTextColor="?attr/color_tab_text" />
+
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/activity_me_viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+</android.support.design.widget.CoordinatorLayout>

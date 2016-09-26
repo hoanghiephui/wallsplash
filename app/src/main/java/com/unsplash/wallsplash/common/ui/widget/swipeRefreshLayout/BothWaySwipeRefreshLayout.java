@@ -1,5 +1,6 @@
 package com.unsplash.wallsplash.common.ui.widget.swipeRefreshLayout;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.support.annotation.ColorInt;
@@ -1014,10 +1015,10 @@ public class BothWaySwipeRefreshLayout extends ViewGroup {
     /**
      * @deprecated Use {@link #setColorSchemeResources(int...)}
      */
-    @Deprecated
+ /*   @Deprecated
     public void setColorScheme(@ColorInt int... colors) {
         setColorSchemeResources(colors);
-    }
+    }*/
 
     /**
      * Set the color resources used in the progress animation from color resources.
@@ -1041,6 +1042,7 @@ public class BothWaySwipeRefreshLayout extends ViewGroup {
      *
      * @param colors
      */
+    @SuppressLint("SupportAnnotationUsage")
     @ColorInt
     public void setColorSchemeColors(int... colors) {
         ensureTarget();

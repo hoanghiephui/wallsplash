@@ -8,8 +8,8 @@ android {
         applicationId "com.unsplash.wallsplash"
         minSdkVersion 16
         targetSdkVersion 24
-        versionCode 1
-        versionName "1.0"
+        versionCode 3
+        versionName "1.1.1"
         ndk {
             moduleName "JniBitmapStorageTest"
             ldLibs "log", "jnigraphics"
@@ -23,7 +23,7 @@ android {
             java.srcDirs = ['src/main/java','.apt_generated']
             aidl.srcDirs = ['src/main/aidl','.apt_generated']
             assets.srcDirs = ['src/main/assets']
-            res.srcDirs = [
+            /*res.srcDirs = [
                     'src/main/res/main',
                     'src/main/res/photo',
                     'src/main/res/user',
@@ -31,13 +31,13 @@ android {
                     'src/main/res/me',
                     'src/main/res/commen',
                     'src/main/res/resource',
-                    'src/main/res']
+                    'src/main/res']*/
         }
     }
     buildTypes {
         release {
             minifyEnabled false
-            shrinkResources true
+            shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -49,9 +49,9 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:cardview-v7:24.2.0'
-    compile 'com.android.support:design:24.2.0'
-    compile 'com.android.support:support-v4:24.2.0'
+    compile 'com.android.support:cardview-v7:24.2.1'
+    compile 'com.android.support:design:24.2.1'
+    compile 'com.android.support:support-v4:24.2.1'
     compile 'com.squareup.retrofit2:retrofit:2.0.2'
     compile 'com.squareup.retrofit2:converter-gson:2.0.2'
     compile 'com.github.bumptech.glide:glide:3.7.0'
@@ -64,6 +64,9 @@ dependencies {
     compile 'com.mikhaellopez:circularimageview:3.0.2'
     compile project(':admobadapter')
     compile 'com.bm.photoview:library:1.4.1'
-    compile 'com.android.support:palette-v7:24.2.0'
+    compile 'com.android.support:palette-v7:24.2.1'
     compile project(':library')
+    compile('com.github.garretyoder:app-theme-engine:1.5@aar') {
+        transitive = true
+    }
 }

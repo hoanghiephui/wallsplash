@@ -26,6 +26,9 @@ public class PhotoDetailsImplementor
     private PhotoDetailsModel model;
     private PhotoDetailsView view;
 
+    // data
+    private OnRequestPhotoDetailsListener listener;
+
     /**
      * <br> life cycle.
      */
@@ -35,19 +38,21 @@ public class PhotoDetailsImplementor
         this.view = view;
     }
 
-    /**
-     * <br> presenter.
-     */
+    /** <br> presenter. */
 
     @Override
     public void requestPhotoDetails(Context c) {
         view.initRefreshStart();
+        listener = new OnRequestPhotoDetailsListener(c);
         model.getService()
-                .requestPhotoDetails(model.getPhoto(), new OnRequestPhotoDetailsListener(c));
+                .requestPhotoDetails(model.getPhoto(), listener);
     }
 
     @Override
     public void cancelRequest() {
+        if (listener != null) {
+            listener.cancel();
+        }
         model.getService().cancel();
     }
 
@@ -58,20 +63,27 @@ public class PhotoDetailsImplementor
                 Snackbar.LENGTH_SHORT);
     }
 
-    /**
-     * <br> interface.
-     */
+    /** <br> interface. */
 
     private class OnRequestPhotoDetailsListener implements PhotoService.OnRequestPhotoDetailsListener {
         // data
         private Context c;
+        private boolean canceled;
 
-        public OnRequestPhotoDetailsListener(Context c) {
+        OnRequestPhotoDetailsListener(Context c) {
             this.c = c;
+            this.canceled = false;
+        }
+
+        public void cancel() {
+            canceled = true;
         }
 
         @Override
         public void onRequestPhotoDetailsSuccess(Call<PhotoDetails> call, Response<PhotoDetails> response) {
+            if (canceled) {
+                return;
+            }
             if (response.isSuccessful() && response.body() != null) {
                 ValueUtils.writePhotoCount(
                         c,
@@ -82,13 +94,16 @@ public class PhotoDetailsImplementor
             } else {
                 requestPhotoDetails(c);
                 RateLimitDialog.checkAndNotify(
-                        WallSplashApplication.getInstance().getActivityList().get(WallSplashApplication.getInstance().getActivityList().size() - 1),
+                        WallSplashApplication.getInstance().getLatestActivity(),
                         response.headers().get("X-Ratelimit-Remaining"));
             }
         }
 
         @Override
         public void onRequestPhotoDetailsFailed(Call<PhotoDetails> call, Throwable t) {
+            if (canceled) {
+                return;
+            }
             requestPhotoDetails(c);
         }
     }

@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.thin.downloadmanager.DownloadRequest;
@@ -56,7 +55,7 @@ public class DownloadManager {
     public int add(Photo p, int type, OnDownloadListener l) {
         for (int i = 0; i < missionList.size(); i++) {
             if (missionList.get(i).photo.id.equals(p.id)) {
-                Context c = WallSplashApplication.getInstance().getActivityList().get(0);
+                Context c = WallSplashApplication.getInstance().getLatestActivity();
                 NotificationUtils.showSnackbar(
                         c.getString(R.string.feedback_download_repeat),
                         Snackbar.LENGTH_SHORT);
@@ -214,7 +213,7 @@ public class DownloadManager {
             WallSplashApplication.getInstance().sendBroadcast(broadcast);
             switch (downloadType) {
                 case DOWNLOAD_TYPE:
-                    Context c = WallSplashApplication.getInstance().getActivityList().get(0);
+                    Context c = WallSplashApplication.getInstance().getLatestActivity();
                     NotificationUtils.showActionSnackbar(
                             c.getString(R.string.feedback_download_success),
                             c.getString(R.string.check),
@@ -226,11 +225,13 @@ public class DownloadManager {
                     Intent intent = new Intent(Intent.ACTION_SEND);
                     intent.putExtra(Intent.EXTRA_STREAM, file);
                     intent.setType("image/*");
-                    List<AppCompatActivity> list = WallSplashApplication.getInstance().getActivityList();
-                    list.get(list.size() - 1).startActivity(
-                            Intent.createChooser(
-                                    intent,
-                                    WallSplashApplication.getInstance().getString(R.string.feedback_choose_share_app)));
+                    WallSplashApplication.getInstance()
+                            .getLatestActivity()
+                            .startActivity(
+                                    Intent.createChooser(
+                                            intent,
+                                            WallSplashApplication.getInstance()
+                                                    .getString(R.string.feedback_choose_share_app)));
                     break;
                 }
 
@@ -238,11 +239,13 @@ public class DownloadManager {
                     Intent intent = new Intent(Intent.ACTION_ATTACH_DATA);
                     intent.setDataAndType(file, "image/jpg");
                     intent.putExtra("mimeType", "image/jpg");
-                    List<AppCompatActivity> list = WallSplashApplication.getInstance().getActivityList();
-                    list.get(list.size() - 1).startActivity(
-                            Intent.createChooser(
-                                    intent,
-                                    WallSplashApplication.getInstance().getString(R.string.feedback_choose_wallpaper_app)));
+                    WallSplashApplication.getInstance()
+                            .getLatestActivity()
+                            .startActivity(
+                                    Intent.createChooser(
+                                            intent,
+                                            WallSplashApplication.getInstance()
+                                                    .getString(R.string.feedback_choose_wallpaper_app)));
                     break;
                 }
             }
@@ -259,7 +262,7 @@ public class DownloadManager {
                 DownloadManager.getInstance().deleteMission(this);
             } else {
                 failed = true;
-                Context c = WallSplashApplication.getInstance().getActivityList().get(0);
+                Context c = WallSplashApplication.getInstance().getLatestActivity();
                 NotificationUtils.showActionSnackbar(
                         c.getString(R.string.feedback_download_failed),
                         c.getString(R.string.check),
@@ -279,9 +282,9 @@ public class DownloadManager {
         @Override
         public void onClick(View v) {
             if (failed) {
-                Context c = WallSplashApplication.getInstance().getActivityList().get(0);
-                Intent intent = new Intent(c, DownloadManageActivity.class);
-                c.startActivity(intent);
+                Context context = WallSplashApplication.getInstance().getLatestActivity();
+                Intent intent = new Intent(context, DownloadManageActivity.class);
+                context.startActivity(intent);
             } else {
                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
                 intent.addCategory(Intent.CATEGORY_DEFAULT);
@@ -290,8 +293,8 @@ public class DownloadManager {
                 Uri file = Uri.parse(WallSplashApplication.DOWNLOAD_PATH + photo.id + WallSplashApplication.DOWNLOAD_FORMAT);
                 intent.setDataAndType(file, "image/*");
 
-                Context c = WallSplashApplication.getInstance().getActivityList().get(0);
-                c.startActivity(intent);
+                Context context = WallSplashApplication.getInstance().getLatestActivity();
+                context.startActivity(intent);
             }
         }
     }

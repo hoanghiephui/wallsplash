@@ -2,7 +2,6 @@ package com.unsplash.wallsplash.me.view.activity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
@@ -15,7 +14,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
@@ -36,10 +34,9 @@ import com.unsplash.wallsplash.common.i.view.PagerManageView;
 import com.unsplash.wallsplash.common.i.view.PagerView;
 import com.unsplash.wallsplash.common.i.view.PopupManageView;
 import com.unsplash.wallsplash.common.i.view.SwipeBackManageView;
-import com.unsplash.wallsplash.common.i.view.ToolbarView;
 import com.unsplash.wallsplash.common.ui.activity.BaseActivity;
-import com.unsplash.wallsplash.common.ui.activity.UpdateMeActivity;
 import com.unsplash.wallsplash.common.ui.adapter.MyPagerAdapter;
+import com.unsplash.wallsplash.common.ui.widget.StatusBarView;
 import com.unsplash.wallsplash.common.ui.widget.SwipeBackLayout;
 import com.unsplash.wallsplash.common.utils.AnimUtils;
 import com.unsplash.wallsplash.common.utils.BackToTopUtils;
@@ -65,7 +62,7 @@ import jp.wasabeef.glide.transformations.BlurTransformation;
  */
 
 public class MeActivity extends BaseActivity
-        implements ToolbarView, PagerManageView, PopupManageView, SwipeBackManageView,
+        implements PagerManageView, PopupManageView, SwipeBackManageView,
         Toolbar.OnMenuItemClickListener, View.OnClickListener, ViewPager.OnPageChangeListener,
         /*SwipeBackLayout.OnSwipeListener,*/ AuthManager.OnAuthDataChangedListener {
     // model.
@@ -169,7 +166,7 @@ public class MeActivity extends BaseActivity
      */
 
     private void initPresenter() {
-        this.toolbarPresenter = new ToolbarImplementor(this);
+        this.toolbarPresenter = new ToolbarImplementor();
         this.pagerManagePresenter = new PagerManageImplementor(pagerManageModel, this);
         this.popupManagePresenter = new PopupManageImplementor(this);
         this.swipeBackManagePresenter = new SwipeBackManageImplementor(this);
@@ -184,10 +181,10 @@ public class MeActivity extends BaseActivity
         /*SwipeBackLayout swipeBackLayout = (SwipeBackLayout) findViewById(R.id.activity_me_swipeBackLayout);
         swipeBackLayout.setOnSwipeListener(this);*/
 
-       /* StatusBarView statusBar = (StatusBarView) findViewById(R.id.activity_me_statusBar);
+        StatusBarView statusBar = (StatusBarView) findViewById(R.id.activity_me_statusBar);
         if (ThemeUtils.getInstance(this).isNeedSetStatusBarMask()) {
             statusBar.setMask(true);
-        }*/
+        }
 
         this.container = (CoordinatorLayout) findViewById(R.id.activity_me_container);
         this.appBar = (AppBarLayout) findViewById(R.id.activity_me_appBar);
@@ -296,6 +293,15 @@ public class MeActivity extends BaseActivity
         ((MeCollectionsView) pagers[1]).changeCollection(c);
     }
 
+    public void showPopup() {
+        int page = pagerManagePresenter.getPagerPosition();
+        popupManagePresenter.showPopup(
+                this,
+                toolbar,
+                pagerManagePresenter.getPagerKey(page),
+                page);
+    }
+
     /**
      * <br> model.
      */
@@ -317,7 +323,7 @@ public class MeActivity extends BaseActivity
     public void onClick(View view) {
         switch (view.getId()) {
             case -1:
-                toolbarPresenter.touchNavigatorIcon();
+                toolbarPresenter.touchNavigatorIcon(this);
                 break;
         }
     }
@@ -326,8 +332,7 @@ public class MeActivity extends BaseActivity
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
-        toolbarPresenter.touchMenuItem(item.getItemId());
-        return true;
+        return toolbarPresenter.touchMenuItem(this, item.getItemId());
     }
 
     // on page change listener.
@@ -395,63 +400,7 @@ public class MeActivity extends BaseActivity
 
     // view.
 
-    // toolbar view.
 
-    @Override
-    public void touchNavigatorIcon() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            finishAfterTransition();
-        } else {
-            finish();
-        }
-    }
-
-    @Override
-    public void touchToolbar() {
-        // do nothing.
-    }
-
-    @Override
-    public void touchMenuItem(int itemId) {
-        switch (itemId) {
-            case R.id.action_edit:
-                if (AuthManager.getInstance().isAuthorized()
-                        && AuthManager.getInstance().getMe() != null) {
-                    Intent u = new Intent(this, UpdateMeActivity.class);
-                    startActivity(u);
-                    overridePendingTransition(R.anim.activity_in, 0);
-                }
-                break;
-
-            case R.id.action_open_portfolio:
-                if (AuthManager.getInstance().isAuthorized()
-                        && AuthManager.getInstance().getMe() != null) {
-                    String url = AuthManager.getInstance().getMe().portfolio_url;
-                    if (!TextUtils.isEmpty(url)) {
-                        Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                        startActivity(i);
-                    } else {
-                        Toast.makeText(
-                                this,
-                                getString(R.string.feedback_portfolio_is_null),
-                                Toast.LENGTH_SHORT).show();
-                    }
-                }
-                break;
-
-            case R.id.action_filter:
-                if (AuthManager.getInstance().isAuthorized()
-                        && AuthManager.getInstance().getMe() != null) {
-                    int page = pagerManagePresenter.getPagerPosition();
-                    popupManagePresenter.showPopup(
-                            this,
-                            toolbar,
-                            pagerManagePresenter.getPagerKey(page),
-                            page);
-                }
-                break;
-        }
-    }
 
     // pager manage view.
 
@@ -496,21 +445,5 @@ public class MeActivity extends BaseActivity
         }
     }
 
-    @Override
-    public void swipeBackFinish(int dir) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            finishAfterTransition();
-        } else {
-            finish();
-            switch (dir) {
-                case SwipeBackLayout.UP_DIR:
-                    overridePendingTransition(0, R.anim.activity_slide_out_top);
-                    break;
 
-                case SwipeBackLayout.DOWN_DIR:
-                    overridePendingTransition(0, R.anim.activity_slide_out_bottom);
-                    break;
-            }
-        }
-    }
 }

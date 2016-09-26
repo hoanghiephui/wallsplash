@@ -39,9 +39,7 @@ public class BackToTopUtils {
      */
 
     public void showSetBackToTopSnackbar() {
-        final Context c = WallSplashApplication.getInstance()
-                .getActivityList()
-                .get(WallSplashApplication.getInstance().getActivityList().size() - 1);
+        final Context c = WallSplashApplication.getInstance().getLatestActivity();
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(c);
         if (!notified) {

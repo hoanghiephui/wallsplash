@@ -29,6 +29,8 @@ public class CollectionsImplementor
     // model & view.
     private CollectionsModel model;
     private CollectionsView view;
+    // data
+    private OnRequestCollectionsListener listener;
 
     /**
      * <br> life cycle.
@@ -39,9 +41,7 @@ public class CollectionsImplementor
         this.view = view;
     }
 
-    /**
-     * <br> presenter.
-     */
+    /** <br> presenter. */
 
     @Override
     public void requestCollections(Context c, int page, boolean refresh) {
@@ -53,18 +53,24 @@ public class CollectionsImplementor
                 model.setLoading(true);
             }
             page = refresh ? 1 : page + 1;
+            listener = new OnRequestCollectionsListener(c, page, refresh);
             model.getService()
                     .requestUserCollections(
                             AuthManager.getInstance().getMe(),
                             page,
                             WallSplashApplication.DEFAULT_PER_PAGE,
-                            new OnRequestCollectionsListener(c, page, refresh));
+                            listener);
         }
     }
 
     @Override
     public void cancelRequest() {
+        if (listener != null) {
+            listener.cancel();
+        }
         model.getService().cancel();
+        model.setRefreshing(false);
+        model.setLoading(false);
     }
 
     @Override
@@ -85,9 +91,7 @@ public class CollectionsImplementor
 
     @Override
     public void initRefresh(Context c) {
-        model.getService().cancel();
-        model.setRefreshing(false);
-        model.setLoading(false);
+        cancelRequest();
         refreshNew(c, false);
         view.initRefreshStart();
     }
@@ -132,24 +136,31 @@ public class CollectionsImplementor
         return model.getAdapter().getRealItemCount();
     }
 
-    /**
-     * <br> interface.
-     */
+    /** <br> interface. */
 
     private class OnRequestCollectionsListener implements CollectionService.OnRequestCollectionsListener {
         // data
         private Context c;
         private int page;
         private boolean refresh;
+        private boolean canceled;
 
-        public OnRequestCollectionsListener(Context c, int page, boolean refresh) {
+        OnRequestCollectionsListener(Context c, int page, boolean refresh) {
             this.c = c;
             this.page = page;
             this.refresh = refresh;
+            this.canceled = false;
+        }
+
+        public void cancel() {
+            canceled = true;
         }
 
         @Override
         public void onRequestCollectionsSuccess(Call<List<Collection>> call, Response<List<Collection>> response) {
+            if (canceled) {
+                return;
+            }
             model.setRefreshing(false);
             model.setLoading(false);
             if (refresh) {
@@ -162,7 +173,7 @@ public class CollectionsImplementor
             }
             if (response.isSuccessful()) {
                 model.setCollectionsPage(page);
-                for (int i = 0; i < response.body().size(); i++) {
+                for (int i = 0; i < response.body().size(); i ++) {
                     model.getAdapter().insertItem(response.body().get(i), model.getAdapter().getRealItemCount());
                 }
                 if (response.body().size() < WallSplashApplication.DEFAULT_PER_PAGE) {
@@ -178,13 +189,16 @@ public class CollectionsImplementor
             } else {
                 view.requestCollectionsFailed(c.getString(R.string.feedback_load_nothing_tv));
                 RateLimitDialog.checkAndNotify(
-                        WallSplashApplication.getInstance().getActivityList().get(WallSplashApplication.getInstance().getActivityList().size() - 1),
+                        WallSplashApplication.getInstance().getLatestActivity(),
                         response.headers().get("X-Ratelimit-Remaining"));
             }
         }
 
         @Override
         public void onRequestCollectionsFailed(Call<List<Collection>> call, Throwable t) {
+            if (canceled) {
+                return;
+            }
             model.setRefreshing(false);
             model.setLoading(false);
             if (refresh) {

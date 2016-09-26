@@ -35,7 +35,6 @@ import com.unsplash.wallsplash.common.i.presenter.SwipeBackManagePresenter;
 import com.unsplash.wallsplash.common.i.presenter.ToolbarPresenter;
 import com.unsplash.wallsplash.common.i.view.EditResultView;
 import com.unsplash.wallsplash.common.i.view.SwipeBackManageView;
-import com.unsplash.wallsplash.common.i.view.ToolbarView;
 import com.unsplash.wallsplash.common.ui.activity.BaseActivity;
 import com.unsplash.wallsplash.common.ui.dialog.UpdateCollectionDialog;
 import com.unsplash.wallsplash.common.ui.widget.StatusBarView;
@@ -51,7 +50,7 @@ import com.unsplash.wallsplash.user.view.activity.UserActivity;
  */
 
 public class CollectionActivity extends BaseActivity
-        implements ToolbarView, SwipeBackManageView, EditResultView,
+        implements SwipeBackManageView, EditResultView,
         View.OnClickListener, Toolbar.OnMenuItemClickListener, SwipeBackLayout.OnSwipeListener,
         UpdateCollectionDialog.OnCollectionChangedListener {
     // model.
@@ -125,7 +124,7 @@ public class CollectionActivity extends BaseActivity
         }
     }
 
-    private void finishActivity(int dir, boolean delete) {
+    public void finishActivity(int dir, boolean delete) {
         Intent result = new Intent();
         result.putExtra(DELETE_COLLECTION, delete);
         setResult(RESULT_OK, result);
@@ -146,7 +145,7 @@ public class CollectionActivity extends BaseActivity
      */
 
     private void initPresenter() {
-        this.toolbarPresenter = new ToolbarImplementor(this);
+        this.toolbarPresenter = new ToolbarImplementor();
         this.swipeBackManagePresenter = new SwipeBackManageImplementor(this);
         this.editResultPresenter = new EditResultImplementor(editResultModel, this);
     }
@@ -217,6 +216,12 @@ public class CollectionActivity extends BaseActivity
         photosView.initRefresh();
     }
 
+    // interface.
+
+    public CollectionPhotosView getPhotosView() {
+        return photosView;
+    }
+
     /**
      * <br> model.
      */
@@ -238,15 +243,15 @@ public class CollectionActivity extends BaseActivity
     public void onClick(View view) {
         switch (view.getId()) {
             case -1:
-                toolbarPresenter.touchNavigatorIcon();
+                toolbarPresenter.touchNavigatorIcon(this);
                 break;
 
             case R.id.activity_collection_creatorBar:
-                toolbarPresenter.touchToolbar();
+                toolbarPresenter.touchToolbar(this);
                 break;
 
             case R.id.activity_collection_avatar:
-                toolbarPresenter.touchToolbar();
+                toolbarPresenter.touchToolbar(this);
                 User u = User.buildUser((Collection) editResultModel.getEditKey());
                 WallSplashApplication.getInstance().setUser(u);
 
@@ -270,8 +275,7 @@ public class CollectionActivity extends BaseActivity
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
-        toolbarPresenter.touchMenuItem(item.getItemId());
-        return false;
+        return toolbarPresenter.touchMenuItem(this, item.getItemId());
     }
 
     // on swipe listener.
@@ -283,7 +287,7 @@ public class CollectionActivity extends BaseActivity
 
     @Override
     public void onSwipeFinish(int dir) {
-        swipeBackManagePresenter.swipeBackFinish(dir);
+        swipeBackManagePresenter.swipeBackFinish(this, dir);
     }
 
     // on collection changed listener.
@@ -307,29 +311,7 @@ public class CollectionActivity extends BaseActivity
 
     // view.
 
-    // toolbar view.
 
-    @Override
-    public void touchNavigatorIcon() {
-        finishActivity(SwipeBackLayout.NULL_DIR, false);
-    }
-
-    @Override
-    public void touchToolbar() {
-        photosView.pagerBackToTop();
-    }
-
-    @Override
-    public void touchMenuItem(int itemId) {
-        switch (itemId) {
-            case R.id.action_edit:
-                UpdateCollectionDialog dialog = new UpdateCollectionDialog();
-                dialog.setCollection((Collection) editResultPresenter.getEditKey());
-                dialog.setOnCollectionChangedListener(this);
-                dialog.show(getSupportFragmentManager(), null);
-                break;
-        }
-    }
 
     // swipe back manage view.
 
@@ -344,10 +326,6 @@ public class CollectionActivity extends BaseActivity
         }
     }
 
-    @Override
-    public void swipeBackFinish(int dir) {
-        finishActivity(dir, false);
-    }
 
     // edit result view.
 

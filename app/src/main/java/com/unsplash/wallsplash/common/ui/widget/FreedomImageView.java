@@ -30,6 +30,7 @@ public class FreedomImageView extends ImageView {
     private float width = 1;
     private float height = 0.666F;
     private boolean coverMode = false;
+    private boolean squareMode = false;
     private boolean showShadow = false;
 
     private String textPosition;
@@ -65,6 +66,7 @@ public class FreedomImageView extends ImageView {
         TypedArray a = c.obtainStyledAttributes(attrs, R.styleable.FreedomImageView, defStyleAttr, defStyleRes);
 
         this.coverMode = a.getBoolean(R.styleable.FreedomImageView_fiv_cover_mode, false);
+        this.squareMode = a.getBoolean(R.styleable.FreedomImageView_fiv_square, false);
 
         this.textPosition = a.getString(R.styleable.FreedomImageView_fiv_text_position);
         if (TextUtils.isEmpty(textPosition)
@@ -151,6 +153,10 @@ public class FreedomImageView extends ImageView {
     }
 
     private int[] getMeasureSize(int measureWidth) {
+        if (squareMode) {
+            return new int[]{measureWidth, measureWidth};
+        }
+
         if (coverMode) {
             int screenWidth = getResources().getDisplayMetrics().widthPixels;
             int screenHeight = getResources().getDisplayMetrics().heightPixels;

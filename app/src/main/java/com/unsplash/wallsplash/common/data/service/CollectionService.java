@@ -256,7 +256,7 @@ public class CollectionService {
         return new CollectionService();
     }
 
-    public OkHttpClient buildClient() {
+    private OkHttpClient buildClient() {
         return new OkHttpClient.Builder()
                 .addInterceptor(new AuthInterceptor())
                 .build();

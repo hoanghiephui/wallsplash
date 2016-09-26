@@ -106,7 +106,7 @@ public class UserService {
         return new UserService();
     }
 
-    public OkHttpClient buildClient() {
+    private OkHttpClient buildClient() {
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         logging.setLevel(BuildConfig.DEBUG ? HttpLoggingInterceptor.Level.BODY
                 : HttpLoggingInterceptor.Level.NONE);

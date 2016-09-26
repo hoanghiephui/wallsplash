@@ -6,17 +6,11 @@ package com.unsplash.wallsplash.common.i.view;
 
 public interface SearchBarView {
 
-    void touchNavigatorIcon();
-
-    void touchMenuItem(int itemId);
-
-    void touchOrientationIcon();
-
-    void touchSearchBar();
+    void clearSearchBarText();
 
     void showKeyboard();
 
     void hideKeyboard();
 
-    void submitSearchInfo(String text, String orientation);
+    void submitSearchInfo(String text);
 }

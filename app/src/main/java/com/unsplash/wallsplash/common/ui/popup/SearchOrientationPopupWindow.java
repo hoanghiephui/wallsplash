@@ -5,7 +5,9 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,6 +39,7 @@ public class SearchOrientationPopupWindow extends PopupWindow
      * <br> life cycle.
      */
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public SearchOrientationPopupWindow(Context c, View anchor, String valueNow) {
         super(c);
         this.initialize(c, anchor, valueNow);
@@ -49,6 +52,7 @@ public class SearchOrientationPopupWindow extends PopupWindow
         });
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @SuppressLint("InflateParams")
     private void initialize(Context c, View anchor, String valueNow) {
         View v = LayoutInflater.from(c).inflate(R.layout.popup_search_orientation, null);
@@ -76,9 +80,21 @@ public class SearchOrientationPopupWindow extends PopupWindow
     private void initWidget() {
         View v = getContentView();
 
+        v.findViewById(R.id.popup_search_orientation_all).setOnClickListener(this);
         v.findViewById(R.id.popup_search_orientation_landscape).setOnClickListener(this);
         v.findViewById(R.id.popup_search_orientation_portrait).setOnClickListener(this);
         v.findViewById(R.id.popup_search_orientation_squarish).setOnClickListener(this);
+
+        TextView allTxt = (TextView) v.findViewById(R.id.popup_search_orientation_allTxt);
+        TypefaceUtils.setTypeface(v.getContext(), allTxt);
+        allTxt.setText(v.getContext().getText(R.string.all));
+        if (TextUtils.isEmpty(valueNow)) {
+            if (ThemeUtils.getInstance(v.getContext()).isLightTheme()) {
+                allTxt.setTextColor(ContextCompat.getColor(v.getContext(), R.color.colorTextSubtitle_light));
+            } else {
+                allTxt.setTextColor(ContextCompat.getColor(v.getContext(), R.color.colorTextSubtitle_dark));
+            }
+        }
 
         TextView landscapeTxt = (TextView) v.findViewById(R.id.popup_search_orientation_landscapeTxt);
         TypefaceUtils.setTypeface(v.getContext(), landscapeTxt);
@@ -114,6 +130,8 @@ public class SearchOrientationPopupWindow extends PopupWindow
         }
 
         if (ThemeUtils.getInstance(v.getContext()).isLightTheme()) {
+            ((ImageView) v.findViewById(R.id.popup_search_orientation_allIcon))
+                    .setImageResource(R.drawable.ic_infinity_dark);
             ((ImageView) v.findViewById(R.id.popup_search_orientation_landscapeIcon))
                     .setImageResource(R.drawable.ic_orientation_landscape_light);
             ((ImageView) v.findViewById(R.id.popup_search_orientation_portraitIcon))
@@ -121,6 +139,8 @@ public class SearchOrientationPopupWindow extends PopupWindow
             ((ImageView) v.findViewById(R.id.popup_search_orientation_squarishIcon))
                     .setImageResource(R.drawable.ic_orientation_squarish_light);
         } else {
+            ((ImageView) v.findViewById(R.id.popup_search_orientation_allIcon))
+                    .setImageResource(R.drawable.ic_infinity_light);
             ((ImageView) v.findViewById(R.id.popup_search_orientation_landscapeIcon))
                     .setImageResource(R.drawable.ic_orientation_landscape_dark);
             ((ImageView) v.findViewById(R.id.popup_search_orientation_portraitIcon))
@@ -156,6 +176,10 @@ public class SearchOrientationPopupWindow extends PopupWindow
     public void onClick(View view) {
         String newValue = valueNow;
         switch (view.getId()) {
+            case R.id.popup_search_orientation_all:
+                newValue = "";
+                break;
+
             case R.id.popup_search_orientation_landscape:
                 newValue = values[0];
                 break;

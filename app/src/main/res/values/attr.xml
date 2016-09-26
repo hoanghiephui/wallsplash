@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- style -->
+    <declare-styleable name="root_color">
+        <attr name="root_color" format="reference|color" />
+    </declare-styleable>
+
+    <declare-styleable name="line_color">
+        <attr name="line_color" format="reference|color" />
+    </declare-styleable>
+
+    <declare-styleable name="title_color">
+        <attr name="title_color" format="reference|color" />
+    </declare-styleable>
+
+    <declare-styleable name="subtitle_color">
+        <attr name="subtitle_color" format="reference|color" />
+    </declare-styleable>
+
+    <declare-styleable name="content_color">
+        <attr name="content_color" format="reference|color" />
+    </declare-styleable>
+
+    <declare-styleable name="color_tab_text">
+        <attr name="color_tab_text" format="reference|color" />
+    </declare-styleable>
+
+    <declare-styleable name="color_tab_selected">
+        <attr name="color_tab_selected" format="reference|color" />
+    </declare-styleable>
+
+    <!-- circleImageView -->
+    <declare-styleable name="CircleImageView">
+        <attr name="civ_border_width" format="dimension" />
+        <attr name="civ_border_color" format="color" />
+        <attr name="civ_border_overlay" format="boolean" />
+        <attr name="civ_fill_color" format="color" />
+    </declare-styleable>
+
+    <!-- FreedomImageView -->
+    <declare-styleable name="FreedomImageView">
+        <attr name="fiv_cover_mode" format="boolean" />
+        <attr name="fiv_exist_photo" format="boolean" />
+        <attr name="fiv_text_position" format="string" />
+        <attr name="fiv_square" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="MaterialProgressBar">
+        <attr name="progressColour" format="color" />
+        <attr name="secondaryProgressColour" format="color" />
+        <attr name="backgroundColour" format="color" />
+        <attr name="duration" format="integer" />
+    </declare-styleable>
+
+    <attr name="dragDismissDistance" format="dimension" />
+
+    <declare-styleable name="ElasticDragDismissFrameLayout">
+        <attr name="dragDismissDistance" />
+        <attr name="dragDismissFraction" format="float" />
+        <attr name="dragDismissScale" format="float" />
+        <attr name="dragElasticity" format="float" />
+    </declare-styleable>
+
+    <declare-styleable name="BottomSheet">
+        <attr name="scrollingChild" format="reference" />
+        <attr name="dragDismissDistance" />
+    </declare-styleable>
+
+    <attr name="ate_key" format="string" />
+    <attr name="toolbar_popup_theme" format="reference" />
+
+</resources>

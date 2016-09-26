@@ -1,7 +1,7 @@
 package com.unsplash.wallsplash.common.i.presenter;
 
-import android.app.Activity;
 import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 
 /**
  * Search presenter.
@@ -27,9 +27,9 @@ public interface SearchPresenter {
 
     void setQuery(String key);
 
-    void setOrientation(String key);
-
-    void setActivityForAdapter(Activity a);
+    String getQuery();
 
     int getAdapterItemCount();
+
+    RecyclerView.Adapter getAdapter();
 }

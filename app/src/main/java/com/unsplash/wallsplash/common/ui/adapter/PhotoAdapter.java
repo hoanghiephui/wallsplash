@@ -181,6 +181,7 @@ public class PhotoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                     })
                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                     .into(((ViewHolder) holder).image);
+            ((ViewHolder) holder).image.setTransitionName(itemList.get(position).id);
         }
         String titleTxt = "By " + itemList.get(position).user.name;
         ((ViewHolder) holder).title.setText(titleTxt);
@@ -200,9 +201,7 @@ public class PhotoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                         mContext,
                         itemList.get(position).color));
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            ((ViewHolder) holder).image.setTransitionName(itemList.get(position).id);
-        }
+
 
         setOnClick((ViewHolder) holder, position);
     }
@@ -383,7 +382,7 @@ public class PhotoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         private boolean like;
         private int position;
 
-        public OnSetLikeListener(String id, boolean like, int position) {
+        OnSetLikeListener(String id, boolean like, int position) {
             this.id = id;
             this.like = like;
             this.position = position;
@@ -435,7 +434,7 @@ public class PhotoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     // view holder.
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    private class ViewHolder extends RecyclerView.ViewHolder {
         // widget
         public RelativeLayout background;
         public FreedomImageView image;
@@ -444,9 +443,9 @@ public class PhotoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         private CircularImageView avatar;
         private ShortTimeView tvTime;
         private MaterialProgressBar progress;
-        public ImageButton deleteButton, addCollection;
+        ImageButton deleteButton, addCollection;
 
-        public ViewHolder(View itemView, int position) {
+        ViewHolder(View itemView, int position) {
             super(itemView);
 
             this.background = (RelativeLayout) itemView.findViewById(R.id.item_photo_background);

@@ -4,7 +4,10 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Message;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -13,59 +16,56 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.unsplash.wallsplash.R;
-import com.unsplash.wallsplash.common.i.model.SearchBarModel;
+import com.unsplash.wallsplash.common.i.model.PagerManageModel;
 import com.unsplash.wallsplash.common.i.presenter.MessageManagePresenter;
-import com.unsplash.wallsplash.common.i.presenter.PopupManagePresenter;
+import com.unsplash.wallsplash.common.i.presenter.PagerManagePresenter;
 import com.unsplash.wallsplash.common.i.presenter.SearchBarPresenter;
 import com.unsplash.wallsplash.common.i.view.MessageManageView;
-import com.unsplash.wallsplash.common.i.view.PopupManageView;
+import com.unsplash.wallsplash.common.i.view.PagerManageView;
+import com.unsplash.wallsplash.common.i.view.PagerView;
 import com.unsplash.wallsplash.common.i.view.SearchBarView;
+import com.unsplash.wallsplash.common.ui.adapter.MyPagerAdapter;
 import com.unsplash.wallsplash.common.ui.widget.StatusBarView;
 import com.unsplash.wallsplash.common.utils.NotificationUtils;
 import com.unsplash.wallsplash.common.utils.SafeHandler;
 import com.unsplash.wallsplash.common.utils.ThemeUtils;
 import com.unsplash.wallsplash.common.utils.TypefaceUtils;
-import com.unsplash.wallsplash.common.utils.ValueUtils;
-import com.unsplash.wallsplash.main.model.fragment.SearchBarObject;
-import com.unsplash.wallsplash.main.presenter.activity.MessageManageImplementor;
+import com.unsplash.wallsplash.main.model.fragment.PagerManageObject;
+import com.unsplash.wallsplash.main.presenter.fragment.MessageManageImplementor;
+import com.unsplash.wallsplash.main.presenter.fragment.PagerManageImplementor;
 import com.unsplash.wallsplash.main.presenter.fragment.SearchBarImplementor;
-import com.unsplash.wallsplash.main.presenter.fragment.SearchFragmentPopupManageImplementor;
-import com.unsplash.wallsplash.main.view.activity.MainActivity;
-import com.unsplash.wallsplash.main.view.widget.SearchPhotosView;
+import com.unsplash.wallsplash.main.view.widget.HomeSearchView;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
 /**
  * Search Fragment.
- */
+ * */
 
 public class SearchFragment extends Fragment
-        implements SearchBarView, MessageManageView, PopupManageView,
+        implements SearchBarView, MessageManageView, PagerManageView,
         View.OnClickListener, Toolbar.OnMenuItemClickListener, EditText.OnEditorActionListener,
-        NotificationUtils.SnackbarContainer, SafeHandler.HandlerContainer {
+        NotificationUtils.SnackbarContainer, ViewPager.OnPageChangeListener, SafeHandler.HandlerContainer {
     // model.
-    private SearchBarModel searchBarModel;
+    private PagerManageModel pagerManageModel;
 
     // view.
     private CoordinatorLayout container;
     private EditText editText;
-    private TextView orientationTxt;
-    private ImageView menuIcon;
-    private SearchPhotosView contentView;
+    private PagerView[] pagers = new PagerView[3];
 
     private SafeHandler<SearchFragment> handler;
 
     // presenter.
     private SearchBarPresenter searchBarPresenter;
     private MessageManagePresenter messageManagePresenter;
-    private PopupManagePresenter popupManagePresenter;
+    private PagerManagePresenter pagerManagePresenter;
 
     /**
      * <br> life cycle.
@@ -84,26 +84,25 @@ public class SearchFragment extends Fragment
     @Override
     public void onDestroy() {
         super.onDestroy();
+        for (PagerView p : pagers) {
+            p.cancelRequest();
+        }
         searchBarPresenter.hideKeyboard();
         handler.removeCallbacksAndMessages(null);
-        contentView.cancelRequest();
     }
 
-    /**
-     * <br> presenter.
-     */
+    /** <br> presenter. */
 
     private void initPresenter() {
-        this.searchBarPresenter = new SearchBarImplementor(searchBarModel, this);
+        this.searchBarPresenter = new SearchBarImplementor(this);
         this.messageManagePresenter = new MessageManageImplementor(this);
-        this.popupManagePresenter = new SearchFragmentPopupManageImplementor(this);
+        this.pagerManagePresenter = new PagerManageImplementor(pagerManageModel, this);
     }
 
-    /**
-     * <br> view.
-     */
+    /** <br> view. */
 
     // init.
+
     private void initView(View v) {
         this.handler = new SafeHandler<>(this);
 
@@ -131,70 +130,68 @@ public class SearchFragment extends Fragment
         editText.setFocusable(true);
         editText.requestFocus();
 
-        FrameLayout orientationContainer = (FrameLayout) v.findViewById(R.id.fragment_search_orientationContainer);
-        orientationContainer.setOnClickListener(this);
+        initPages(v);
+    }
 
-        RelativeLayout orientationMenu = (RelativeLayout) v.findViewById(R.id.fragment_search_orientationMenu);
-        orientationMenu.setOnClickListener(this);
-
-        this.menuIcon = (ImageView) v.findViewById(R.id.fragment_search_menuIcon);
-        if (ThemeUtils.getInstance(getActivity()).isLightTheme()) {
-            menuIcon.setImageResource(R.drawable.ic_menu_down_light);
-        } else {
-            menuIcon.setImageResource(R.drawable.ic_menu_down_dark);
+    private void initPages(View v) {
+        List<View> pageList = new ArrayList<>();
+        pageList.add(new HomeSearchView(getActivity(), HomeSearchView.SEARCH_PHOTOS_TYPE));
+        pageList.add(new HomeSearchView(getActivity(), HomeSearchView.SEARCH_COLLECTIONS_TYPE));
+        pageList.add(new HomeSearchView(getActivity(), HomeSearchView.SEARCH_USERS_TYPE));
+        for (int i = 0; i < pageList.size(); i++) {
+            pagers[i] = (PagerView) pageList.get(i);
+            pageList.get(i).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    searchBarPresenter.hideKeyboard();
+                }
+            });
         }
 
-        this.orientationTxt = (TextView) v.findViewById(R.id.fragment_search_nowTxt);
-        TypefaceUtils.setTypeface(getActivity(), orientationTxt);
-        orientationTxt.setText(ValueUtils.getOrientationName(getActivity(), searchBarModel.getOrientation()));
+        List<String> tabList = new ArrayList<>();
+        tabList.add("PHOTOS");
+        tabList.add("COLLECTIONS");
+        tabList.add("USERS");
+        MyPagerAdapter adapter = new MyPagerAdapter(pageList, tabList);
 
-        this.contentView = (SearchPhotosView) v.findViewById(R.id.fragment_search_contentView);
-        contentView.setActivity(getActivity());
-        contentView.setOnClickListener(this);
+        ViewPager viewPager = (ViewPager) v.findViewById(R.id.fragment_search_viewPager);
+        viewPager.setAdapter(adapter);
+        viewPager.addOnPageChangeListener(this);
+
+        TabLayout tabLayout = (TabLayout) v.findViewById(R.id.fragment_search_tabLayout);
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+        tabLayout.setupWithViewPager(viewPager);
     }
 
     // interface.
 
     public void pagerBackToTop() {
-        contentView.pagerScrollToTop();
+        pagerManagePresenter.pagerScrollToTop();
     }
 
-    /**
-     * <br> model.
-     */
+    /** <br> model. */
 
     // init.
+
     private void initModel() {
-        this.searchBarModel = new SearchBarObject();
+        this.pagerManageModel = new PagerManageObject(0);
     }
 
     // interface.
 
     public boolean needPagerBackToTop() {
-        return contentView.needPagerBackToTop();
+        return pagerManagePresenter.needPagerBackToTop();
     }
 
-    /**
-     * <br> interface.
-     */
+    /** <br> interface. */
 
     // on click listener.
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case -1:
-                searchBarPresenter.touchNavigatorIcon();
-                break;
-            case R.id.fragment_search_orientationContainer:
-                searchBarPresenter.touchSearchBar();
-                break;
-
-            case R.id.fragment_search_orientationMenu:
-                searchBarPresenter.touchOrientationIcon();
-                break;
-
-            case R.id.fragment_search_contentView:
-                searchBarPresenter.hideKeyboard();
+                searchBarPresenter.touchNavigatorIcon(getActivity());
                 break;
         }
     }
@@ -203,8 +200,7 @@ public class SearchFragment extends Fragment
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
-        searchBarPresenter.touchMenuItem(item.getItemId());
-        return true;
+        return searchBarPresenter.touchMenuItem(getActivity(), item.getItemId());
     }
 
     // on editor action clickListener.
@@ -219,6 +215,24 @@ public class SearchFragment extends Fragment
         return true;
     }
 
+    // on page change listener.
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+        // do nothing.
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+        pagerManagePresenter.setPagerPosition(position);
+        pagerManagePresenter.checkToRefresh(position);
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+        // do nothing.
+    }
+
     // snackbar container.
 
     @Override
@@ -230,7 +244,7 @@ public class SearchFragment extends Fragment
 
     @Override
     public void handleMessage(Message message) {
-        messageManagePresenter.responseMessage(message.what, message.obj);
+        messageManagePresenter.responseMessage((AppCompatActivity) getActivity(), message.what, message.obj);
     }
 
     // view.
@@ -238,27 +252,8 @@ public class SearchFragment extends Fragment
     // search bar view.
 
     @Override
-    public void touchNavigatorIcon() {
-        ((MainActivity) getActivity()).removeFragment();
-    }
-
-    @Override
-    public void touchMenuItem(int itemId) {
-        switch (itemId) {
-            case R.id.action_clear_text:
-                editText.setText("");
-                break;
-        }
-    }
-
-    @Override
-    public void touchOrientationIcon() {
-        popupManagePresenter.showPopup(getActivity(), menuIcon, searchBarModel.getOrientation(), 0);
-    }
-
-    @Override
-    public void touchSearchBar() {
-        // do nothing.
+    public void clearSearchBarText() {
+        editText.setText("");
     }
 
     @Override
@@ -274,8 +269,12 @@ public class SearchFragment extends Fragment
     }
 
     @Override
-    public void submitSearchInfo(String text, String orientation) {
-        contentView.doSearch(text, orientation);
+    public void submitSearchInfo(String text) {
+        for (PagerView p : pagers) {
+            p.setKey(text);
+            ((HomeSearchView) p).clearAdapter();
+        }
+        pagerManagePresenter.getPagerView(pagerManagePresenter.getPagerPosition()).refreshPager();
     }
 
     // message manage view.
@@ -299,11 +298,20 @@ public class SearchFragment extends Fragment
         }
     }
 
-    // popup manage view.
+    // page manage view.
 
     @Override
-    public void responsePopup(String value, int position) {
-        searchBarPresenter.setOrientation(value);
-        orientationTxt.setText(ValueUtils.getOrientationName(getActivity(), value));
+    public PagerView getPagerView(int position) {
+        return pagers[position];
+    }
+
+    @Override
+    public boolean canPagerSwipeBack(int position, int dir) {
+        return false;
+    }
+
+    @Override
+    public int getPagerItemCount(int position) {
+        return pagers[position].getItemCounts();
     }
 }

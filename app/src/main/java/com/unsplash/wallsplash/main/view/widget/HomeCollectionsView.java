@@ -131,10 +131,10 @@ public class HomeCollectionsView extends FrameLayout
 
         this.recyclerView = (RecyclerView) findViewById(R.id.container_photo_list_recyclerView);
         String[] testDevicesIds = new String[]{getContext().getString(R.string.testDeviceID), AdRequest.DEVICE_ID_EMULATOR};
-        adapterWrapper = new AdmobExpressRecyclerAdapterWrapper(getContext(), getContext().getString(R.string.id_ads), testDevicesIds, new AdSize(AdSize.FULL_WIDTH, 250));
+        adapterWrapper = new AdmobExpressRecyclerAdapterWrapper(getContext(), getContext().getString(R.string.id_ads_collection), testDevicesIds, new AdSize(AdSize.FULL_WIDTH, 250));
         adapterWrapper.setAdapter(collectionsModel.getAdapter());
         adapterWrapper.setLimitOfAds(100);
-        adapterWrapper.setNoOfDataBetweenAds(10);
+        adapterWrapper.setNoOfDataBetweenAds(8);
         adapterWrapper.setFirstAdIndex(2);
         recyclerView.setAdapter(adapterWrapper);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));

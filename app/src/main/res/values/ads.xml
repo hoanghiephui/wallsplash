@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="id_app_admob">ca-app-pub-2257698129050878~5912075542</string>
+    <string name="id_ads">ca-app-pub-2257698129050878/7388808742</string>
+    <string name="id_ads_collection">ca-app-pub-2257698129050878/3029001148</string>
+    <string name="id_ads_search_collection">ca-app-pub-2257698129050878/3549731543</string>
+    <string name="testDeviceID">AEF5B86790E2FFBE863DC449D15B4C63</string>
+    <string name="id_ads_banner">ca-app-pub-2257698129050878/6503197942</string>
+    <string name="id_ads_search_user">ca-app-pub-2257698129050878/9177462743</string>
+</resources>
